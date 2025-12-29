@@ -11,8 +11,7 @@ LIMIT 100
 
 WITH collect(topForum) AS topForums
 
-CALL {
-  WITH topForums
+CALL (topForums){
   UNWIND topForums AS topForum1
   MATCH (topForum1)-[:CONTAINER_OF]->(post:Post)<-[:REPLY_OF*0..]-(message:Message)-[:HAS_CREATOR]->(person:Person)<-[:HAS_MEMBER]-(topForum2:Forum)
   WITH person, message, topForum2

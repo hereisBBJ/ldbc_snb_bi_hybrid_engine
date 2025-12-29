@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 from pathlib import Path
 import time
+import os
 import requests
 import re
 import subprocess
@@ -94,7 +95,11 @@ def run_queries(query_variants, parameter_csvs, sf, results_file, timings_file, 
         i = 0
         for query_parameters in parameters_csv:
             i = i + 1
-
+            perf_file_path = f'system_performance/bi-{query_num}{query_subvariant}'
+            os.makedirs(perf_file_path, exist_ok=True)
+            perf_file = f'{perf_file_path}/parameters-{i}.csv'
+            perf = subprocess.Popen(["python3", "/d1/machine_performance_indicators/system_perf.py", perf_file,args.container_name])
+            print(["python3", "/d1/machine_performance_indicators/system_perf.py", perf_file,args.container_name])
             query_parameters_split = {k.split(":")[0]: v for k, v in query_parameters.items()}
             query_parameters_in_order = json.dumps(query_parameters_split)
 
@@ -109,6 +114,8 @@ def run_queries(query_variants, parameter_csvs, sf, results_file, timings_file, 
             results_file.flush()
             timings_file.write(f"TigerGraph|{sf}|{batch_date}|{batch_type}|{query_variant}|{query_parameters_in_order}|{duration:.6f}\n")
             timings_file.flush()
+
+            perf.kill()
 
             # - test run: 1 query
             # - regular run: 30 queries
@@ -125,9 +132,16 @@ def run_precompute(args, timings_file, sf, batch_id, batch_type):
     print(f"==================== Precompute for BI 4, 6, 19, 20 ======================")
     # compute values and print to files
     for q in [4,6,20]:
+        perf_file_path = f'system_performance'
+        os.makedirs(perf_file_path, exist_ok=True)
+        perf_file = f'{perf_file_path}/bi-{q}-precomputations.csv'
+        perf = subprocess.Popen(["python3", "/d1/machine_performance_indicators/system_perf.py", perf_file,args.container_name])
+
         t1 = time.time()
         requests.get(f'{args.endpoint}/query/ldbc_snb/precompute_bi{q}', headers=HEADERS)
         duration = time.time()-t1
+
+        perf.kill()
         print(f'precompute_bi{q}:\t\t{duration:.4f} s')
         timings_file.write(f"TigerGraph|{sf}|{batch_id}|{batch_type}|q{q}precomputation||{duration}\n")
 
@@ -140,10 +154,19 @@ def run_precompute(args, timings_file, sf, batch_id, batch_type):
     for i in range(nbatch):
       t2 = time.time()
       end = start + datetime.timedelta(days=365*3//nbatch + 1)
+      
+      perf_file_path = f'system_performance'
+      os.makedirs(perf_file_path, exist_ok=True)
+      perf_file = f'{perf_file_path}/bi-19-{start}-to-{end}-precomputations.csv'
+      perf = subprocess.Popen(["python3", "/d1/machine_performance_indicators/system_perf.py", perf_file,args.container_name])
+
       output = Path('/home/tigergraph/reply_count')
       out_file = output / f'part_{i:04d}.csv'
       params = {'startDate':start, 'endDate': end, 'file': str(out_file)}
       requests.get(f'{args.endpoint}/query/ldbc_snb/precompute_bi19', params = params, headers=HEADERS)
+      
+      perf.kill()
+
       print(f'precompute_bi19({start},{end}):{time.time()-t2:.4f} s')
       start = end
     q19precomputation_total_duration = time.time()-t1
@@ -153,7 +176,7 @@ def run_precompute(args, timings_file, sf, batch_id, batch_type):
     # load the files (this is faster in large SF)
     t1 = time.time()
     if not args.cluster:
-        subprocess.run(f"docker exec --user tigergraph snb-bi-tg bash -c '/home/tigergraph/tigergraph/app/cmd/gsql -g ldbc_snb RUN LOADING JOB load_precompute'", shell=True)
+        subprocess.run(f"podman exec --user tigergraph mem_tigergraph_3_11_1 bash -c '/home/tigergraph/tigergraph/app/cmd/gsql -g ldbc_snb RUN LOADING JOB load_precompute'", shell=True)
     else:
         subprocess.run(f'gsql -g ldbc_snb RUN LOADING JOB load_precompute', shell=True)
     print(f'load_precompute:\t\t{time.time()-t1:.4f} s')

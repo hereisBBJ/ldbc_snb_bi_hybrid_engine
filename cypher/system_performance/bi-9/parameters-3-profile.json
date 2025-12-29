@@ -1,0 +1,246 @@
+{
+  "operatorType": "ProduceResults@neo4j",
+  "identifiers": [
+    "`person.firstName`",
+    "messageCount",
+    "`person.lastName`",
+    "`person.id`",
+    "threadCount"
+  ],
+  "dbHits": 0,
+  "rows": 100,
+  "pageCacheHits": 0,
+  "pageCacheMisses": 0,
+  "args": {
+    "Order": "messageCount DESC, `person.id` ASC",
+    "GlobalMemory": 187197040,
+    "planner-impl": "IDP",
+    "string-representation": "Planner COST\n\nRuntime SLOTTED\n\nRuntime version 5.9\n\n+-------------------------------+----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+------------------------------------+\n| Operator                      | Id | Details                                                                                              | Estimated Rows | Rows    | DB Hits  | Memory (Bytes) | Page Cache Hits/Misses | Ordered by                         |\n+-------------------------------+----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+------------------------------------+\n| +ProduceResults               |  0 | `person.id`, `person.firstName`, `person.lastName`, threadCount, messageCount                        |            100 |     100 |        0 |                |                    0/0 |                                    |\n| |                             +----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+                                    |\n| +Top                          |  1 | messageCount DESC, `person.id` ASC LIMIT 100                                                         |            100 |     100 |        0 |          27416 |                    0/0 | messageCount DESC, `person.id` ASC |\n| |                             +----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+------------------------------------+\n| +EagerAggregation             |  2 | cache[person.id] AS `person.id`, cache[person.firstName] AS `person.firstName`, cache[person.lastNam |           1508 |   58757 |        0 |      187196512 |                    0/0 |                                    |\n| |                             |    | e] AS `person.lastName`, count(DISTINCT post) AS threadCount, count(DISTINCT reply) AS messageCount  |                |         |          |                |                        |                                    |\n| |                             +----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+------------------------------------+\n| +Filter                       |  3 | cache[reply.creationDate] >= $startDate AND cache[reply.creationDate] <= $endDate AND reply:Message  |        2274282 | 3499795 |  6999590 |                |                    0/0 |                                    |\n| |                             +----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+------------------------------------+\n| +VarLengthExpand(Pruning,BFS) |  4 | (post)<-[:REPLY_OF*0..2147483647]-(reply)                                                            |        9154988 | 3499795 | 19983497 |            976 |                    0/0 |                                    |\n| |                             +----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+------------------------------------+\n| +CacheProperties              |  5 | cache[person.lastName], cache[person.firstName], cache[person.id]                                    |        2068373 | 1213292 |  3639876 |                |                    0/0 |                                    |\n| |                             +----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+------------------------------------+\n| +Filter                       |  6 | person:Person                                                                                        |        2068373 | 1213292 |  1213292 |                |                    0/0 |                                    |\n| |                             +----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+------------------------------------+\n| +Expand(All)                  |  7 | (post)-[anon_0:HAS_CREATOR]->(person)                                                                |        2068373 | 1213292 |  7347817 |                |                    0/0 |                                    |\n| |                             +----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+------------------------------------+\n| +Filter                       |  8 | cache[post.creationDate] >= $startDate AND cache[post.creationDate] <= $endDate                      |        2068373 | 1213292 |  8273491 |                |                    0/0 |                                    |\n| |                             +----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+------------------------------------+\n| +NodeByLabelScan              |  9 | post:Post                                                                                            |        8273491 | 8273491 |  8273492 |                |                    0/0 |                                    |\n+-------------------------------+----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+------------------------------------+\n\nTotal database accesses: 55731055, total allocated memory: 187197040\n",
+    "runtime": "SLOTTED",
+    "runtime-impl": "SLOTTED",
+    "DbHits": 0,
+    "Details": "`person.id`, `person.firstName`, `person.lastName`, threadCount, messageCount",
+    "planner-version": "5.9",
+    "runtime-version": "5.9",
+    "Id": 0,
+    "PageCacheMisses": 0,
+    "EstimatedRows": 100.0,
+    "planner": "COST",
+    "Rows": 100,
+    "PageCacheHits": 0
+  },
+  "children": [
+    {
+      "operatorType": "Top@neo4j",
+      "identifiers": [
+        "`person.firstName`",
+        "messageCount",
+        "`person.lastName`",
+        "`person.id`",
+        "threadCount"
+      ],
+      "dbHits": 0,
+      "rows": 100,
+      "pageCacheHits": 0,
+      "pageCacheMisses": 0,
+      "args": {
+        "Order": "messageCount DESC, `person.id` ASC",
+        "Details": "messageCount DESC, `person.id` ASC LIMIT 100",
+        "Memory": 27416,
+        "Id": 1,
+        "EstimatedRows": 100.0,
+        "PageCacheMisses": 0,
+        "DbHits": 0,
+        "Rows": 100,
+        "PageCacheHits": 0
+      },
+      "children": [
+        {
+          "operatorType": "EagerAggregation@neo4j",
+          "identifiers": [
+            "`person.firstName`",
+            "messageCount",
+            "`person.lastName`",
+            "`person.id`",
+            "threadCount"
+          ],
+          "dbHits": 0,
+          "rows": 58757,
+          "pageCacheHits": 0,
+          "pageCacheMisses": 0,
+          "args": {
+            "Details": "cache[person.id] AS `person.id`, cache[person.firstName] AS `person.firstName`, cache[person.lastName] AS `person.lastName`, count(DISTINCT post) AS threadCount, count(DISTINCT reply) AS messageCount",
+            "Memory": 187196512,
+            "Id": 2,
+            "EstimatedRows": 1508.0721414251452,
+            "PageCacheMisses": 0,
+            "DbHits": 0,
+            "Rows": 58757,
+            "PageCacheHits": 0
+          },
+          "children": [
+            {
+              "operatorType": "Filter@neo4j",
+              "identifiers": [
+                "post",
+                "anon_0",
+                "person",
+                "reply"
+              ],
+              "dbHits": 6999590,
+              "rows": 3499795,
+              "pageCacheHits": 0,
+              "pageCacheMisses": 0,
+              "args": {
+                "Details": "cache[reply.creationDate] >= $startDate AND cache[reply.creationDate] <= $endDate AND reply:Message",
+                "Id": 3,
+                "PageCacheMisses": 0,
+                "EstimatedRows": 2274281.583742623,
+                "DbHits": 6999590,
+                "Rows": 3499795,
+                "PageCacheHits": 0
+              },
+              "children": [
+                {
+                  "operatorType": "VarLengthExpand(Pruning,BFS)@neo4j",
+                  "identifiers": [
+                    "post",
+                    "anon_0",
+                    "person",
+                    "reply"
+                  ],
+                  "dbHits": 19983497,
+                  "rows": 3499795,
+                  "pageCacheHits": 0,
+                  "pageCacheMisses": 0,
+                  "args": {
+                    "Details": "(post)<-[:REPLY_OF*0..2147483647]-(reply) ",
+                    "Memory": 976,
+                    "Id": 4,
+                    "EstimatedRows": 9154988.076119859,
+                    "PageCacheMisses": 0,
+                    "DbHits": 19983497,
+                    "Rows": 3499795,
+                    "PageCacheHits": 0
+                  },
+                  "children": [
+                    {
+                      "operatorType": "CacheProperties@neo4j",
+                      "identifiers": [
+                        "post",
+                        "anon_0",
+                        "person"
+                      ],
+                      "dbHits": 3639876,
+                      "rows": 1213292,
+                      "pageCacheHits": 0,
+                      "pageCacheMisses": 0,
+                      "args": {
+                        "Details": "cache[person.lastName], cache[person.firstName], cache[person.id]",
+                        "Id": 5,
+                        "PageCacheMisses": 0,
+                        "EstimatedRows": 2068372.7499999995,
+                        "DbHits": 3639876,
+                        "Rows": 1213292,
+                        "PageCacheHits": 0
+                      },
+                      "children": [
+                        {
+                          "operatorType": "Filter@neo4j",
+                          "identifiers": [
+                            "post",
+                            "anon_0",
+                            "person"
+                          ],
+                          "dbHits": 1213292,
+                          "rows": 1213292,
+                          "pageCacheHits": 0,
+                          "pageCacheMisses": 0,
+                          "args": {
+                            "Details": "person:Person",
+                            "Id": 6,
+                            "PageCacheMisses": 0,
+                            "EstimatedRows": 2068372.7499999995,
+                            "DbHits": 1213292,
+                            "Rows": 1213292,
+                            "PageCacheHits": 0
+                          },
+                          "children": [
+                            {
+                              "operatorType": "Expand(All)@neo4j",
+                              "identifiers": [
+                                "post",
+                                "anon_0",
+                                "person"
+                              ],
+                              "dbHits": 7347817,
+                              "rows": 1213292,
+                              "pageCacheHits": 0,
+                              "pageCacheMisses": 0,
+                              "args": {
+                                "Details": "(post)-[anon_0:HAS_CREATOR]->(person)",
+                                "Id": 7,
+                                "PageCacheMisses": 0,
+                                "EstimatedRows": 2068372.75,
+                                "DbHits": 7347817,
+                                "Rows": 1213292,
+                                "PageCacheHits": 0
+                              },
+                              "children": [
+                                {
+                                  "operatorType": "Filter@neo4j",
+                                  "identifiers": [
+                                    "post"
+                                  ],
+                                  "dbHits": 8273491,
+                                  "rows": 1213292,
+                                  "pageCacheHits": 0,
+                                  "pageCacheMisses": 0,
+                                  "args": {
+                                    "Details": "cache[post.creationDate] >= $startDate AND cache[post.creationDate] <= $endDate",
+                                    "Id": 8,
+                                    "PageCacheMisses": 0,
+                                    "EstimatedRows": 2068372.75,
+                                    "DbHits": 8273491,
+                                    "Rows": 1213292,
+                                    "PageCacheHits": 0
+                                  },
+                                  "children": [
+                                    {
+                                      "operatorType": "NodeByLabelScan@neo4j",
+                                      "identifiers": [
+                                        "post"
+                                      ],
+                                      "dbHits": 8273492,
+                                      "rows": 8273491,
+                                      "pageCacheHits": 0,
+                                      "pageCacheMisses": 0,
+                                      "args": {
+                                        "Details": "post:Post",
+                                        "Id": 9,
+                                        "PageCacheMisses": 0,
+                                        "EstimatedRows": 8273491.0,
+                                        "DbHits": 8273492,
+                                        "Rows": 8273491,
+                                        "PageCacheHits": 0
+                                      },
+                                      "children": []
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

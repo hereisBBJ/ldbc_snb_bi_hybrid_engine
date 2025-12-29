@@ -1,0 +1,184 @@
+diff -ur ldbc_snb_bi-523fde3957aa5472782158d4956c856b04e83e3e/umbra/queries/bi-10.sql ./postgres_queries/bi-10.sql
+--- ldbc_snb_bi-523fde3957aa5472782158d4956c856b04e83e3e/umbra/queries/bi-10.sql	2023-06-21 05:00:24.000000000 +0800
++++ ./postgres_queries/bi-10.sql	2023-09-26 20:26:36.375232465 +0800
+@@ -7,13 +7,13 @@
+  */
+ WITH friends AS
+   (SELECT Person2Id
+-     FROM Person_knows_Person
++     FROM undirected_Person_knows_Person
+     WHERE Person1Id = :personId
+   )
+   , friends_of_friends AS
+   (SELECT knowsB.Person2Id AS Person2Id
+      FROM friends
+-     JOIN Person_knows_Person knowsB
++     JOIN undirected_Person_knows_Person knowsB
+        ON friends.Person2Id = knowsB.Person1Id
+   )
+   , friends_and_friends_of_friends AS
+@@ -27,9 +27,9 @@
+     -- people reachable through 1..4 hops
+     (SELECT DISTINCT knowsD.Person2Id AS Person2Id
+       FROM friends_and_friends_of_friends ffoaf
+-      JOIN Person_knows_Person knowsC
++      JOIN undirected_Person_knows_Person knowsC
+         ON knowsC.Person1Id = ffoaf.Person2Id
+-      JOIN Person_knows_Person knowsD
++      JOIN undirected_Person_knows_Person knowsD
+         ON knowsD.Person1Id = knowsC.Person2Id
+     )
+     -- removing people reachable through 1..2 hops, yielding the ones reachable through 3..4 hops
+diff -ur ldbc_snb_bi-523fde3957aa5472782158d4956c856b04e83e3e/umbra/queries/bi-11.sql ./postgres_queries/bi-11.sql
+--- ldbc_snb_bi-523fde3957aa5472782158d4956c856b04e83e3e/umbra/queries/bi-11.sql	2023-06-21 05:00:24.000000000 +0800
++++ ./postgres_queries/bi-11.sql	2023-09-26 20:26:36.375232465 +0800
+@@ -5,16 +5,16 @@
+  */
+ WITH Persons_of_country_w_friends AS (
+     SELECT Person.id AS PersonId
+-         , Person_knows_Person.Person2Id AS FriendId
+-         , Person_knows_Person.creationDate AS creationDate
++         , undirected_Person_knows_Person.Person2Id AS FriendId
++         , undirected_Person_knows_Person.creationDate AS creationDate
+       FROM Person
+       JOIN City
+         ON City.id = Person.LocationCityId
+       JOIN Country
+         ON Country.id = City.PartOfCountryId
+        AND Country.name = :country
+-      JOIN Person_knows_Person
+-        ON Person_knows_Person.Person1Id = Person.id
++      JOIN undirected_Person_knows_Person
++        ON undirected_Person_knows_Person.Person1Id = Person.id
+ )
+ SELECT count(*)
+   FROM Persons_of_country_w_friends p1
+diff -ur ldbc_snb_bi-523fde3957aa5472782158d4956c856b04e83e3e/umbra/queries/bi-14.sql ./postgres_queries/bi-14.sql
+--- ldbc_snb_bi-523fde3957aa5472782158d4956c856b04e83e3e/umbra/queries/bi-14.sql	2023-06-21 05:00:24.000000000 +0800
++++ ./postgres_queries/bi-14.sql	2023-09-26 20:26:36.375232465 +0800
+@@ -12,10 +12,10 @@
+         ON City1.PartOfCountryId = Country1.id
+       JOIN Person Person1
+         ON Person1.LocationCityId = City1.id
+-      JOIN Person_knows_Person
+-        ON Person_knows_Person.Person1Id = Person1.id
++      JOIN undirected_Person_knows_Person
++        ON undirected_Person_knows_Person.Person1Id = Person1.id
+       JOIN Person Person2
+-        ON Person2.id = Person_knows_Person.Person2Id
++        ON Person2.id = undirected_Person_knows_Person.Person2Id
+       JOIN City City2
+         ON Person2.LocationCityId = City2.id
+       JOIN Country Country2
+diff -ur ldbc_snb_bi-523fde3957aa5472782158d4956c856b04e83e3e/umbra/queries/bi-15.sql ./postgres_queries/bi-15.sql
+--- ldbc_snb_bi-523fde3957aa5472782158d4956c856b04e83e3e/umbra/queries/bi-15.sql	2023-06-21 05:00:24.000000000 +0800
++++ ./postgres_queries/bi-15.sql	2023-09-26 20:26:36.375232465 +0800
+@@ -12,7 +12,7 @@
+ ),
+ mm as (
+     select least(msg.CreatorPersonId, reply.CreatorPersonId) as src, greatest(msg.CreatorPersonId, reply.CreatorPersonId) as dst, sum(case when msg.ParentMessageId is null then 10 else 5 end) as w
+-    from Person_knows_Person pp, Message msg, Message reply
++    from undirected_Person_knows_Person pp, Message msg, Message reply
+     where true
+           and pp.person1id = msg.CreatorPersonId 
+           and pp.person2id = reply.CreatorPersonId
+@@ -23,7 +23,7 @@
+ ),
+ path(src, dst, w) as (
+     select pp.person1id, pp.person2id, 10::double precision / (coalesce(w, 0) + 10)
+-    from Person_knows_Person pp left join mm on least(pp.person1id, pp.person2id) = mm.src and greatest(pp.person1id, pp.person2id) = mm.dst
++    from undirected_Person_knows_Person pp left join mm on least(pp.person1id, pp.person2id) = mm.src and greatest(pp.person1id, pp.person2id) = mm.dst
+ ),
+ -- bidirectional bfs for nonexistant paths
+ pexists(src, dir) as (
+diff -ur ldbc_snb_bi-523fde3957aa5472782158d4956c856b04e83e3e/umbra/queries/bi-16.sql ./postgres_queries/bi-16.sql
+--- ldbc_snb_bi-523fde3957aa5472782158d4956c856b04e83e3e/umbra/queries/bi-16.sql	2023-06-21 05:00:24.000000000 +0800
++++ ./postgres_queries/bi-16.sql	2023-09-26 20:26:36.375232465 +0800
+@@ -22,13 +22,13 @@
+     SELECT
+         subgraphA1.PersonId,
+         count(DISTINCT subgraphA1.MessageId) AS cm,
+-        count(DISTINCT Person_knows_Person.Person2Id) AS cp2
++        count(DISTINCT undirected_Person_knows_Person.Person2Id) AS cp2
+     FROM subgraphA subgraphA1
+-    LEFT JOIN Person_knows_Person
+-    ON Person_knows_Person.Person1Id = subgraphA1.PersonId
+-    AND Person_knows_Person.Person2Id IN (SELECT PersonId FROM subgraphA)
++    LEFT JOIN undirected_Person_knows_Person
++    ON undirected_Person_knows_Person.Person1Id = subgraphA1.PersonId
++    AND undirected_Person_knows_Person.Person2Id IN (SELECT PersonId FROM subgraphA)
+     GROUP BY subgraphA1.PersonId
+-    HAVING count(DISTINCT Person_knows_Person.Person2Id) <= :maxKnowsLimit
++    HAVING count(DISTINCT undirected_Person_knows_Person.Person2Id) <= :maxKnowsLimit
+     ORDER BY subgraphA1.PersonId ASC
+   ),
+   subgraphB AS (
+@@ -47,13 +47,13 @@
+     SELECT
+         subgraphB1.PersonId,
+         count(DISTINCT subgraphB1.MessageId) AS cm,
+-        count(DISTINCT Person_knows_Person.Person2Id) AS cp2
++        count(DISTINCT undirected_Person_knows_Person.Person2Id) AS cp2
+     FROM subgraphB subgraphB1
+-    LEFT JOIN Person_knows_Person
+-    ON Person_knows_Person.Person1Id = subgraphB1.PersonId
+-    AND Person_knows_Person.Person2Id IN (SELECT PersonId FROM subgraphB)
++    LEFT JOIN undirected_Person_knows_Person
++    ON undirected_Person_knows_Person.Person1Id = subgraphB1.PersonId
++    AND undirected_Person_knows_Person.Person2Id IN (SELECT PersonId FROM subgraphB)
+     GROUP BY subgraphB1.PersonId
+-    HAVING count(DISTINCT Person_knows_Person.Person2Id) <= :maxKnowsLimit
++    HAVING count(DISTINCT undirected_Person_knows_Person.Person2Id) <= :maxKnowsLimit
+     ORDER BY subgraphB1.PersonId ASC
+   )
+ SELECT
+diff -ur ldbc_snb_bi-523fde3957aa5472782158d4956c856b04e83e3e/umbra/queries/bi-18.sql ./postgres_queries/bi-18.sql
+--- ldbc_snb_bi-523fde3957aa5472782158d4956c856b04e83e3e/umbra/queries/bi-18.sql	2023-06-21 05:00:24.000000000 +0800
++++ ./postgres_queries/bi-18.sql	2023-09-26 20:26:36.375232465 +0800
+@@ -9,7 +9,7 @@
+ ),
+ FriendsOfInterested AS (
+ SELECT k.Person1Id AS InterestedId, k.Person2Id AS FriendId
+-FROM PersonWithInterest p, Person_knows_Person k
++FROM PersonWithInterest p, undirected_Person_knows_Person k
+ WHERE p.PersonId = k.Person1Id
+ )
+ SELECT k1.InterestedId AS "person1.id", k2.InterestedId AS "person2.id", count(k1.FriendId) AS mutualFriendCount
+@@ -19,7 +19,7 @@
+  -- negative edge
+ WHERE k1.InterestedId != k2.InterestedId
+   AND NOT EXISTS (SELECT 1
+-         FROM Person_knows_Person k3
++         FROM undirected_Person_knows_Person k3
+         WHERE k3.Person1Id = k2.InterestedId -- pattern: person2
+           AND k3.Person2Id = k1.InterestedId -- pattern: person1
+       )
+diff -ur ldbc_snb_bi-523fde3957aa5472782158d4956c856b04e83e3e/umbra/queries/bi-8.sql ./postgres_queries/bi-8.sql
+--- ldbc_snb_bi-523fde3957aa5472782158d4956c856b04e83e3e/umbra/queries/bi-8.sql	2023-06-21 05:00:24.000000000 +0800
++++ ./postgres_queries/bi-8.sql	2023-09-26 20:26:36.375232465 +0800
+@@ -39,10 +39,10 @@
+      , p.score AS score
+      , coalesce(sum(f.score), 0) AS friendsScore
+   FROM Person_score p
+-  LEFT JOIN Person_knows_Person
+-    ON Person_knows_Person.Person1Id = p.PersonId
++  LEFT JOIN undirected_Person_knows_Person
++    ON undirected_Person_knows_Person.Person1Id = p.PersonId
+   LEFT JOIN Person_score f -- the friend
+-    ON f.PersonId = Person_knows_Person.Person2Id
++    ON f.PersonId = undirected_Person_knows_Person.Person2Id
+  GROUP BY p.PersonId, p.score
+  ORDER BY p.score + coalesce(sum(f.score), 0) DESC, p.PersonId
+  LIMIT 100
+diff -ur ldbc_snb_bi-523fde3957aa5472782158d4956c856b04e83e3e/umbra/queries/bi-9.sql ./postgres_queries/bi-9.sql
+--- ldbc_snb_bi-523fde3957aa5472782158d4956c856b04e83e3e/umbra/queries/bi-9.sql	2023-06-21 05:00:24.000000000 +0800
++++ ./postgres_queries/bi-9.sql	2023-09-26 20:26:36.375232465 +0800
+@@ -10,7 +10,7 @@
+      , count(Post.id) AS threadCount
+      , sum(MPP.MessageCount) AS messageCount
+   FROM Person
+-  JOIN Post_View Post
++  JOIN Post Post
+     ON Person.id = Post.CreatorPersonId
+   JOIN MPP
+     ON Post.id = MPP.RootPostId

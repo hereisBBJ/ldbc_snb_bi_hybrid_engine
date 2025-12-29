@@ -1,11 +1,18 @@
-CALL gds.graph.project.cypher(
-    'bi20',
-    'MATCH (p:Person) RETURN id(p) AS id',
-    'MATCH
+MATCH (personA:Person)
+OPTIONAL MATCH
       (personA:Person)-[:KNOWS]-(personB:Person),
       (personA)-[saA:STUDY_AT]->(u:University)<-[saB:STUDY_AT]-(personB)
-    RETURN
-      id(personA) AS source,
-      id(personB) AS target,
-      min(abs(saA.classYear - saB.classYear)) + 1 AS weight'
-)
+    WITH
+      min(abs(saA.classYear - saB.classYear)) + 1 AS weight,personA, personB
+WITH gds.graph.project(
+  'bi20',
+  personA,
+  personB,
+  {
+    sourceNodeLabels: 'Person',
+    targetNodeLabels: 'Person',
+    relationshipProperties: { weight: weight}
+  }
+) AS g
+RETURN
+  g.graphName AS graph, g.nodeCount AS nodes, g.relationshipCount AS rels

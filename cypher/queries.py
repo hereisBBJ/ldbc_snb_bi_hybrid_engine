@@ -1,4 +1,6 @@
 import datetime
+import os
+import subprocess
 import time
 import re
 import json
@@ -8,6 +10,9 @@ from result_mapping import result_mapping
 
 
 def convert_value_to_string(value, result_type, input):
+    # 测试匹配时间时删除下面两行注释符号
+    #if value is None:
+    #    return "0"
     if result_type == "ID[]" or result_type == "INT[]" or result_type == "INT32[]" or result_type == "INT64[]":
         return [int(x) for x in value]
     elif result_type == "ID" or result_type == "INT" or result_type == "INT32" or result_type == "INT64":
@@ -44,7 +49,7 @@ def cast_parameter_to_driver_input(value, parameter_type):
         return value
     elif parameter_type == "DATETIME":
         dt = datetime.datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f+00:00')
-        return datetime.datetime(dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second, dt.microsecond, tzinfo=datetime.timezone.utc)
+        return datetime.datetime(dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second, dt.microsecond*1000, tzinfo=datetime.timezone.utc)
     elif parameter_type == "DATE":
         dt = datetime.datetime.strptime(value, '%Y-%m-%d')
         return datetime.datetime(dt.year, dt.month, dt.day, tzinfo=datetime.timezone.utc)
@@ -83,7 +88,7 @@ def run_query(session, query_num, query_variant, query_spec, query_parameters, t
     return (results, duration)
 
 
-def run_queries(query_variants, parameter_csvs, session, sf, batch_id, batch_type, test, pgtuning, timings_file, results_file):
+def run_queries(query_variants, parameter_csvs, session, sf, batch_id, batch_type, test, pgtuning, timings_file, results_file,container_name):
     start = time.time()
 
     for query_variant in query_variants:
@@ -100,6 +105,11 @@ def run_queries(query_variants, parameter_csvs, session, sf, batch_id, batch_typ
         i = 0
         for query_parameters in parameters_csv:
             i = i + 1
+            perf_file_path = f'system_performance/bi-{query_num}{query_subvariant}'
+            os.makedirs(perf_file_path, exist_ok=True)
+            perf_file = f'{perf_file_path}/parameters-{i}.csv'
+            perf = subprocess.Popen(["/d1/machine_performance_indicators/system_perf.sh", perf_file,container_name])
+#           print(perf)
 
             query_parameters_converted = {k.split(":")[0]: cast_parameter_to_driver_input(v, k.split(":")[1]) for k, v in query_parameters.items()}
 
@@ -112,31 +122,43 @@ def run_queries(query_variants, parameter_csvs, session, sf, batch_id, batch_typ
             timings_file.flush()
             results_file.write(f"{query_num}|{query_variant}|{query_parameters_in_order}|{results}\n")
             results_file.flush()
+            perf.kill()
 
             # - test run: 1 query
             # - regular run: 30 queries
             # - paramgen tuning: 100 queries
-            if (test) or (not pgtuning and i == 30) or (pgtuning and i == 100):
+            if (test) or (not pgtuning and i == 5) or (pgtuning and i == 100):
                 break
 
     return time.time() - start
 
 
-def run_precomputations(sf, query_variants, session, batch_date, batch_type, timings_file):
+def run_precomputations(sf, query_variants, session, batch_date, batch_type, timings_file,container_name):
     if "19a" in query_variants or "19b" in query_variants:
         start = time.time()
+        perf_file_path = f'system_performance'
+        os.makedirs(perf_file_path, exist_ok=True)
+        perf_file = f'{perf_file_path}/bi-19-precomputations.csv'
+        perf = subprocess.Popen(["/d1/machine_performance_indicators/system_perf.sh", perf_file,container_name])
         print("Creating graph (precomputing weights) for Q19")
         session.write_transaction(write_query_fun, open(f'queries/bi-19-drop-graph.cypher', 'r').read())
         session.write_transaction(write_query_fun, open(f'queries/bi-19-create-graph.cypher', 'r').read())
+        perf.kill()
         end = time.time()
         duration = end - start
         timings_file.write(f"Neo4j|{sf}|{batch_date}|{batch_type}|q19precomputation||{duration}\n")
 
     if "20a" in query_variants or "20b" in query_variants:
         start = time.time()
+        perf_file_path = f'system_performance'
+        os.makedirs(perf_file_path, exist_ok=True)
+        perf_file = f'{perf_file_path}/bi-20-precomputations.csv'
+        perf = subprocess.Popen(["/d1/machine_performance_indicators/system_perf.sh", perf_file,container_name])
         print("Creating graph (precomputing weights) for Q20")
         session.write_transaction(write_query_fun, open(f'queries/bi-20-drop-graph.cypher', 'r').read())
         session.write_transaction(write_query_fun, open(f'queries/bi-20-create-graph.cypher', 'r').read())
+        perf.kill()
         end = time.time()
         duration = end - start
         timings_file.write(f"Neo4j|{sf}|{batch_date}|{batch_type}|q20precomputation||{duration}\n")
+

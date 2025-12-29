@@ -1,0 +1,338 @@
+{
+  "operatorType": "ProduceResults@neo4j",
+  "identifiers": [
+    "`relatedTag.name`",
+    "count"
+  ],
+  "dbHits": 0,
+  "rows": 100,
+  "pageCacheHits": 0,
+  "pageCacheMisses": 0,
+  "args": {
+    "Order": "count DESC, `relatedTag.name` ASC",
+    "GlobalMemory": 3188800,
+    "planner-impl": "IDP",
+    "string-representation": "Planner COST\n\nRuntime SLOTTED\n\nRuntime version 5.9\n\n+-------------------+----+------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------------------------+\n| Operator          | Id | Details                                                                | Estimated Rows | Rows  | DB Hits | Memory (Bytes) | Page Cache Hits/Misses | Ordered by                        |\n+-------------------+----+------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------------------------+\n| +ProduceResults   |  0 | `relatedTag.name`, count                                               |            100 |   100 |       0 |                |                    0/0 |                                   |\n| |                 +----+------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+                                   |\n| +Top              |  1 | count DESC, `relatedTag.name` ASC LIMIT 100                            |            100 |   100 |       0 |          16056 |                    0/0 | count DESC, `relatedTag.name` ASC |\n| |                 +----+------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------------------------+\n| +EagerAggregation |  2 | relatedTag.name AS `relatedTag.name`, count(DISTINCT comment) AS count |           1157 |  6547 |   26725 |        3187816 |                    0/0 |                                   |\n| |                 +----+------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------------------------+\n| +Filter           |  3 | not anon_0 = anon_2 AND relatedTag:Tag                                 |        1339025 | 26725 |   26725 |                |                    0/0 |                                   |\n| |                 +----+------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------------------------+\n| +Expand(All)      |  4 | (comment)-[anon_2:HAS_TAG]->(relatedTag)                               |        1352550 | 26725 |  133346 |                |                    0/0 |                                   |\n| |                 +----+------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------------------------+\n| +Filter           |  5 | comment:Comment                                                        |        1064792 | 24701 |   24701 |                |                    0/0 |                                   |\n| |                 +----+------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------------------------+\n| +AntiSemiApply    |  6 |                                                                        |        1064793 | 24701 |       0 |                |                    0/0 |                                   |\n| |\\                +----+------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------------------------+\n| | +Expand(Into)   |  7 | (comment)-[anon_3:HAS_TAG]->(tag)                                      |             81 |     0 |  219627 |            904 |                    0/0 |                                   |\n| | |               +----+------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------------------------+\n| | +Argument       |  8 | tag, comment                                                           |        1064794 | 29710 |       0 |                |                    0/0 |                                   |\n| |                 +----+------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------------------------+\n| +Expand(All)      |  9 | (message)<-[anon_1:REPLY_OF]-(comment)                                 |        1064794 | 29710 |  191518 |                |                    0/0 |                                   |\n| |                 +----+------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------------------------+\n| +Filter           | 10 | message:Message                                                        |        1548940 | 16406 |   16446 |                |                    0/0 |                                   |\n| |                 +----+------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------------------------+\n| +Expand(All)      | 11 | (tag)<-[anon_0:HAS_TAG]-(message)                                      |        1659316 | 16446 |   16450 |                |                    0/0 |                                   |\n| |                 +----+------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------------------------+\n| +Filter           | 12 | tag.name = $tag                                                        |            804 |     1 |   16080 |                |                    0/0 |                                   |\n| |                 +----+------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------------------------+\n| +NodeByLabelScan  | 13 | tag:Tag                                                                |          16080 | 16080 |   16081 |                |                    0/0 |                                   |\n+-------------------+----+------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------------------------+\n\nTotal database accesses: 687699, total allocated memory: 3188800\n",
+    "runtime": "SLOTTED",
+    "runtime-impl": "SLOTTED",
+    "DbHits": 0,
+    "Details": "`relatedTag.name`, count",
+    "planner-version": "5.9",
+    "runtime-version": "5.9",
+    "Id": 0,
+    "PageCacheMisses": 0,
+    "EstimatedRows": 100.0,
+    "planner": "COST",
+    "Rows": 100,
+    "PageCacheHits": 0
+  },
+  "children": [
+    {
+      "operatorType": "Top@neo4j",
+      "identifiers": [
+        "`relatedTag.name`",
+        "count"
+      ],
+      "dbHits": 0,
+      "rows": 100,
+      "pageCacheHits": 0,
+      "pageCacheMisses": 0,
+      "args": {
+        "Order": "count DESC, `relatedTag.name` ASC",
+        "Details": "count DESC, `relatedTag.name` ASC LIMIT 100",
+        "Memory": 16056,
+        "Id": 1,
+        "EstimatedRows": 100.0,
+        "PageCacheMisses": 0,
+        "DbHits": 0,
+        "Rows": 100,
+        "PageCacheHits": 0
+      },
+      "children": [
+        {
+          "operatorType": "EagerAggregation@neo4j",
+          "identifiers": [
+            "`relatedTag.name`",
+            "count"
+          ],
+          "dbHits": 26725,
+          "rows": 6547,
+          "pageCacheHits": 0,
+          "pageCacheMisses": 0,
+          "args": {
+            "Details": "relatedTag.name AS `relatedTag.name`, count(DISTINCT comment) AS count",
+            "Memory": 3187816,
+            "Id": 2,
+            "EstimatedRows": 1157.1623067494415,
+            "PageCacheMisses": 0,
+            "DbHits": 26725,
+            "Rows": 6547,
+            "PageCacheHits": 0
+          },
+          "children": [
+            {
+              "operatorType": "Filter@neo4j",
+              "identifiers": [
+                "anon_2",
+                "tag",
+                "comment",
+                "relatedTag",
+                "message",
+                "anon_0",
+                "anon_1"
+              ],
+              "dbHits": 26725,
+              "rows": 26725,
+              "pageCacheHits": 0,
+              "pageCacheMisses": 0,
+              "args": {
+                "Details": "not anon_0 = anon_2 AND relatedTag:Tag",
+                "Id": 3,
+                "PageCacheMisses": 0,
+                "EstimatedRows": 1339024.6041616886,
+                "DbHits": 26725,
+                "Rows": 26725,
+                "PageCacheHits": 0
+              },
+              "children": [
+                {
+                  "operatorType": "Expand(All)@neo4j",
+                  "identifiers": [
+                    "anon_2",
+                    "tag",
+                    "comment",
+                    "relatedTag",
+                    "message",
+                    "anon_0",
+                    "anon_1"
+                  ],
+                  "dbHits": 133346,
+                  "rows": 26725,
+                  "pageCacheHits": 0,
+                  "pageCacheMisses": 0,
+                  "args": {
+                    "Details": "(comment)-[anon_2:HAS_TAG]->(relatedTag)",
+                    "Id": 4,
+                    "PageCacheMisses": 0,
+                    "EstimatedRows": 1352550.1052138268,
+                    "DbHits": 133346,
+                    "Rows": 26725,
+                    "PageCacheHits": 0
+                  },
+                  "children": [
+                    {
+                      "operatorType": "Filter@neo4j",
+                      "identifiers": [
+                        "tag",
+                        "comment",
+                        "message",
+                        "anon_0",
+                        "anon_1"
+                      ],
+                      "dbHits": 24701,
+                      "rows": 24701,
+                      "pageCacheHits": 0,
+                      "pageCacheMisses": 0,
+                      "args": {
+                        "Details": "comment:Comment",
+                        "Id": 5,
+                        "PageCacheMisses": 0,
+                        "EstimatedRows": 1064792.4592696647,
+                        "DbHits": 24701,
+                        "Rows": 24701,
+                        "PageCacheHits": 0
+                      },
+                      "children": [
+                        {
+                          "operatorType": "AntiSemiApply@neo4j",
+                          "identifiers": [
+                            "tag",
+                            "comment",
+                            "message",
+                            "anon_0",
+                            "anon_1"
+                          ],
+                          "dbHits": 0,
+                          "rows": 24701,
+                          "pageCacheHits": 0,
+                          "pageCacheMisses": 0,
+                          "args": {
+                            "Id": 6,
+                            "PageCacheMisses": 0,
+                            "EstimatedRows": 1064792.5793630022,
+                            "DbHits": 0,
+                            "Rows": 24701,
+                            "PageCacheHits": 0
+                          },
+                          "children": [
+                            {
+                              "operatorType": "Expand(All)@neo4j",
+                              "identifiers": [
+                                "tag",
+                                "comment",
+                                "message",
+                                "anon_0",
+                                "anon_1"
+                              ],
+                              "dbHits": 191518,
+                              "rows": 29710,
+                              "pageCacheHits": 0,
+                              "pageCacheMisses": 0,
+                              "args": {
+                                "Details": "(message)<-[anon_1:REPLY_OF]-(comment)",
+                                "Id": 9,
+                                "PageCacheMisses": 0,
+                                "EstimatedRows": 1064793.6961471147,
+                                "DbHits": 191518,
+                                "Rows": 29710,
+                                "PageCacheHits": 0
+                              },
+                              "children": [
+                                {
+                                  "operatorType": "Filter@neo4j",
+                                  "identifiers": [
+                                    "tag",
+                                    "anon_0",
+                                    "message"
+                                  ],
+                                  "dbHits": 16446,
+                                  "rows": 16406,
+                                  "pageCacheHits": 0,
+                                  "pageCacheMisses": 0,
+                                  "args": {
+                                    "Details": "message:Message",
+                                    "Id": 10,
+                                    "PageCacheMisses": 0,
+                                    "EstimatedRows": 1548939.95,
+                                    "DbHits": 16446,
+                                    "Rows": 16406,
+                                    "PageCacheHits": 0
+                                  },
+                                  "children": [
+                                    {
+                                      "operatorType": "Expand(All)@neo4j",
+                                      "identifiers": [
+                                        "tag",
+                                        "anon_0",
+                                        "message"
+                                      ],
+                                      "dbHits": 16450,
+                                      "rows": 16446,
+                                      "pageCacheHits": 0,
+                                      "pageCacheMisses": 0,
+                                      "args": {
+                                        "Details": "(tag)<-[anon_0:HAS_TAG]-(message)",
+                                        "Id": 11,
+                                        "PageCacheMisses": 0,
+                                        "EstimatedRows": 1659316.2,
+                                        "DbHits": 16450,
+                                        "Rows": 16446,
+                                        "PageCacheHits": 0
+                                      },
+                                      "children": [
+                                        {
+                                          "operatorType": "Filter@neo4j",
+                                          "identifiers": [
+                                            "tag"
+                                          ],
+                                          "dbHits": 16080,
+                                          "rows": 1,
+                                          "pageCacheHits": 0,
+                                          "pageCacheMisses": 0,
+                                          "args": {
+                                            "Details": "tag.name = $tag",
+                                            "Id": 12,
+                                            "PageCacheMisses": 0,
+                                            "EstimatedRows": 804.0,
+                                            "DbHits": 16080,
+                                            "Rows": 1,
+                                            "PageCacheHits": 0
+                                          },
+                                          "children": [
+                                            {
+                                              "operatorType": "NodeByLabelScan@neo4j",
+                                              "identifiers": [
+                                                "tag"
+                                              ],
+                                              "dbHits": 16081,
+                                              "rows": 16080,
+                                              "pageCacheHits": 0,
+                                              "pageCacheMisses": 0,
+                                              "args": {
+                                                "Details": "tag:Tag",
+                                                "Id": 13,
+                                                "PageCacheMisses": 0,
+                                                "EstimatedRows": 16080.0,
+                                                "DbHits": 16081,
+                                                "Rows": 16080,
+                                                "PageCacheHits": 0
+                                              },
+                                              "children": []
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "operatorType": "Expand(Into)@neo4j",
+                              "identifiers": [
+                                "tag",
+                                "comment",
+                                "anon_3"
+                              ],
+                              "dbHits": 219627,
+                              "rows": 0,
+                              "pageCacheHits": 0,
+                              "pageCacheMisses": 0,
+                              "args": {
+                                "Details": "(comment)-[anon_3:HAS_TAG]->(tag)",
+                                "Memory": 904,
+                                "Id": 7,
+                                "EstimatedRows": 80.699235351288,
+                                "PageCacheMisses": 0,
+                                "DbHits": 219627,
+                                "Rows": 0,
+                                "PageCacheHits": 0
+                              },
+                              "children": [
+                                {
+                                  "operatorType": "Argument@neo4j",
+                                  "identifiers": [
+                                    "tag",
+                                    "comment"
+                                  ],
+                                  "dbHits": 0,
+                                  "rows": 29710,
+                                  "pageCacheHits": 0,
+                                  "pageCacheMisses": 0,
+                                  "args": {
+                                    "Details": "tag, comment",
+                                    "Id": 8,
+                                    "PageCacheMisses": 0,
+                                    "EstimatedRows": 1064793.6961471147,
+                                    "DbHits": 0,
+                                    "Rows": 29710,
+                                    "PageCacheHits": 0
+                                  },
+                                  "children": []
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

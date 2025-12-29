@@ -1,0 +1,438 @@
+{
+  "operatorType": "ProduceResults@neo4j",
+  "identifiers": [
+    "`person1.id`",
+    "authorityScore"
+  ],
+  "dbHits": 0,
+  "rows": 100,
+  "pageCacheHits": 0,
+  "pageCacheMisses": 0,
+  "args": {
+    "Order": "authorityScore DESC, `person1.id` ASC",
+    "GlobalMemory": 181769584,
+    "planner-impl": "IDP",
+    "string-representation": "Planner COST\n\nRuntime SLOTTED\n\nRuntime version 5.9\n\n+----------------------+----+---------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+---------------------------------------+\n| Operator             | Id | Details                                                                   | Estimated Rows | Rows    | DB Hits  | Memory (Bytes) | Page Cache Hits/Misses | Ordered by                            |\n+----------------------+----+---------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+---------------------------------------+\n| +ProduceResults      |  0 | `person1.id`, authorityScore                                              |            100 |     100 |        0 |                |                    0/0 |                                       |\n| |                    +----+---------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+                                       |\n| +Top                 |  1 | authorityScore DESC, `person1.id` ASC LIMIT 100                           |            100 |     100 |        0 |          11784 |                    0/0 | authorityScore DESC, `person1.id` ASC |\n| |                    +----+---------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+---------------------------------------+\n| +EagerAggregation    |  2 | cache[person1.id] AS `person1.id`, count(DISTINCT like) AS authorityScore |          22843 |    1500 |     3271 |      181769520 |                    0/0 |                                       |\n| |                    +----+---------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+---------------------------------------+\n| +Apply               |  3 |                                                                           |      521780089 | 6152929 |        0 |                |                    0/0 |                                       |\n| |\\                   +----+---------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+---------------------------------------+\n| | +Optional          |  4 | person2, tag, anon_0, person1, anon_1, message1, anon_2                   |        1548940 | 6152929 |        0 |                |                    0/0 |                                       |\n| | |                  +----+---------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+---------------------------------------+\n| | +CacheProperties   |  5 | cache[person1.id]                                                         |        1315844 | 6149658 |  6149658 |                |                    0/0 |                                       |\n| | |                  +----+---------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+---------------------------------------+\n| | +Filter            |  6 | person3:Person                                                            |        1315844 | 6149658 |  6149658 |                |                    0/0 |                                       |\n| | |                  +----+---------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+---------------------------------------+\n| | +Expand(All)       |  7 | (message2)<-[like:LIKES]-(person3)                                        |        1315844 | 6149658 | 45854122 |                |                    0/0 |                                       |\n| | |                  +----+---------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+---------------------------------------+\n| | +Filter            |  8 | message2:Message                                                          |        1505609 | 6357820 |  6357820 |                |                    0/0 |                                       |\n| | |                  +----+---------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+---------------------------------------+\n| | +Expand(All)       |  9 | (person2)<-[anon_3:HAS_CREATOR]-(message2)                                |        1505609 | 6357820 |  6417899 |                |                    0/0 |                                       |\n| | |                  +----+---------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+---------------------------------------+\n| | +Argument          | 10 | person2                                                                   |        1548940 |    9500 |        0 |                |                    0/0 |                                       |\n| |                    +----+---------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+---------------------------------------+\n| +OptionalExpand(All) | 11 | (message1)<-[anon_2:LIKES]-(person2) WHERE person2:Person                 |        1548940 |    9500 |    55761 |                |                    0/0 |                                       |\n| |                    +----+---------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+---------------------------------------+\n| +Filter              | 12 | person1:Person                                                            |        1548940 |    3525 |     3525 |                |                    0/0 |                                       |\n| |                    +----+---------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+---------------------------------------+\n| +Expand(All)         | 13 | (message1)-[anon_1:HAS_CREATOR]->(person1)                                |        1548940 |    3525 |    44482 |                |                    0/0 |                                       |\n| |                    +----+---------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+---------------------------------------+\n| +Filter              | 14 | message1:Message                                                          |        1548940 |    3525 |     3525 |                |                    0/0 |                                       |\n| |                    +----+---------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+---------------------------------------+\n| +Expand(All)         | 15 | (tag)<-[anon_0:HAS_TAG]-(message1)                                        |        1659316 |    3525 |     3528 |                |                    0/0 |                                       |\n| |                    +----+---------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+---------------------------------------+\n| +Filter              | 16 | tag.name = $tag                                                           |            804 |       1 |    16080 |                |                    0/0 |                                       |\n| |                    +----+---------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+---------------------------------------+\n| +NodeByLabelScan     | 17 | tag:Tag                                                                   |          16080 |   16080 |    16081 |                |                    0/0 |                                       |\n+----------------------+----+---------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+---------------------------------------+\n\nTotal database accesses: 71075410, total allocated memory: 181769584\n",
+    "runtime": "SLOTTED",
+    "runtime-impl": "SLOTTED",
+    "DbHits": 0,
+    "Details": "`person1.id`, authorityScore",
+    "planner-version": "5.9",
+    "runtime-version": "5.9",
+    "Id": 0,
+    "PageCacheMisses": 0,
+    "EstimatedRows": 100.0,
+    "planner": "COST",
+    "Rows": 100,
+    "PageCacheHits": 0
+  },
+  "children": [
+    {
+      "operatorType": "Top@neo4j",
+      "identifiers": [
+        "`person1.id`",
+        "authorityScore"
+      ],
+      "dbHits": 0,
+      "rows": 100,
+      "pageCacheHits": 0,
+      "pageCacheMisses": 0,
+      "args": {
+        "Order": "authorityScore DESC, `person1.id` ASC",
+        "Details": "authorityScore DESC, `person1.id` ASC LIMIT 100",
+        "Memory": 11784,
+        "Id": 1,
+        "EstimatedRows": 100.0,
+        "PageCacheMisses": 0,
+        "DbHits": 0,
+        "Rows": 100,
+        "PageCacheHits": 0
+      },
+      "children": [
+        {
+          "operatorType": "EagerAggregation@neo4j",
+          "identifiers": [
+            "`person1.id`",
+            "authorityScore"
+          ],
+          "dbHits": 3271,
+          "rows": 1500,
+          "pageCacheHits": 0,
+          "pageCacheMisses": 0,
+          "args": {
+            "Details": "cache[person1.id] AS `person1.id`, count(DISTINCT like) AS authorityScore",
+            "Memory": 181769520,
+            "Id": 2,
+            "EstimatedRows": 22842.506194575406,
+            "PageCacheMisses": 0,
+            "DbHits": 3271,
+            "Rows": 1500,
+            "PageCacheHits": 0
+          },
+          "children": [
+            {
+              "operatorType": "Apply@neo4j",
+              "identifiers": [
+                "person2",
+                "anon_2",
+                "tag",
+                "person3",
+                "anon_3",
+                "message1",
+                "message2",
+                "person1",
+                "like",
+                "anon_0",
+                "anon_1"
+              ],
+              "dbHits": 0,
+              "rows": 6152929,
+              "pageCacheHits": 0,
+              "pageCacheMisses": 0,
+              "args": {
+                "Id": 3,
+                "PageCacheMisses": 0,
+                "EstimatedRows": 521780089.2492158,
+                "DbHits": 0,
+                "Rows": 6152929,
+                "PageCacheHits": 0
+              },
+              "children": [
+                {
+                  "operatorType": "OptionalExpand(All)@neo4j",
+                  "identifiers": [
+                    "person2",
+                    "anon_2",
+                    "tag",
+                    "message1",
+                    "person1",
+                    "anon_0",
+                    "anon_1"
+                  ],
+                  "dbHits": 55761,
+                  "rows": 9500,
+                  "pageCacheHits": 0,
+                  "pageCacheMisses": 0,
+                  "args": {
+                    "Details": "(message1)<-[anon_2:LIKES]-(person2) WHERE person2:Person",
+                    "Id": 11,
+                    "PageCacheMisses": 0,
+                    "EstimatedRows": 1548939.95,
+                    "DbHits": 55761,
+                    "Rows": 9500,
+                    "PageCacheHits": 0
+                  },
+                  "children": [
+                    {
+                      "operatorType": "Filter@neo4j",
+                      "identifiers": [
+                        "tag",
+                        "message1",
+                        "person1",
+                        "anon_0",
+                        "anon_1"
+                      ],
+                      "dbHits": 3525,
+                      "rows": 3525,
+                      "pageCacheHits": 0,
+                      "pageCacheMisses": 0,
+                      "args": {
+                        "Details": "person1:Person",
+                        "Id": 12,
+                        "PageCacheMisses": 0,
+                        "EstimatedRows": 1548939.95,
+                        "DbHits": 3525,
+                        "Rows": 3525,
+                        "PageCacheHits": 0
+                      },
+                      "children": [
+                        {
+                          "operatorType": "Expand(All)@neo4j",
+                          "identifiers": [
+                            "tag",
+                            "message1",
+                            "person1",
+                            "anon_0",
+                            "anon_1"
+                          ],
+                          "dbHits": 44482,
+                          "rows": 3525,
+                          "pageCacheHits": 0,
+                          "pageCacheMisses": 0,
+                          "args": {
+                            "Details": "(message1)-[anon_1:HAS_CREATOR]->(person1)",
+                            "Id": 13,
+                            "PageCacheMisses": 0,
+                            "EstimatedRows": 1548939.95,
+                            "DbHits": 44482,
+                            "Rows": 3525,
+                            "PageCacheHits": 0
+                          },
+                          "children": [
+                            {
+                              "operatorType": "Filter@neo4j",
+                              "identifiers": [
+                                "tag",
+                                "anon_0",
+                                "message1"
+                              ],
+                              "dbHits": 3525,
+                              "rows": 3525,
+                              "pageCacheHits": 0,
+                              "pageCacheMisses": 0,
+                              "args": {
+                                "Details": "message1:Message",
+                                "Id": 14,
+                                "PageCacheMisses": 0,
+                                "EstimatedRows": 1548939.95,
+                                "DbHits": 3525,
+                                "Rows": 3525,
+                                "PageCacheHits": 0
+                              },
+                              "children": [
+                                {
+                                  "operatorType": "Expand(All)@neo4j",
+                                  "identifiers": [
+                                    "tag",
+                                    "anon_0",
+                                    "message1"
+                                  ],
+                                  "dbHits": 3528,
+                                  "rows": 3525,
+                                  "pageCacheHits": 0,
+                                  "pageCacheMisses": 0,
+                                  "args": {
+                                    "Details": "(tag)<-[anon_0:HAS_TAG]-(message1)",
+                                    "Id": 15,
+                                    "PageCacheMisses": 0,
+                                    "EstimatedRows": 1659316.2,
+                                    "DbHits": 3528,
+                                    "Rows": 3525,
+                                    "PageCacheHits": 0
+                                  },
+                                  "children": [
+                                    {
+                                      "operatorType": "Filter@neo4j",
+                                      "identifiers": [
+                                        "tag"
+                                      ],
+                                      "dbHits": 16080,
+                                      "rows": 1,
+                                      "pageCacheHits": 0,
+                                      "pageCacheMisses": 0,
+                                      "args": {
+                                        "Details": "tag.name = $tag",
+                                        "Id": 16,
+                                        "PageCacheMisses": 0,
+                                        "EstimatedRows": 804.0,
+                                        "DbHits": 16080,
+                                        "Rows": 1,
+                                        "PageCacheHits": 0
+                                      },
+                                      "children": [
+                                        {
+                                          "operatorType": "NodeByLabelScan@neo4j",
+                                          "identifiers": [
+                                            "tag"
+                                          ],
+                                          "dbHits": 16081,
+                                          "rows": 16080,
+                                          "pageCacheHits": 0,
+                                          "pageCacheMisses": 0,
+                                          "args": {
+                                            "Details": "tag:Tag",
+                                            "Id": 17,
+                                            "PageCacheMisses": 0,
+                                            "EstimatedRows": 16080.0,
+                                            "DbHits": 16081,
+                                            "Rows": 16080,
+                                            "PageCacheHits": 0
+                                          },
+                                          "children": []
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "operatorType": "Optional@neo4j",
+                  "identifiers": [
+                    "person2",
+                    "person3",
+                    "anon_3",
+                    "message2",
+                    "like"
+                  ],
+                  "dbHits": 0,
+                  "rows": 6152929,
+                  "pageCacheHits": 0,
+                  "pageCacheMisses": 0,
+                  "args": {
+                    "Details": "person2, tag, anon_0, person1, anon_1, message1, anon_2",
+                    "Id": 4,
+                    "PageCacheMisses": 0,
+                    "EstimatedRows": 1548939.95,
+                    "DbHits": 0,
+                    "Rows": 6152929,
+                    "PageCacheHits": 0
+                  },
+                  "children": [
+                    {
+                      "operatorType": "CacheProperties@neo4j",
+                      "identifiers": [
+                        "person2",
+                        "person3",
+                        "anon_3",
+                        "message2",
+                        "like"
+                      ],
+                      "dbHits": 6149658,
+                      "rows": 6149658,
+                      "pageCacheHits": 0,
+                      "pageCacheMisses": 0,
+                      "args": {
+                        "Details": "cache[person1.id]",
+                        "Id": 5,
+                        "PageCacheMisses": 0,
+                        "EstimatedRows": 1315843.8852592795,
+                        "DbHits": 6149658,
+                        "Rows": 6149658,
+                        "PageCacheHits": 0
+                      },
+                      "children": [
+                        {
+                          "operatorType": "Filter@neo4j",
+                          "identifiers": [
+                            "person2",
+                            "person3",
+                            "anon_3",
+                            "message2",
+                            "like"
+                          ],
+                          "dbHits": 6149658,
+                          "rows": 6149658,
+                          "pageCacheHits": 0,
+                          "pageCacheMisses": 0,
+                          "args": {
+                            "Details": "person3:Person",
+                            "Id": 6,
+                            "PageCacheMisses": 0,
+                            "EstimatedRows": 1315843.8852592795,
+                            "DbHits": 6149658,
+                            "Rows": 6149658,
+                            "PageCacheHits": 0
+                          },
+                          "children": [
+                            {
+                              "operatorType": "Expand(All)@neo4j",
+                              "identifiers": [
+                                "person2",
+                                "person3",
+                                "anon_3",
+                                "message2",
+                                "like"
+                              ],
+                              "dbHits": 45854122,
+                              "rows": 6149658,
+                              "pageCacheHits": 0,
+                              "pageCacheMisses": 0,
+                              "args": {
+                                "Details": "(message2)<-[like:LIKES]-(person3)",
+                                "Id": 7,
+                                "PageCacheMisses": 0,
+                                "EstimatedRows": 1315843.8852592795,
+                                "DbHits": 45854122,
+                                "Rows": 6149658,
+                                "PageCacheHits": 0
+                              },
+                              "children": [
+                                {
+                                  "operatorType": "Filter@neo4j",
+                                  "identifiers": [
+                                    "person2",
+                                    "anon_3",
+                                    "message2"
+                                  ],
+                                  "dbHits": 6357820,
+                                  "rows": 6357820,
+                                  "pageCacheHits": 0,
+                                  "pageCacheMisses": 0,
+                                  "args": {
+                                    "Details": "message2:Message",
+                                    "Id": 8,
+                                    "PageCacheMisses": 0,
+                                    "EstimatedRows": 1505609.0936817618,
+                                    "DbHits": 6357820,
+                                    "Rows": 6357820,
+                                    "PageCacheHits": 0
+                                  },
+                                  "children": [
+                                    {
+                                      "operatorType": "Expand(All)@neo4j",
+                                      "identifiers": [
+                                        "person2",
+                                        "anon_3",
+                                        "message2"
+                                      ],
+                                      "dbHits": 6417899,
+                                      "rows": 6357820,
+                                      "pageCacheHits": 0,
+                                      "pageCacheMisses": 0,
+                                      "args": {
+                                        "Details": "(person2)<-[anon_3:HAS_CREATOR]-(message2)",
+                                        "Id": 9,
+                                        "PageCacheMisses": 0,
+                                        "EstimatedRows": 1505609.0936817618,
+                                        "DbHits": 6417899,
+                                        "Rows": 6357820,
+                                        "PageCacheHits": 0
+                                      },
+                                      "children": [
+                                        {
+                                          "operatorType": "Argument@neo4j",
+                                          "identifiers": [
+                                            "person2"
+                                          ],
+                                          "dbHits": 0,
+                                          "rows": 9500,
+                                          "pageCacheHits": 0,
+                                          "pageCacheMisses": 0,
+                                          "args": {
+                                            "Details": "person2",
+                                            "Id": 10,
+                                            "PageCacheMisses": 0,
+                                            "EstimatedRows": 1548939.95,
+                                            "DbHits": 0,
+                                            "Rows": 9500,
+                                            "PageCacheHits": 0
+                                          },
+                                          "children": []
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

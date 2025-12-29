@@ -1,0 +1,443 @@
+{
+  "operatorType": "ProduceResults@neo4j",
+  "identifiers": [
+    "person1Id",
+    "totalWeight"
+  ],
+  "dbHits": 0,
+  "rows": 1,
+  "pageCacheHits": 0,
+  "pageCacheMisses": 0,
+  "args": {
+    "Order": "person1Id ASC",
+    "GlobalMemory": 3296,
+    "planner-impl": "IDP",
+    "string-representation": "Planner COST\n\nRuntime SLOTTED\n\nRuntime version 5.9\n\n+--------------------+----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------+\n| Operator           | Id | Details                                                                                              | Estimated Rows | Rows  | DB Hits | Memory (Bytes) | Page Cache Hits/Misses | Ordered by      |\n+--------------------+----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------+\n| +ProduceResults    |  0 | person1Id, totalWeight                                                                               |              1 |     1 |       0 |                |                    0/0 |                 |\n| |                  +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+                 |\n| +Top               |  1 | person1Id ASC LIMIT 20                                                                               |              1 |     1 |       0 |           3216 |                    0/0 | person1Id ASC   |\n| |                  +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------+\n| +Filter            |  2 | (results[$autoint_2]).totalWeight = totalWeight                                                      |              1 |     1 |       0 |                |                    0/0 |                 |\n| |                  +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------+\n| +Projection        |  3 | result.person1Id AS person1Id, result.totalWeight AS totalWeight                                     |             10 |     7 |       0 |                |                    0/0 |                 |\n| |                  +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------+\n| +Unwind            |  4 | results AS result                                                                                    |             10 |     7 |       0 |                |                    0/0 |                 |\n| |                  +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------+\n| +EagerAggregation  |  5 | collect({person1Id: person1Id, totalWeight: totalWeight}) AS results                                 |              1 |     1 |       0 |           2624 |                    0/0 |                 |\n| |                  +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------+\n| +Projection        |  6 | cache[person1.id] AS person1Id                                                                       |      121982090 |     7 |       0 |                |                    0/0 |                 |\n| |                  +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+                 |\n| +Sort              |  7 | totalWeight ASC                                                                                      |      121982090 |     7 |       0 |           2144 |                    0/0 | totalWeight ASC |\n| |                  +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------+\n| +Projection        |  8 | totalCost AS totalWeight                                                                             |      121982090 |     7 |       0 |                |                    0/0 |                 |\n| |                  +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------+\n| +Filter            |  9 | not cache[person1.id] = $person2Id                                                                   |      121982090 |     7 |       0 |                |                    0/0 |                 |\n| |                  +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------+\n| +ProcedureCall     | 10 | gds.shortestPath.dijkstra.stream($autostring_0, {sourceNode: person1, targetNode: person2, relations |      256804400 |     7 |         |                |                    0/0 |                 |\n| |                  |    | hipWeightProperty: $autostring_1}) :: (totalCost :: FLOAT?)                                          |                |       |         |                |                        |                 |\n| |                  +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------+\n| +CartesianProduct  | 11 |                                                                                                      |       25680440 |    46 |       0 |                |                    0/0 |                 |\n| |\\                 +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------+\n| | +CacheProperties | 12 | cache[person1.id]                                                                                    |       25680440 |    46 |      46 |                |                    0/0 |                 |\n| | |                +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------+\n| | +Filter          | 13 | person1:Person                                                                                       |       25680440 |    46 |      46 |                |                    0/0 |                 |\n| | |                +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------+\n| | +Expand(All)     | 14 | (company)<-[anon_0:WORK_AT]-(person1)                                                                |       25680440 |    46 |      48 |                |                    0/0 |                 |\n| | |                +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------+\n| | +Filter          | 15 | company.name = $company                                                                              |         270400 |     1 |    1575 |                |                    0/0 |                 |\n| | |                +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------+\n| | +NodeByLabelScan | 16 | company:Company                                                                                      |        5407999 |  1575 |    1576 |                |                    0/0 |                 |\n| |                  +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------+\n| +Filter            | 17 | person2.id = $person2Id                                                                              |           3434 |     1 |   68673 |                |                    0/0 |                 |\n| |                  +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------+\n| +NodeByLabelScan   | 18 | person2:Person                                                                                       |          68673 | 68673 |   68674 |                |                    0/0 |                 |\n+--------------------+----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------+\n\nTotal database accesses: 140638 + ?, total allocated memory: 3296\n",
+    "runtime": "SLOTTED",
+    "runtime-impl": "SLOTTED",
+    "DbHits": 0,
+    "Details": "person1Id, totalWeight",
+    "planner-version": "5.9",
+    "runtime-version": "5.9",
+    "Id": 0,
+    "PageCacheMisses": 0,
+    "EstimatedRows": 1.0,
+    "planner": "COST",
+    "Rows": 1,
+    "PageCacheHits": 0
+  },
+  "children": [
+    {
+      "operatorType": "Top@neo4j",
+      "identifiers": [
+        "person1Id",
+        "totalWeight"
+      ],
+      "dbHits": 0,
+      "rows": 1,
+      "pageCacheHits": 0,
+      "pageCacheMisses": 0,
+      "args": {
+        "Order": "person1Id ASC",
+        "Details": "person1Id ASC LIMIT 20",
+        "Memory": 3216,
+        "Id": 1,
+        "EstimatedRows": 1.0,
+        "PageCacheMisses": 0,
+        "DbHits": 0,
+        "Rows": 1,
+        "PageCacheHits": 0
+      },
+      "children": [
+        {
+          "operatorType": "Filter@neo4j",
+          "identifiers": [
+            "person1Id",
+            "totalWeight"
+          ],
+          "dbHits": 0,
+          "rows": 1,
+          "pageCacheHits": 0,
+          "pageCacheMisses": 0,
+          "args": {
+            "Details": "(results[$autoint_2]).totalWeight = totalWeight",
+            "Id": 2,
+            "PageCacheMisses": 0,
+            "EstimatedRows": 1.0,
+            "DbHits": 0,
+            "Rows": 1,
+            "PageCacheHits": 0
+          },
+          "children": [
+            {
+              "operatorType": "Projection@neo4j",
+              "identifiers": [
+                "person1Id",
+                "totalWeight"
+              ],
+              "dbHits": 0,
+              "rows": 7,
+              "pageCacheHits": 0,
+              "pageCacheMisses": 0,
+              "args": {
+                "Details": "result.person1Id AS person1Id, result.totalWeight AS totalWeight",
+                "Id": 3,
+                "PageCacheMisses": 0,
+                "EstimatedRows": 10.0,
+                "DbHits": 0,
+                "Rows": 7,
+                "PageCacheHits": 0
+              },
+              "children": [
+                {
+                  "operatorType": "Unwind@neo4j",
+                  "identifiers": [
+                    "results",
+                    "result"
+                  ],
+                  "dbHits": 0,
+                  "rows": 7,
+                  "pageCacheHits": 0,
+                  "pageCacheMisses": 0,
+                  "args": {
+                    "Details": "results AS result",
+                    "Id": 4,
+                    "PageCacheMisses": 0,
+                    "EstimatedRows": 10.0,
+                    "DbHits": 0,
+                    "Rows": 7,
+                    "PageCacheHits": 0
+                  },
+                  "children": [
+                    {
+                      "operatorType": "EagerAggregation@neo4j",
+                      "identifiers": [
+                        "results"
+                      ],
+                      "dbHits": 0,
+                      "rows": 1,
+                      "pageCacheHits": 0,
+                      "pageCacheMisses": 0,
+                      "args": {
+                        "Details": "collect({person1Id: person1Id, totalWeight: totalWeight}) AS results",
+                        "Memory": 2624,
+                        "Id": 5,
+                        "EstimatedRows": 1.0,
+                        "PageCacheMisses": 0,
+                        "DbHits": 0,
+                        "Rows": 1,
+                        "PageCacheHits": 0
+                      },
+                      "children": [
+                        {
+                          "operatorType": "Projection@neo4j",
+                          "identifiers": [
+                            "totalWeight",
+                            "person1Id"
+                          ],
+                          "dbHits": 0,
+                          "rows": 7,
+                          "pageCacheHits": 0,
+                          "pageCacheMisses": 0,
+                          "args": {
+                            "Order": "totalWeight ASC",
+                            "Details": "cache[person1.id] AS person1Id",
+                            "Id": 6,
+                            "PageCacheMisses": 0,
+                            "EstimatedRows": 121982090.15437497,
+                            "DbHits": 0,
+                            "Rows": 7,
+                            "PageCacheHits": 0
+                          },
+                          "children": [
+                            {
+                              "operatorType": "Sort@neo4j",
+                              "identifiers": [
+                                "person2",
+                                "totalCost",
+                                "totalWeight",
+                                "anon_0",
+                                "company",
+                                "person1"
+                              ],
+                              "dbHits": 0,
+                              "rows": 7,
+                              "pageCacheHits": 0,
+                              "pageCacheMisses": 0,
+                              "args": {
+                                "Order": "totalWeight ASC",
+                                "Details": "totalWeight ASC",
+                                "Memory": 2144,
+                                "Id": 7,
+                                "EstimatedRows": 121982090.15437497,
+                                "PageCacheMisses": 0,
+                                "DbHits": 0,
+                                "Rows": 7,
+                                "PageCacheHits": 0
+                              },
+                              "children": [
+                                {
+                                  "operatorType": "Projection@neo4j",
+                                  "identifiers": [
+                                    "person2",
+                                    "totalCost",
+                                    "totalWeight",
+                                    "anon_0",
+                                    "company",
+                                    "person1"
+                                  ],
+                                  "dbHits": 0,
+                                  "rows": 7,
+                                  "pageCacheHits": 0,
+                                  "pageCacheMisses": 0,
+                                  "args": {
+                                    "Details": "totalCost AS totalWeight",
+                                    "Id": 8,
+                                    "PageCacheMisses": 0,
+                                    "EstimatedRows": 121982090.15437497,
+                                    "DbHits": 0,
+                                    "Rows": 7,
+                                    "PageCacheHits": 0
+                                  },
+                                  "children": [
+                                    {
+                                      "operatorType": "Filter@neo4j",
+                                      "identifiers": [
+                                        "person2",
+                                        "totalCost",
+                                        "anon_0",
+                                        "company",
+                                        "person1"
+                                      ],
+                                      "dbHits": 0,
+                                      "rows": 7,
+                                      "pageCacheHits": 0,
+                                      "pageCacheMisses": 0,
+                                      "args": {
+                                        "Details": "not cache[person1.id] = $person2Id",
+                                        "Id": 9,
+                                        "PageCacheMisses": 0,
+                                        "EstimatedRows": 121982090.15437497,
+                                        "DbHits": 0,
+                                        "Rows": 7,
+                                        "PageCacheHits": 0
+                                      },
+                                      "children": [
+                                        {
+                                          "operatorType": "ProcedureCall@neo4j",
+                                          "identifiers": [
+                                            "person2",
+                                            "totalCost",
+                                            "anon_0",
+                                            "company",
+                                            "person1"
+                                          ],
+                                          "dbHits": 0,
+                                          "rows": 0,
+                                          "pageCacheHits": 0,
+                                          "pageCacheMisses": 0,
+                                          "args": {
+                                            "Details": "gds.shortestPath.dijkstra.stream($autostring_0, {sourceNode: person1, targetNode: person2, relationshipWeightProperty: $autostring_1}) :: (totalCost :: FLOAT?)",
+                                            "Id": 10,
+                                            "PageCacheMisses": 0,
+                                            "EstimatedRows": 256804400.32499996,
+                                            "Rows": 7,
+                                            "PageCacheHits": 0
+                                          },
+                                          "children": [
+                                            {
+                                              "operatorType": "CartesianProduct@neo4j",
+                                              "identifiers": [
+                                                "person2",
+                                                "company",
+                                                "anon_0",
+                                                "person1"
+                                              ],
+                                              "dbHits": 0,
+                                              "rows": 46,
+                                              "pageCacheHits": 0,
+                                              "pageCacheMisses": 0,
+                                              "args": {
+                                                "Id": 11,
+                                                "PageCacheMisses": 0,
+                                                "EstimatedRows": 25680440.032499995,
+                                                "DbHits": 0,
+                                                "Rows": 46,
+                                                "PageCacheHits": 0
+                                              },
+                                              "children": [
+                                                {
+                                                  "operatorType": "Filter@neo4j",
+                                                  "identifiers": [
+                                                    "person2"
+                                                  ],
+                                                  "dbHits": 68673,
+                                                  "rows": 1,
+                                                  "pageCacheHits": 0,
+                                                  "pageCacheMisses": 0,
+                                                  "args": {
+                                                    "Details": "person2.id = $person2Id",
+                                                    "Id": 17,
+                                                    "PageCacheMisses": 0,
+                                                    "EstimatedRows": 3433.65,
+                                                    "DbHits": 68673,
+                                                    "Rows": 1,
+                                                    "PageCacheHits": 0
+                                                  },
+                                                  "children": [
+                                                    {
+                                                      "operatorType": "NodeByLabelScan@neo4j",
+                                                      "identifiers": [
+                                                        "person2"
+                                                      ],
+                                                      "dbHits": 68674,
+                                                      "rows": 68673,
+                                                      "pageCacheHits": 0,
+                                                      "pageCacheMisses": 0,
+                                                      "args": {
+                                                        "Details": "person2:Person",
+                                                        "Id": 18,
+                                                        "PageCacheMisses": 0,
+                                                        "EstimatedRows": 68673.0,
+                                                        "DbHits": 68674,
+                                                        "Rows": 68673,
+                                                        "PageCacheHits": 0
+                                                      },
+                                                      "children": []
+                                                    }
+                                                  ]
+                                                },
+                                                {
+                                                  "operatorType": "CacheProperties@neo4j",
+                                                  "identifiers": [
+                                                    "company",
+                                                    "anon_0",
+                                                    "person1"
+                                                  ],
+                                                  "dbHits": 46,
+                                                  "rows": 46,
+                                                  "pageCacheHits": 0,
+                                                  "pageCacheMisses": 0,
+                                                  "args": {
+                                                    "Details": "cache[person1.id]",
+                                                    "Id": 12,
+                                                    "PageCacheMisses": 0,
+                                                    "EstimatedRows": 25680440.0325,
+                                                    "DbHits": 46,
+                                                    "Rows": 46,
+                                                    "PageCacheHits": 0
+                                                  },
+                                                  "children": [
+                                                    {
+                                                      "operatorType": "Filter@neo4j",
+                                                      "identifiers": [
+                                                        "company",
+                                                        "anon_0",
+                                                        "person1"
+                                                      ],
+                                                      "dbHits": 46,
+                                                      "rows": 46,
+                                                      "pageCacheHits": 0,
+                                                      "pageCacheMisses": 0,
+                                                      "args": {
+                                                        "Details": "person1:Person",
+                                                        "Id": 13,
+                                                        "PageCacheMisses": 0,
+                                                        "EstimatedRows": 25680440.0325,
+                                                        "DbHits": 46,
+                                                        "Rows": 46,
+                                                        "PageCacheHits": 0
+                                                      },
+                                                      "children": [
+                                                        {
+                                                          "operatorType": "Expand(All)@neo4j",
+                                                          "identifiers": [
+                                                            "company",
+                                                            "anon_0",
+                                                            "person1"
+                                                          ],
+                                                          "dbHits": 48,
+                                                          "rows": 46,
+                                                          "pageCacheHits": 0,
+                                                          "pageCacheMisses": 0,
+                                                          "args": {
+                                                            "Details": "(company)<-[anon_0:WORK_AT]-(person1)",
+                                                            "Id": 14,
+                                                            "PageCacheMisses": 0,
+                                                            "EstimatedRows": 25680440.032500003,
+                                                            "DbHits": 48,
+                                                            "Rows": 46,
+                                                            "PageCacheHits": 0
+                                                          },
+                                                          "children": [
+                                                            {
+                                                              "operatorType": "Filter@neo4j",
+                                                              "identifiers": [
+                                                                "company"
+                                                              ],
+                                                              "dbHits": 1575,
+                                                              "rows": 1,
+                                                              "pageCacheHits": 0,
+                                                              "pageCacheMisses": 0,
+                                                              "args": {
+                                                                "Details": "company.name = $company",
+                                                                "Id": 15,
+                                                                "PageCacheMisses": 0,
+                                                                "EstimatedRows": 270399.9375,
+                                                                "DbHits": 1575,
+                                                                "Rows": 1,
+                                                                "PageCacheHits": 0
+                                                              },
+                                                              "children": [
+                                                                {
+                                                                  "operatorType": "NodeByLabelScan@neo4j",
+                                                                  "identifiers": [
+                                                                    "company"
+                                                                  ],
+                                                                  "dbHits": 1576,
+                                                                  "rows": 1575,
+                                                                  "pageCacheHits": 0,
+                                                                  "pageCacheMisses": 0,
+                                                                  "args": {
+                                                                    "Details": "company:Company",
+                                                                    "Id": 16,
+                                                                    "PageCacheMisses": 0,
+                                                                    "EstimatedRows": 5407998.75,
+                                                                    "DbHits": 1576,
+                                                                    "Rows": 1575,
+                                                                    "PageCacheHits": 0
+                                                                  },
+                                                                  "children": []
+                                                                }
+                                                              ]
+                                                            }
+                                                          ]
+                                                        }
+                                                      ]
+                                                    }
+                                                  ]
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

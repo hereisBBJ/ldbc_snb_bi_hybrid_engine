@@ -1,0 +1,262 @@
+{
+  "operatorType": "ProduceResults@neo4j",
+  "identifiers": [
+    "messageCount",
+    "personCount"
+  ],
+  "dbHits": 0,
+  "rows": 393,
+  "pageCacheHits": 0,
+  "pageCacheMisses": 0,
+  "args": {
+    "Order": "personCount DESC, messageCount DESC",
+    "GlobalMemory": 21626392,
+    "planner-impl": "IDP",
+    "string-representation": "Planner COST\n\nRuntime SLOTTED\n\nRuntime version 5.9\n\n+-------------------------+----+------------------------------------------------------------------------------------------------------+----------------+---------+---------+----------------+------------------------+-------------------------------------+\n| Operator                | Id | Details                                                                                              | Estimated Rows | Rows    | DB Hits | Memory (Bytes) | Page Cache Hits/Misses | Ordered by                          |\n+-------------------------+----+------------------------------------------------------------------------------------------------------+----------------+---------+---------+----------------+------------------------+-------------------------------------+\n| +ProduceResults         |  0 | messageCount, personCount                                                                            |             27 |     393 |       0 |                |                    0/0 |                                     |\n| |                       +----+------------------------------------------------------------------------------------------------------+----------------+---------+---------+----------------+------------------------+                                     |\n| +Sort                   |  1 | personCount DESC, messageCount DESC                                                                  |             27 |     393 |       0 |          47032 |                    0/0 | personCount DESC, messageCount DESC |\n| |                       +----+------------------------------------------------------------------------------------------------------+----------------+---------+---------+----------------+------------------------+-------------------------------------+\n| +EagerAggregation       |  2 | messageCount, count(person) AS personCount                                                           |             27 |     393 |       0 |          44488 |                    0/0 |                                     |\n| |                       +----+------------------------------------------------------------------------------------------------------+----------------+---------+---------+----------------+------------------------+-------------------------------------+\n| +EagerAggregation       |  3 | person, count(message) AS messageCount                                                               |            730 |   68673 |       0 |        8432168 |                    0/0 |                                     |\n| |                       +----+------------------------------------------------------------------------------------------------------+----------------+---------+---------+----------------+------------------------+-------------------------------------+\n| +NodeLeftOuterHashJoin  |  4 | person                                                                                               |         533264 | 1116461 |       0 |       13194392 |                    0/0 |                                     |\n| |\\                      +----+------------------------------------------------------------------------------------------------------+----------------+---------+---------+----------------+------------------------+-------------------------------------+\n| | +Expand(All)          |  5 | (message)-[anon_0:HAS_CREATOR]->(person)                                                             |         533264 | 1097836 | 4529942 |                |                    0/0 |                                     |\n| | |                     +----+------------------------------------------------------------------------------------------------------+----------------+---------+---------+----------------+------------------------+-------------------------------------+\n| | +Filter               |  6 | message.creationDate > $startDate AND message.length < $lengthThreshold AND message.content IS NOT N |         533264 | 1097836 | 6916896 |                |                    0/0 |                                     |\n| | |                     |    | ULL AND message:Message                                                                              |                |         |         |                |                        |                                     |\n| | |                     +----+------------------------------------------------------------------------------------------------------+----------------+---------+---------+----------------+------------------------+-------------------------------------+\n| | +VarLengthExpand(All) |  7 | (post)<-[anon_1:REPLY_OF*0..]-(message)                                                              |       11925682 | 3037841 | 5727253 |           7048 |                    0/0 |                                     |\n| | |                     +----+------------------------------------------------------------------------------------------------------+----------------+---------+---------+----------------+------------------------+-------------------------------------+\n| | +Filter               |  8 | post.language IN $languages                                                                          |        2694352 |  348429 | 8273491 |              0 |                    0/0 |                                     |\n| | |                     +----+------------------------------------------------------------------------------------------------------+----------------+---------+---------+----------------+------------------------+-------------------------------------+\n| | +NodeByLabelScan      |  9 | post:Post                                                                                            |        8273491 | 8273491 | 8273492 |                |                    0/0 |                                     |\n| |                       +----+------------------------------------------------------------------------------------------------------+----------------+---------+---------+----------------+------------------------+-------------------------------------+\n| +NodeByLabelScan        | 10 | person:Person                                                                                        |          68673 |   68673 |   68674 |                |                    0/0 | person ASC                          |\n+-------------------------+----+------------------------------------------------------------------------------------------------------+----------------+---------+---------+----------------+------------------------+-------------------------------------+\n\nTotal database accesses: 33789748, total allocated memory: 21626392\n",
+    "runtime": "SLOTTED",
+    "runtime-impl": "SLOTTED",
+    "DbHits": 0,
+    "Details": "messageCount, personCount",
+    "planner-version": "5.9",
+    "runtime-version": "5.9",
+    "Id": 0,
+    "PageCacheMisses": 0,
+    "EstimatedRows": 27.02312358690781,
+    "planner": "COST",
+    "Rows": 393,
+    "PageCacheHits": 0
+  },
+  "children": [
+    {
+      "operatorType": "Sort@neo4j",
+      "identifiers": [
+        "messageCount",
+        "personCount"
+      ],
+      "dbHits": 0,
+      "rows": 393,
+      "pageCacheHits": 0,
+      "pageCacheMisses": 0,
+      "args": {
+        "Order": "personCount DESC, messageCount DESC",
+        "Details": "personCount DESC, messageCount DESC",
+        "Memory": 47032,
+        "Id": 1,
+        "EstimatedRows": 27.02312358690781,
+        "PageCacheMisses": 0,
+        "DbHits": 0,
+        "Rows": 393,
+        "PageCacheHits": 0
+      },
+      "children": [
+        {
+          "operatorType": "EagerAggregation@neo4j",
+          "identifiers": [
+            "messageCount",
+            "personCount"
+          ],
+          "dbHits": 0,
+          "rows": 393,
+          "pageCacheHits": 0,
+          "pageCacheMisses": 0,
+          "args": {
+            "Details": "messageCount, count(person) AS personCount",
+            "Memory": 44488,
+            "Id": 2,
+            "EstimatedRows": 27.02312358690781,
+            "PageCacheMisses": 0,
+            "DbHits": 0,
+            "Rows": 393,
+            "PageCacheHits": 0
+          },
+          "children": [
+            {
+              "operatorType": "EagerAggregation@neo4j",
+              "identifiers": [
+                "person",
+                "messageCount"
+              ],
+              "dbHits": 0,
+              "rows": 68673,
+              "pageCacheHits": 0,
+              "pageCacheMisses": 0,
+              "args": {
+                "Details": "person, count(message) AS messageCount",
+                "Memory": 8432168,
+                "Id": 3,
+                "EstimatedRows": 730.2492083932933,
+                "PageCacheMisses": 0,
+                "DbHits": 0,
+                "Rows": 68673,
+                "PageCacheHits": 0
+              },
+              "children": [
+                {
+                  "operatorType": "NodeLeftOuterHashJoin@neo4j",
+                  "identifiers": [
+                    "post",
+                    "person",
+                    "message",
+                    "anon_0",
+                    "anon_1"
+                  ],
+                  "dbHits": 0,
+                  "rows": 1116461,
+                  "pageCacheHits": 0,
+                  "pageCacheMisses": 0,
+                  "args": {
+                    "Details": "person",
+                    "Memory": 13194392,
+                    "Id": 4,
+                    "EstimatedRows": 533263.9063590316,
+                    "PageCacheMisses": 0,
+                    "DbHits": 0,
+                    "Rows": 1116461,
+                    "PageCacheHits": 0
+                  },
+                  "children": [
+                    {
+                      "operatorType": "NodeByLabelScan@neo4j",
+                      "identifiers": [
+                        "person"
+                      ],
+                      "dbHits": 68674,
+                      "rows": 68673,
+                      "pageCacheHits": 0,
+                      "pageCacheMisses": 0,
+                      "args": {
+                        "Order": "person ASC",
+                        "Details": "person:Person",
+                        "Id": 10,
+                        "PageCacheMisses": 0,
+                        "EstimatedRows": 68673.0,
+                        "DbHits": 68674,
+                        "Rows": 68673,
+                        "PageCacheHits": 0
+                      },
+                      "children": []
+                    },
+                    {
+                      "operatorType": "Expand(All)@neo4j",
+                      "identifiers": [
+                        "post",
+                        "person",
+                        "message",
+                        "anon_0",
+                        "anon_1"
+                      ],
+                      "dbHits": 4529942,
+                      "rows": 1097836,
+                      "pageCacheHits": 0,
+                      "pageCacheMisses": 0,
+                      "args": {
+                        "Details": "(message)-[anon_0:HAS_CREATOR]->(person)",
+                        "Id": 5,
+                        "PageCacheMisses": 0,
+                        "EstimatedRows": 533263.9063590314,
+                        "DbHits": 4529942,
+                        "Rows": 1097836,
+                        "PageCacheHits": 0
+                      },
+                      "children": [
+                        {
+                          "operatorType": "Filter@neo4j",
+                          "identifiers": [
+                            "post",
+                            "anon_1",
+                            "message"
+                          ],
+                          "dbHits": 6916896,
+                          "rows": 1097836,
+                          "pageCacheHits": 0,
+                          "pageCacheMisses": 0,
+                          "args": {
+                            "Details": "message.creationDate > $startDate AND message.length < $lengthThreshold AND message.content IS NOT NULL AND message:Message",
+                            "Id": 6,
+                            "PageCacheMisses": 0,
+                            "EstimatedRows": 533263.9063590316,
+                            "DbHits": 6916896,
+                            "Rows": 1097836,
+                            "PageCacheHits": 0
+                          },
+                          "children": [
+                            {
+                              "operatorType": "VarLengthExpand(All)@neo4j",
+                              "identifiers": [
+                                "post",
+                                "anon_1",
+                                "message"
+                              ],
+                              "dbHits": 5727253,
+                              "rows": 3037841,
+                              "pageCacheHits": 0,
+                              "pageCacheMisses": 0,
+                              "args": {
+                                "Details": "(post)<-[anon_1:REPLY_OF*0..]-(message)",
+                                "Memory": 7048,
+                                "Id": 7,
+                                "EstimatedRows": 11925682.229208576,
+                                "PageCacheMisses": 0,
+                                "DbHits": 5727253,
+                                "Rows": 3037841,
+                                "PageCacheHits": 0
+                              },
+                              "children": [
+                                {
+                                  "operatorType": "Filter@neo4j",
+                                  "identifiers": [
+                                    "post"
+                                  ],
+                                  "dbHits": 8273491,
+                                  "rows": 348429,
+                                  "pageCacheHits": 0,
+                                  "pageCacheMisses": 0,
+                                  "args": {
+                                    "Details": "post.language IN $languages",
+                                    "Memory": 0,
+                                    "Id": 8,
+                                    "EstimatedRows": 2694351.531969305,
+                                    "PageCacheMisses": 0,
+                                    "DbHits": 8273491,
+                                    "Rows": 348429,
+                                    "PageCacheHits": 0
+                                  },
+                                  "children": [
+                                    {
+                                      "operatorType": "NodeByLabelScan@neo4j",
+                                      "identifiers": [
+                                        "post"
+                                      ],
+                                      "dbHits": 8273492,
+                                      "rows": 8273491,
+                                      "pageCacheHits": 0,
+                                      "pageCacheMisses": 0,
+                                      "args": {
+                                        "Details": "post:Post",
+                                        "Id": 9,
+                                        "PageCacheMisses": 0,
+                                        "EstimatedRows": 8273491.0,
+                                        "DbHits": 8273492,
+                                        "Rows": 8273491,
+                                        "PageCacheHits": 0
+                                      },
+                                      "children": []
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

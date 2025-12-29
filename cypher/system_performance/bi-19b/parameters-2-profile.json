@@ -1,0 +1,509 @@
+{
+  "operatorType": "ProduceResults@neo4j",
+  "identifiers": [
+    "person1Id",
+    "person2Id",
+    "totalWeight"
+  ],
+  "dbHits": 0,
+  "rows": 1,
+  "pageCacheHits": 0,
+  "pageCacheMisses": 0,
+  "args": {
+    "Order": "person1Id ASC, person2Id ASC",
+    "GlobalMemory": 1400936,
+    "planner-impl": "IDP",
+    "string-representation": "Planner COST\n\nRuntime SLOTTED\n\nRuntime version 5.9\n\n+--------------------+----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------------------------------------+\n| Operator           | Id | Details                                                                                              | Estimated Rows | Rows  | DB Hits | Memory (Bytes) | Page Cache Hits/Misses | Ordered by                                    |\n+--------------------+----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------------------------------------+\n| +ProduceResults    |  0 | person1Id, person2Id, totalWeight                                                                    |              1 |     1 |       0 |                |                    0/0 |                                               |\n| |                  +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+                                               |\n| +Sort              |  1 | person1Id ASC, person2Id ASC                                                                         |              1 |     1 |       0 |         978592 |                    0/0 | person1Id ASC, person2Id ASC                  |\n| |                  +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------------------------------------+\n| +Filter            |  2 | (results[$autoint_2]).totalWeight = totalWeight                                                      |              1 |     1 |       0 |                |                    0/0 |                                               |\n| |                  +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------------------------------------+\n| +Projection        |  3 | result.person1Id AS person1Id, result.person2Id AS person2Id, result.totalWeight AS totalWeight      |             10 |  2052 |       0 |                |                    0/0 |                                               |\n| |                  +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------------------------------------+\n| +Unwind            |  4 | results AS result                                                                                    |             10 |  2052 |       0 |                |                    0/0 |                                               |\n| |                  +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------------------------------------+\n| +EagerAggregation  |  5 | collect({person1Id: person1Id, person2Id: person2Id, totalWeight: totalWeight}) AS results           |              1 |     1 |       0 |         976912 |                    0/0 |                                               |\n| |                  +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------------------------------------+\n| +Sort              |  6 | totalWeight ASC, person1Id ASC, person2Id ASC                                                        |      116720528 |  2052 |       0 |         423944 |                    0/0 | totalWeight ASC, person1Id ASC, person2Id ASC |\n| |                  +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------------------------------------+\n| +Projection        |  7 | totalCost AS totalWeight, cache[person1.id] AS person1Id, cache[person2.id] AS person2Id             |      116720528 |  2052 |       0 |                |                    0/0 |                                               |\n| |                  +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------------------------------------+\n| +ProcedureCall     |  8 | gds.shortestPath.dijkstra.stream($autostring_0, {sourceNode: person1, targetNode: person2, relations |      116720528 |  2052 |         |                |                    0/0 |                                               |\n| |                  |    | hipWeightProperty: $autostring_1}) :: (totalCost :: FLOAT?)                                          |                |       |         |                |                        |                                               |\n| |                  +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------------------------------------+\n| +CacheProperties   |  9 | cache[person2.id]                                                                                    |       11672053 |  2684 |    2684 |                |                    0/0 |                                               |\n| |                  +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------------------------------------+\n| +Filter            | 10 | not anon_0 = anon_1                                                                                  |       11672053 |  2684 |       0 |                |                    0/0 |                                               |\n| |                  +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------------------------------------+\n| +CartesianProduct  | 11 |                                                                                                      |       11789952 |  2684 |       0 |                |                    0/0 |                                               |\n| |\\                 +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------------------------------------+\n| | +Filter          | 12 | person2:Person                                                                                       |       11789952 |  2684 |    2684 |                |                    0/0 |                                               |\n| | |                +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------------------------------------+\n| | +Expand(All)     | 13 | (city2)<-[anon_1:IS_LOCATED_IN]-(person2)                                                            |       12885287 |  2684 |    2816 |                |                    0/0 |                                               |\n| | |                +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------------------------------------+\n| | +Filter          | 14 | city2.id = $city2Id                                                                                  |         230570 |    44 |   59092 |                |                    0/0 |                                               |\n| | |                +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------------------------------------+\n| | +NodeByLabelScan | 15 | city2:City                                                                                           |        4611392 | 59092 |   59136 |                |                    0/0 |                                               |\n| |                  +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------------------------------------+\n| +CacheProperties   | 16 | cache[person1.id]                                                                                    |           3434 |    44 |      44 |                |                    0/0 |                                               |\n| |                  +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------------------------------------+\n| +Filter            | 17 | person1:Person                                                                                       |           3434 |    44 |      44 |                |                    0/0 |                                               |\n| |                  +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------------------------------------+\n| +Expand(All)       | 18 | (city1)<-[anon_0:IS_LOCATED_IN]-(person1)                                                            |           3753 |    44 |      46 |                |                    0/0 |                                               |\n| |                  +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------------------------------------+\n| +Filter            | 19 | city1.id = $city1Id                                                                                  |             67 |     1 |    1343 |                |                    0/0 |                                               |\n| |                  +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------------------------------------+\n| +NodeByLabelScan   | 20 | city1:City                                                                                           |           1343 |  1343 |    1344 |                |                    0/0 |                                               |\n+--------------------+----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-----------------------------------------------+\n\nTotal database accesses: 129233 + ?, total allocated memory: 1400936\n",
+    "runtime": "SLOTTED",
+    "runtime-impl": "SLOTTED",
+    "DbHits": 0,
+    "Details": "person1Id, person2Id, totalWeight",
+    "planner-version": "5.9",
+    "runtime-version": "5.9",
+    "Id": 0,
+    "PageCacheMisses": 0,
+    "EstimatedRows": 1.0,
+    "planner": "COST",
+    "Rows": 1,
+    "PageCacheHits": 0
+  },
+  "children": [
+    {
+      "operatorType": "Sort@neo4j",
+      "identifiers": [
+        "person1Id",
+        "person2Id",
+        "totalWeight"
+      ],
+      "dbHits": 0,
+      "rows": 1,
+      "pageCacheHits": 0,
+      "pageCacheMisses": 0,
+      "args": {
+        "Order": "person1Id ASC, person2Id ASC",
+        "Details": "person1Id ASC, person2Id ASC",
+        "Memory": 978592,
+        "Id": 1,
+        "EstimatedRows": 1.0,
+        "PageCacheMisses": 0,
+        "DbHits": 0,
+        "Rows": 1,
+        "PageCacheHits": 0
+      },
+      "children": [
+        {
+          "operatorType": "Filter@neo4j",
+          "identifiers": [
+            "person1Id",
+            "person2Id",
+            "totalWeight"
+          ],
+          "dbHits": 0,
+          "rows": 1,
+          "pageCacheHits": 0,
+          "pageCacheMisses": 0,
+          "args": {
+            "Details": "(results[$autoint_2]).totalWeight = totalWeight",
+            "Id": 2,
+            "PageCacheMisses": 0,
+            "EstimatedRows": 1.0,
+            "DbHits": 0,
+            "Rows": 1,
+            "PageCacheHits": 0
+          },
+          "children": [
+            {
+              "operatorType": "Projection@neo4j",
+              "identifiers": [
+                "person1Id",
+                "person2Id",
+                "totalWeight"
+              ],
+              "dbHits": 0,
+              "rows": 2052,
+              "pageCacheHits": 0,
+              "pageCacheMisses": 0,
+              "args": {
+                "Details": "result.person1Id AS person1Id, result.person2Id AS person2Id, result.totalWeight AS totalWeight",
+                "Id": 3,
+                "PageCacheMisses": 0,
+                "EstimatedRows": 10.0,
+                "DbHits": 0,
+                "Rows": 2052,
+                "PageCacheHits": 0
+              },
+              "children": [
+                {
+                  "operatorType": "Unwind@neo4j",
+                  "identifiers": [
+                    "results",
+                    "result"
+                  ],
+                  "dbHits": 0,
+                  "rows": 2052,
+                  "pageCacheHits": 0,
+                  "pageCacheMisses": 0,
+                  "args": {
+                    "Details": "results AS result",
+                    "Id": 4,
+                    "PageCacheMisses": 0,
+                    "EstimatedRows": 10.0,
+                    "DbHits": 0,
+                    "Rows": 2052,
+                    "PageCacheHits": 0
+                  },
+                  "children": [
+                    {
+                      "operatorType": "EagerAggregation@neo4j",
+                      "identifiers": [
+                        "results"
+                      ],
+                      "dbHits": 0,
+                      "rows": 1,
+                      "pageCacheHits": 0,
+                      "pageCacheMisses": 0,
+                      "args": {
+                        "Details": "collect({person1Id: person1Id, person2Id: person2Id, totalWeight: totalWeight}) AS results",
+                        "Memory": 976912,
+                        "Id": 5,
+                        "EstimatedRows": 1.0,
+                        "PageCacheMisses": 0,
+                        "DbHits": 0,
+                        "Rows": 1,
+                        "PageCacheHits": 0
+                      },
+                      "children": [
+                        {
+                          "operatorType": "Sort@neo4j",
+                          "identifiers": [
+                            "city1",
+                            "person2",
+                            "totalCost",
+                            "city2",
+                            "totalWeight",
+                            "person2Id",
+                            "person1",
+                            "person1Id",
+                            "anon_0",
+                            "anon_1"
+                          ],
+                          "dbHits": 0,
+                          "rows": 2052,
+                          "pageCacheHits": 0,
+                          "pageCacheMisses": 0,
+                          "args": {
+                            "Order": "totalWeight ASC, person1Id ASC, person2Id ASC",
+                            "Details": "totalWeight ASC, person1Id ASC, person2Id ASC",
+                            "Memory": 423944,
+                            "Id": 6,
+                            "EstimatedRows": 116720527.99274999,
+                            "PageCacheMisses": 0,
+                            "DbHits": 0,
+                            "Rows": 2052,
+                            "PageCacheHits": 0
+                          },
+                          "children": [
+                            {
+                              "operatorType": "Projection@neo4j",
+                              "identifiers": [
+                                "city1",
+                                "person2",
+                                "totalCost",
+                                "city2",
+                                "totalWeight",
+                                "person2Id",
+                                "person1",
+                                "person1Id",
+                                "anon_0",
+                                "anon_1"
+                              ],
+                              "dbHits": 0,
+                              "rows": 2052,
+                              "pageCacheHits": 0,
+                              "pageCacheMisses": 0,
+                              "args": {
+                                "Details": "totalCost AS totalWeight, cache[person1.id] AS person1Id, cache[person2.id] AS person2Id",
+                                "Id": 7,
+                                "PageCacheMisses": 0,
+                                "EstimatedRows": 116720527.99274999,
+                                "DbHits": 0,
+                                "Rows": 2052,
+                                "PageCacheHits": 0
+                              },
+                              "children": [
+                                {
+                                  "operatorType": "ProcedureCall@neo4j",
+                                  "identifiers": [
+                                    "city1",
+                                    "person2",
+                                    "totalCost",
+                                    "city2",
+                                    "person1",
+                                    "anon_0",
+                                    "anon_1"
+                                  ],
+                                  "dbHits": 0,
+                                  "rows": 0,
+                                  "pageCacheHits": 0,
+                                  "pageCacheMisses": 0,
+                                  "args": {
+                                    "Details": "gds.shortestPath.dijkstra.stream($autostring_0, {sourceNode: person1, targetNode: person2, relationshipWeightProperty: $autostring_1}) :: (totalCost :: FLOAT?)",
+                                    "Id": 8,
+                                    "PageCacheMisses": 0,
+                                    "EstimatedRows": 116720527.99274999,
+                                    "Rows": 2052,
+                                    "PageCacheHits": 0
+                                  },
+                                  "children": [
+                                    {
+                                      "operatorType": "CacheProperties@neo4j",
+                                      "identifiers": [
+                                        "city1",
+                                        "person2",
+                                        "city2",
+                                        "person1",
+                                        "anon_0",
+                                        "anon_1"
+                                      ],
+                                      "dbHits": 2684,
+                                      "rows": 2684,
+                                      "pageCacheHits": 0,
+                                      "pageCacheMisses": 0,
+                                      "args": {
+                                        "Details": "cache[person2.id]",
+                                        "Id": 9,
+                                        "PageCacheMisses": 0,
+                                        "EstimatedRows": 11672052.799275,
+                                        "DbHits": 2684,
+                                        "Rows": 2684,
+                                        "PageCacheHits": 0
+                                      },
+                                      "children": [
+                                        {
+                                          "operatorType": "Filter@neo4j",
+                                          "identifiers": [
+                                            "city1",
+                                            "person2",
+                                            "city2",
+                                            "person1",
+                                            "anon_0",
+                                            "anon_1"
+                                          ],
+                                          "dbHits": 0,
+                                          "rows": 2684,
+                                          "pageCacheHits": 0,
+                                          "pageCacheMisses": 0,
+                                          "args": {
+                                            "Details": "not anon_0 = anon_1",
+                                            "Id": 10,
+                                            "PageCacheMisses": 0,
+                                            "EstimatedRows": 11672052.799275,
+                                            "DbHits": 0,
+                                            "Rows": 2684,
+                                            "PageCacheHits": 0
+                                          },
+                                          "children": [
+                                            {
+                                              "operatorType": "CartesianProduct@neo4j",
+                                              "identifiers": [
+                                                "city1",
+                                                "person2",
+                                                "city2",
+                                                "person1",
+                                                "anon_0",
+                                                "anon_1"
+                                              ],
+                                              "dbHits": 0,
+                                              "rows": 2684,
+                                              "pageCacheHits": 0,
+                                              "pageCacheMisses": 0,
+                                              "args": {
+                                                "Id": 11,
+                                                "PageCacheMisses": 0,
+                                                "EstimatedRows": 11789952.322499998,
+                                                "DbHits": 0,
+                                                "Rows": 2684,
+                                                "PageCacheHits": 0
+                                              },
+                                              "children": [
+                                                {
+                                                  "operatorType": "CacheProperties@neo4j",
+                                                  "identifiers": [
+                                                    "city1",
+                                                    "anon_0",
+                                                    "person1"
+                                                  ],
+                                                  "dbHits": 44,
+                                                  "rows": 44,
+                                                  "pageCacheHits": 0,
+                                                  "pageCacheMisses": 0,
+                                                  "args": {
+                                                    "Details": "cache[person1.id]",
+                                                    "Id": 16,
+                                                    "PageCacheMisses": 0,
+                                                    "EstimatedRows": 3433.6500000000005,
+                                                    "DbHits": 44,
+                                                    "Rows": 44,
+                                                    "PageCacheHits": 0
+                                                  },
+                                                  "children": [
+                                                    {
+                                                      "operatorType": "Filter@neo4j",
+                                                      "identifiers": [
+                                                        "city1",
+                                                        "anon_0",
+                                                        "person1"
+                                                      ],
+                                                      "dbHits": 44,
+                                                      "rows": 44,
+                                                      "pageCacheHits": 0,
+                                                      "pageCacheMisses": 0,
+                                                      "args": {
+                                                        "Details": "person1:Person",
+                                                        "Id": 17,
+                                                        "PageCacheMisses": 0,
+                                                        "EstimatedRows": 3433.6500000000005,
+                                                        "DbHits": 44,
+                                                        "Rows": 44,
+                                                        "PageCacheHits": 0
+                                                      },
+                                                      "children": [
+                                                        {
+                                                          "operatorType": "Expand(All)@neo4j",
+                                                          "identifiers": [
+                                                            "city1",
+                                                            "anon_0",
+                                                            "person1"
+                                                          ],
+                                                          "dbHits": 46,
+                                                          "rows": 44,
+                                                          "pageCacheHits": 0,
+                                                          "pageCacheMisses": 0,
+                                                          "args": {
+                                                            "Details": "(city1)<-[anon_0:IS_LOCATED_IN]-(person1)",
+                                                            "Id": 18,
+                                                            "PageCacheMisses": 0,
+                                                            "EstimatedRows": 3752.65,
+                                                            "DbHits": 46,
+                                                            "Rows": 44,
+                                                            "PageCacheHits": 0
+                                                          },
+                                                          "children": [
+                                                            {
+                                                              "operatorType": "Filter@neo4j",
+                                                              "identifiers": [
+                                                                "city1"
+                                                              ],
+                                                              "dbHits": 1343,
+                                                              "rows": 1,
+                                                              "pageCacheHits": 0,
+                                                              "pageCacheMisses": 0,
+                                                              "args": {
+                                                                "Details": "city1.id = $city1Id",
+                                                                "Id": 19,
+                                                                "PageCacheMisses": 0,
+                                                                "EstimatedRows": 67.15,
+                                                                "DbHits": 1343,
+                                                                "Rows": 1,
+                                                                "PageCacheHits": 0
+                                                              },
+                                                              "children": [
+                                                                {
+                                                                  "operatorType": "NodeByLabelScan@neo4j",
+                                                                  "identifiers": [
+                                                                    "city1"
+                                                                  ],
+                                                                  "dbHits": 1344,
+                                                                  "rows": 1343,
+                                                                  "pageCacheHits": 0,
+                                                                  "pageCacheMisses": 0,
+                                                                  "args": {
+                                                                    "Details": "city1:City",
+                                                                    "Id": 20,
+                                                                    "PageCacheMisses": 0,
+                                                                    "EstimatedRows": 1343.0,
+                                                                    "DbHits": 1344,
+                                                                    "Rows": 1343,
+                                                                    "PageCacheHits": 0
+                                                                  },
+                                                                  "children": []
+                                                                }
+                                                              ]
+                                                            }
+                                                          ]
+                                                        }
+                                                      ]
+                                                    }
+                                                  ]
+                                                },
+                                                {
+                                                  "operatorType": "Filter@neo4j",
+                                                  "identifiers": [
+                                                    "city2",
+                                                    "anon_1",
+                                                    "person2"
+                                                  ],
+                                                  "dbHits": 2684,
+                                                  "rows": 2684,
+                                                  "pageCacheHits": 0,
+                                                  "pageCacheMisses": 0,
+                                                  "args": {
+                                                    "Details": "person2:Person",
+                                                    "Id": 12,
+                                                    "PageCacheMisses": 0,
+                                                    "EstimatedRows": 11789952.322500004,
+                                                    "DbHits": 2684,
+                                                    "Rows": 2684,
+                                                    "PageCacheHits": 0
+                                                  },
+                                                  "children": [
+                                                    {
+                                                      "operatorType": "Expand(All)@neo4j",
+                                                      "identifiers": [
+                                                        "city2",
+                                                        "anon_1",
+                                                        "person2"
+                                                      ],
+                                                      "dbHits": 2816,
+                                                      "rows": 2684,
+                                                      "pageCacheHits": 0,
+                                                      "pageCacheMisses": 0,
+                                                      "args": {
+                                                        "Details": "(city2)<-[anon_1:IS_LOCATED_IN]-(person2)",
+                                                        "Id": 13,
+                                                        "PageCacheMisses": 0,
+                                                        "EstimatedRows": 12885286.672500003,
+                                                        "DbHits": 2816,
+                                                        "Rows": 2684,
+                                                        "PageCacheHits": 0
+                                                      },
+                                                      "children": [
+                                                        {
+                                                          "operatorType": "Filter@neo4j",
+                                                          "identifiers": [
+                                                            "city2"
+                                                          ],
+                                                          "dbHits": 59092,
+                                                          "rows": 44,
+                                                          "pageCacheHits": 0,
+                                                          "pageCacheMisses": 0,
+                                                          "args": {
+                                                            "Details": "city2.id = $city2Id",
+                                                            "Id": 14,
+                                                            "PageCacheMisses": 0,
+                                                            "EstimatedRows": 230569.59750000006,
+                                                            "DbHits": 59092,
+                                                            "Rows": 44,
+                                                            "PageCacheHits": 0
+                                                          },
+                                                          "children": [
+                                                            {
+                                                              "operatorType": "NodeByLabelScan@neo4j",
+                                                              "identifiers": [
+                                                                "city2"
+                                                              ],
+                                                              "dbHits": 59136,
+                                                              "rows": 59092,
+                                                              "pageCacheHits": 0,
+                                                              "pageCacheMisses": 0,
+                                                              "args": {
+                                                                "Details": "city2:City",
+                                                                "Id": 15,
+                                                                "PageCacheMisses": 0,
+                                                                "EstimatedRows": 4611391.950000001,
+                                                                "DbHits": 59136,
+                                                                "Rows": 59092,
+                                                                "PageCacheHits": 0
+                                                              },
+                                                              "children": []
+                                                            }
+                                                          ]
+                                                        }
+                                                      ]
+                                                    }
+                                                  ]
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

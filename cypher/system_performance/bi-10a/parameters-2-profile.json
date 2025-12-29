@@ -1,0 +1,674 @@
+{
+  "operatorType": "ProduceResults@neo4j",
+  "identifiers": [
+    "`expertCandidatePerson.id`",
+    "`tag.name`",
+    "messageCount"
+  ],
+  "dbHits": 0,
+  "rows": 100,
+  "pageCacheHits": 0,
+  "pageCacheMisses": 0,
+  "args": {
+    "Order": "messageCount DESC, `tag.name` ASC, `expertCandidatePerson.id` ASC",
+    "GlobalMemory": 9894036,
+    "planner-impl": "IDP",
+    "Memory": 0,
+    "string-representation": "Cypher 5\n\nPlanner COST\n\nRuntime PIPELINED\n\nRuntime version 5.26\n\nBatch size 1024\n\n+---------------------+----+------------------------------------------------------------------------------------------------------+----------------+--------+---------+----------------+------------------------+-----------+-------------------------------------------------------------------+---------------------+\n| Operator            | Id | Details                                                                                              | Estimated Rows | Rows   | DB Hits | Memory (Bytes) | Page Cache Hits/Misses | Time (ms) | Ordered by                                                        | Pipeline            |\n+---------------------+----+------------------------------------------------------------------------------------------------------+----------------+--------+---------+----------------+------------------------+-----------+-------------------------------------------------------------------+---------------------+\n| +ProduceResults     |  0 | `expertCandidatePerson.id`, `tag.name`, messageCount                                                 |              0 |    100 |       0 |              0 |                    0/0 |     0.375 |                                                                   |                     |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+--------+---------+----------------+------------------------+-----------+                                                                   |                     |\n| +Top                |  1 | messageCount DESC, `tag.name` ASC, `expertCandidatePerson.id` ASC LIMIT 100                          |              0 |    100 |       0 |         258816 |                    0/0 |     0.104 | messageCount DESC, `tag.name` ASC, `expertCandidatePerson.id` ASC | In Pipeline 6       |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+--------+---------+----------------+------------------------+-----------+-------------------------------------------------------------------+---------------------+\n| +EagerAggregation   |  2 | cache[expertCandidatePerson.id] AS `expertCandidatePerson.id`, tag.name AS `tag.name`, count(DISTINC |              0 |   2014 |    4506 |         997008 |                        |           |                                                                   |                     |\n| |                   |    | T message) AS messageCount                                                                           |                |        |         |                |                        |           |                                                                   |                     |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+--------+---------+----------------+                        |           +-------------------------------------------------------------------+                     |\n| +Filter             |  3 | tag:Tag                                                                                              |              0 |   2253 |    4506 |                |                        |           |                                                                   |                     |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+--------+---------+----------------+                        |           +-------------------------------------------------------------------+                     |\n| +Expand(All)        |  4 | (message)-[anon_9:HAS_TAG]->(tag)                                                                    |              0 |   2253 |    2253 |                |                        |           |                                                                   |                     |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+--------+---------+----------------+                        |           +-------------------------------------------------------------------+                     |\n| +CacheProperties    |  5 | cache[expertCandidatePerson.id]                                                                      |              0 |    434 |     870 |                |                        |           |                                                                   |                     |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+--------+---------+----------------+                        |           +-------------------------------------------------------------------+                     |\n| +Filter             |  6 | anon_8.name = $tagClass AND anon_8:TagClass                                                          |              0 |    434 |  393658 |                |                        |           |                                                                   |                     |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+--------+---------+----------------+                        |           +-------------------------------------------------------------------+                     |\n| +Expand(All)        |  7 | (anon_6)-[anon_7:HAS_TYPE]->(anon_8)                                                                 |              0 | 196393 |  392786 |                |                        |           |                                                                   |                     |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+--------+---------+----------------+                        |           +-------------------------------------------------------------------+                     |\n| +Filter             |  8 | anon_6:Tag                                                                                           |              0 | 196393 |  392788 |                |                        |           |                                                                   |                     |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+--------+---------+----------------+                        |           +-------------------------------------------------------------------+                     |\n| +Expand(All)        |  9 | (message)-[anon_5:HAS_TAG]->(anon_6)                                                                 |              0 | 196393 |  366592 |                |                        |           |                                                                   |                     |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+--------+---------+----------------+                        |           +-------------------------------------------------------------------+                     |\n| +Filter             | 10 | message:Message                                                                                      |              0 | 170199 |  340402 |                |                        |           |                                                                   |                     |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+--------+---------+----------------+                        |           +-------------------------------------------------------------------+                     |\n| +Expand(All)        | 11 | (expertCandidatePerson)<-[anon_4:HAS_CREATOR]-(message)                                              |              0 | 170199 |  170199 |                |                        |           |                                                                   |                     |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+--------+---------+----------------+                        |           +-------------------------------------------------------------------+                     |\n| +Filter             | 12 | anon_3.name = $country AND anon_3:Country                                                            |              0 |    437 |  118060 |                |                        |           |                                                                   |                     |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+--------+---------+----------------+                        |           +-------------------------------------------------------------------+                     |\n| +Expand(All)        | 13 | (anon_1)-[anon_2:IS_PART_OF]->(anon_3)                                                               |              1 |  58589 |  117178 |                |                        |           |                                                                   |                     |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+--------+---------+----------------+                        |           +-------------------------------------------------------------------+                     |\n| +Filter             | 14 | anon_1:City                                                                                          |              1 |  58589 |  117182 |                |                        |           |                                                                   |                     |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+--------+---------+----------------+                        |           +-------------------------------------------------------------------+                     |\n| +Expand(All)        | 15 | (expertCandidatePerson)-[anon_0:IS_LOCATED_IN]->(anon_1)                                             |            420 |  58589 |  117178 |                |                        |           |                                                                   |                     |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+--------+---------+----------------+                        |           +-------------------------------------------------------------------+                     |\n| +Unwind             | 16 | expertCandidatePersons AS expertCandidatePerson                                                      |            430 |  58589 |       0 |        8916228 |         1015508/101950 |  1213.168 |                                                                   | Fused in Pipeline 4 |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+--------+---------+----------------+------------------------+-----------+-------------------------------------------------------------------+---------------------+\n| +Projection         | 17 | [n IN nodesCloserThanMaxPathDistance WHERE NOT n IN nodesCloserThanMinPathDistance] AS expertCandida |             43 |      1 |       0 |          98376 |                    0/0 |    18.983 |                                                                   | In Pipeline 3       |\n| |                   |    | tePersons                                                                                            |                |        |         |                |                        |           |                                                                   |                     |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+--------+---------+----------------+------------------------+-----------+-------------------------------------------------------------------+---------------------+\n| +EagerAggregation   | 18 | nodesCloserThanMinPathDistance, collect(DISTINCT node) AS nodesCloserThanMaxPathDistance             |             43 |      1 |       0 |        5456576 |                        |           |                                                                   |                     |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+--------+---------+----------------+                        |           +-------------------------------------------------------------------+                     |\n| +ProcedureCall      | 19 | apoc.path.subgraphNodes(startPerson, {relationshipFilter: $autostring_3, minLevel: $autoint_4, maxLe |           1853 |  65140 |         |         447452 |            97711/41078 |  1188.072 |                                                                   | Fused in Pipeline 2 |\n| |                   |    | vel: $maxPathDistance}) :: (node :: NODE)                                                            |                |        |         |                |                        |           |                                                                   |                     |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+--------+---------+----------------+------------------------+-----------+                                                                   +---------------------+\n| +OrderedAggregation | 20 | startPerson, collect(DISTINCT node) AS nodesCloserThanMinPathDistance                                |            185 |      1 |       0 |         932224 |                    0/0 |     3.403 |                                                                   | In Pipeline 1       |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+--------+---------+----------------+------------------------+-----------+                                                                   +---------------------+\n| +ProcedureCall      | 21 | apoc.path.subgraphNodes(startPerson, {relationshipFilter: $autostring_0, minLevel: $autoint_1, maxLe |          34337 |   6551 |         |              0 |                        |           |                                                                   |                     |\n| |                   |    | vel: $minPathDistance - $autoint_2}) :: (node :: NODE)                                               |                |        |         |                |                        |           |                                                                   |                     |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+--------+---------+----------------+                        |           |                                                                   |                     |\n| +Filter             | 22 | startPerson.id = $personId                                                                           |           3434 |      1 |  137351 |                |                        |           |                                                                   |                     |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+--------+---------+----------------+                        |           |                                                                   |                     |\n| +NodeByLabelScan    | 23 | startPerson:Person                                                                                   |          68673 |  68673 |   68667 |            376 |              2042/1167 |    47.802 | startPerson ASC                                                   | Fused in Pipeline 0 |\n+---------------------+----+------------------------------------------------------------------------------------------------------+----------------+--------+---------+----------------+------------------------+-----------+-------------------------------------------------------------------+---------------------+\n\nTotal database accesses: 2744176 + ?, total allocated memory: 9894036\n",
+    "runtime": "PIPELINED",
+    "Time": 375187,
+    "runtime-impl": "PIPELINED",
+    "version": "5",
+    "DbHits": 0,
+    "batch-size": 1024,
+    "Details": "`expertCandidatePerson.id`, `tag.name`, messageCount",
+    "planner-version": "5.26",
+    "PipelineInfo": "In Pipeline 6",
+    "runtime-version": "5.26",
+    "Id": 0,
+    "EstimatedRows": 0.003949036141016269,
+    "planner": "COST",
+    "PageCacheMisses": 0,
+    "Rows": 100,
+    "PageCacheHits": 0
+  },
+  "children": [
+    {
+      "operatorType": "Top@neo4j",
+      "identifiers": [
+        "`expertCandidatePerson.id`",
+        "`tag.name`",
+        "messageCount"
+      ],
+      "dbHits": 0,
+      "rows": 100,
+      "pageCacheHits": 0,
+      "pageCacheMisses": 0,
+      "args": {
+        "Order": "messageCount DESC, `tag.name` ASC, `expertCandidatePerson.id` ASC",
+        "Details": "messageCount DESC, `tag.name` ASC, `expertCandidatePerson.id` ASC LIMIT 100",
+        "PipelineInfo": "In Pipeline 6",
+        "Memory": 258816,
+        "Time": 103691,
+        "Id": 1,
+        "EstimatedRows": 0.003949036141016269,
+        "PageCacheMisses": 0,
+        "DbHits": 0,
+        "Rows": 100,
+        "PageCacheHits": 0
+      },
+      "children": [
+        {
+          "operatorType": "EagerAggregation@neo4j",
+          "identifiers": [
+            "`expertCandidatePerson.id`",
+            "`tag.name`",
+            "messageCount"
+          ],
+          "dbHits": 4506,
+          "rows": 2014,
+          "pageCacheHits": 0,
+          "pageCacheMisses": 0,
+          "args": {
+            "Details": "cache[expertCandidatePerson.id] AS `expertCandidatePerson.id`, tag.name AS `tag.name`, count(DISTINCT message) AS messageCount",
+            "Memory": 997008,
+            "PipelineInfo": "Fused in Pipeline 4",
+            "Id": 2,
+            "EstimatedRows": 0.003949036141016269,
+            "DbHits": 4506,
+            "Rows": 2014
+          },
+          "children": [
+            {
+              "operatorType": "Filter@neo4j",
+              "identifiers": [
+                "anon_2",
+                "tag",
+                "anon_9",
+                "anon_8",
+                "anon_3",
+                "anon_5",
+                "expertCandidatePerson",
+                "nodesCloserThanMaxPathDistance",
+                "anon_4",
+                "anon_7",
+                "nodesCloserThanMinPathDistance",
+                "anon_0",
+                "anon_1",
+                "message",
+                "anon_6",
+                "expertCandidatePersons"
+              ],
+              "dbHits": 4506,
+              "rows": 2253,
+              "pageCacheHits": 0,
+              "pageCacheMisses": 0,
+              "args": {
+                "Details": "tag:Tag",
+                "PipelineInfo": "Fused in Pipeline 4",
+                "Id": 3,
+                "EstimatedRows": 0.003949036141016269,
+                "DbHits": 4506,
+                "Rows": 2253
+              },
+              "children": [
+                {
+                  "operatorType": "Expand(All)@neo4j",
+                  "identifiers": [
+                    "anon_2",
+                    "tag",
+                    "anon_9",
+                    "anon_8",
+                    "anon_3",
+                    "anon_5",
+                    "expertCandidatePerson",
+                    "nodesCloserThanMaxPathDistance",
+                    "anon_4",
+                    "anon_7",
+                    "nodesCloserThanMinPathDistance",
+                    "anon_0",
+                    "anon_1",
+                    "message",
+                    "anon_6",
+                    "expertCandidatePersons"
+                  ],
+                  "dbHits": 2253,
+                  "rows": 2253,
+                  "pageCacheHits": 0,
+                  "pageCacheMisses": 0,
+                  "args": {
+                    "Details": "(message)-[anon_9:HAS_TAG]->(tag)",
+                    "PipelineInfo": "Fused in Pipeline 4",
+                    "Id": 4,
+                    "EstimatedRows": 0.003949036141016269,
+                    "DbHits": 2253,
+                    "Rows": 2253
+                  },
+                  "children": [
+                    {
+                      "operatorType": "CacheProperties@neo4j",
+                      "identifiers": [
+                        "anon_2",
+                        "anon_8",
+                        "anon_3",
+                        "anon_5",
+                        "expertCandidatePerson",
+                        "nodesCloserThanMaxPathDistance",
+                        "anon_4",
+                        "anon_7",
+                        "nodesCloserThanMinPathDistance",
+                        "anon_0",
+                        "anon_1",
+                        "message",
+                        "anon_6",
+                        "expertCandidatePersons"
+                      ],
+                      "dbHits": 870,
+                      "rows": 434,
+                      "pageCacheHits": 0,
+                      "pageCacheMisses": 0,
+                      "args": {
+                        "Details": "cache[expertCandidatePerson.id]",
+                        "PipelineInfo": "Fused in Pipeline 4",
+                        "Id": 5,
+                        "EstimatedRows": 0.003374219537109212,
+                        "DbHits": 870,
+                        "Rows": 434
+                      },
+                      "children": [
+                        {
+                          "operatorType": "Filter@neo4j",
+                          "identifiers": [
+                            "anon_2",
+                            "anon_8",
+                            "anon_3",
+                            "anon_5",
+                            "expertCandidatePerson",
+                            "nodesCloserThanMaxPathDistance",
+                            "anon_4",
+                            "anon_7",
+                            "nodesCloserThanMinPathDistance",
+                            "anon_0",
+                            "anon_1",
+                            "message",
+                            "anon_6",
+                            "expertCandidatePersons"
+                          ],
+                          "dbHits": 393658,
+                          "rows": 434,
+                          "pageCacheHits": 0,
+                          "pageCacheMisses": 0,
+                          "args": {
+                            "Details": "anon_8.name = $tagClass AND anon_8:TagClass",
+                            "PipelineInfo": "Fused in Pipeline 4",
+                            "Id": 6,
+                            "EstimatedRows": 0.003374219537109212,
+                            "DbHits": 393658,
+                            "Rows": 434
+                          },
+                          "children": [
+                            {
+                              "operatorType": "Expand(All)@neo4j",
+                              "identifiers": [
+                                "anon_2",
+                                "anon_8",
+                                "anon_3",
+                                "anon_5",
+                                "expertCandidatePerson",
+                                "nodesCloserThanMaxPathDistance",
+                                "anon_4",
+                                "anon_7",
+                                "nodesCloserThanMinPathDistance",
+                                "anon_0",
+                                "anon_1",
+                                "message",
+                                "anon_6",
+                                "expertCandidatePersons"
+                              ],
+                              "dbHits": 392786,
+                              "rows": 196393,
+                              "pageCacheHits": 0,
+                              "pageCacheMisses": 0,
+                              "args": {
+                                "Details": "(anon_6)-[anon_7:HAS_TYPE]->(anon_8)",
+                                "PipelineInfo": "Fused in Pipeline 4",
+                                "Id": 7,
+                                "EstimatedRows": 0.06748439074218424,
+                                "DbHits": 392786,
+                                "Rows": 196393
+                              },
+                              "children": [
+                                {
+                                  "operatorType": "Filter@neo4j",
+                                  "identifiers": [
+                                    "anon_2",
+                                    "nodesCloserThanMinPathDistance",
+                                    "anon_3",
+                                    "anon_5",
+                                    "expertCandidatePerson",
+                                    "nodesCloserThanMaxPathDistance",
+                                    "anon_4",
+                                    "anon_0",
+                                    "anon_1",
+                                    "message",
+                                    "anon_6",
+                                    "expertCandidatePersons"
+                                  ],
+                                  "dbHits": 392788,
+                                  "rows": 196393,
+                                  "pageCacheHits": 0,
+                                  "pageCacheMisses": 0,
+                                  "args": {
+                                    "Details": "anon_6:Tag",
+                                    "PipelineInfo": "Fused in Pipeline 4",
+                                    "Id": 8,
+                                    "EstimatedRows": 0.06748439074218424,
+                                    "DbHits": 392788,
+                                    "Rows": 196393
+                                  },
+                                  "children": [
+                                    {
+                                      "operatorType": "Expand(All)@neo4j",
+                                      "identifiers": [
+                                        "anon_2",
+                                        "nodesCloserThanMinPathDistance",
+                                        "anon_3",
+                                        "anon_5",
+                                        "expertCandidatePerson",
+                                        "nodesCloserThanMaxPathDistance",
+                                        "anon_4",
+                                        "anon_0",
+                                        "anon_1",
+                                        "message",
+                                        "anon_6",
+                                        "expertCandidatePersons"
+                                      ],
+                                      "dbHits": 366592,
+                                      "rows": 196393,
+                                      "pageCacheHits": 0,
+                                      "pageCacheMisses": 0,
+                                      "args": {
+                                        "Details": "(message)-[anon_5:HAS_TAG]->(anon_6)",
+                                        "PipelineInfo": "Fused in Pipeline 4",
+                                        "Id": 9,
+                                        "EstimatedRows": 0.06748439074218424,
+                                        "DbHits": 366592,
+                                        "Rows": 196393
+                                      },
+                                      "children": [
+                                        {
+                                          "operatorType": "Filter@neo4j",
+                                          "identifiers": [
+                                            "anon_2",
+                                            "nodesCloserThanMinPathDistance",
+                                            "anon_3",
+                                            "expertCandidatePerson",
+                                            "nodesCloserThanMaxPathDistance",
+                                            "anon_4",
+                                            "anon_0",
+                                            "anon_1",
+                                            "message",
+                                            "expertCandidatePersons"
+                                          ],
+                                          "dbHits": 340402,
+                                          "rows": 170199,
+                                          "pageCacheHits": 0,
+                                          "pageCacheMisses": 0,
+                                          "args": {
+                                            "Details": "message:Message",
+                                            "PipelineInfo": "Fused in Pipeline 4",
+                                            "Id": 10,
+                                            "EstimatedRows": 0.057661449923725044,
+                                            "DbHits": 340402,
+                                            "Rows": 170199
+                                          },
+                                          "children": [
+                                            {
+                                              "operatorType": "Expand(All)@neo4j",
+                                              "identifiers": [
+                                                "anon_2",
+                                                "nodesCloserThanMinPathDistance",
+                                                "anon_3",
+                                                "expertCandidatePerson",
+                                                "nodesCloserThanMaxPathDistance",
+                                                "anon_4",
+                                                "anon_0",
+                                                "anon_1",
+                                                "message",
+                                                "expertCandidatePersons"
+                                              ],
+                                              "dbHits": 170199,
+                                              "rows": 170199,
+                                              "pageCacheHits": 0,
+                                              "pageCacheMisses": 0,
+                                              "args": {
+                                                "Details": "(expertCandidatePerson)<-[anon_4:HAS_CREATOR]-(message)",
+                                                "PipelineInfo": "Fused in Pipeline 4",
+                                                "Id": 11,
+                                                "EstimatedRows": 0.05766144992372506,
+                                                "DbHits": 170199,
+                                                "Rows": 170199
+                                              },
+                                              "children": [
+                                                {
+                                                  "operatorType": "Filter@neo4j",
+                                                  "identifiers": [
+                                                    "anon_2",
+                                                    "nodesCloserThanMaxPathDistance",
+                                                    "nodesCloserThanMinPathDistance",
+                                                    "anon_3",
+                                                    "expertCandidatePerson",
+                                                    "expertCandidatePersons",
+                                                    "anon_0",
+                                                    "anon_1"
+                                                  ],
+                                                  "dbHits": 118060,
+                                                  "rows": 437,
+                                                  "pageCacheHits": 0,
+                                                  "pageCacheMisses": 0,
+                                                  "args": {
+                                                    "Details": "anon_3.name = $country AND anon_3:Country",
+                                                    "PipelineInfo": "Fused in Pipeline 4",
+                                                    "Id": 12,
+                                                    "EstimatedRows": 0.059320924492676036,
+                                                    "DbHits": 118060,
+                                                    "Rows": 437
+                                                  },
+                                                  "children": [
+                                                    {
+                                                      "operatorType": "Expand(All)@neo4j",
+                                                      "identifiers": [
+                                                        "anon_2",
+                                                        "nodesCloserThanMaxPathDistance",
+                                                        "nodesCloserThanMinPathDistance",
+                                                        "anon_3",
+                                                        "expertCandidatePerson",
+                                                        "expertCandidatePersons",
+                                                        "anon_0",
+                                                        "anon_1"
+                                                      ],
+                                                      "dbHits": 117178,
+                                                      "rows": 58589,
+                                                      "pageCacheHits": 0,
+                                                      "pageCacheMisses": 0,
+                                                      "args": {
+                                                        "Details": "(anon_1)-[anon_2:IS_PART_OF]->(anon_3)",
+                                                        "PipelineInfo": "Fused in Pipeline 4",
+                                                        "Id": 13,
+                                                        "EstimatedRows": 1.1864184898535208,
+                                                        "DbHits": 117178,
+                                                        "Rows": 58589
+                                                      },
+                                                      "children": [
+                                                        {
+                                                          "operatorType": "Filter@neo4j",
+                                                          "identifiers": [
+                                                            "nodesCloserThanMaxPathDistance",
+                                                            "nodesCloserThanMinPathDistance",
+                                                            "expertCandidatePerson",
+                                                            "expertCandidatePersons",
+                                                            "anon_0",
+                                                            "anon_1"
+                                                          ],
+                                                          "dbHits": 117182,
+                                                          "rows": 58589,
+                                                          "pageCacheHits": 0,
+                                                          "pageCacheMisses": 0,
+                                                          "args": {
+                                                            "Details": "anon_1:City",
+                                                            "PipelineInfo": "Fused in Pipeline 4",
+                                                            "Id": 14,
+                                                            "EstimatedRows": 1.1864184898535208,
+                                                            "DbHits": 117182,
+                                                            "Rows": 58589
+                                                          },
+                                                          "children": [
+                                                            {
+                                                              "operatorType": "Expand(All)@neo4j",
+                                                              "identifiers": [
+                                                                "nodesCloserThanMaxPathDistance",
+                                                                "nodesCloserThanMinPathDistance",
+                                                                "expertCandidatePerson",
+                                                                "expertCandidatePersons",
+                                                                "anon_0",
+                                                                "anon_1"
+                                                              ],
+                                                              "dbHits": 117178,
+                                                              "rows": 58589,
+                                                              "pageCacheHits": 0,
+                                                              "pageCacheMisses": 0,
+                                                              "args": {
+                                                                "Details": "(expertCandidatePerson)-[anon_0:IS_LOCATED_IN]->(anon_1)",
+                                                                "PipelineInfo": "Fused in Pipeline 4",
+                                                                "Id": 15,
+                                                                "EstimatedRows": 419.63538047006915,
+                                                                "DbHits": 117178,
+                                                                "Rows": 58589
+                                                              },
+                                                              "children": [
+                                                                {
+                                                                  "operatorType": "Unwind@neo4j",
+                                                                  "identifiers": [
+                                                                    "nodesCloserThanMinPathDistance",
+                                                                    "nodesCloserThanMaxPathDistance",
+                                                                    "expertCandidatePersons",
+                                                                    "expertCandidatePerson"
+                                                                  ],
+                                                                  "dbHits": 0,
+                                                                  "rows": 58589,
+                                                                  "pageCacheHits": 1015508,
+                                                                  "pageCacheMisses": 101950,
+                                                                  "args": {
+                                                                    "Details": "expertCandidatePersons AS expertCandidatePerson",
+                                                                    "PipelineInfo": "Fused in Pipeline 4",
+                                                                    "Memory": 8916228,
+                                                                    "Time": 1213167880,
+                                                                    "Id": 16,
+                                                                    "EstimatedRows": 430.4661500173768,
+                                                                    "PageCacheMisses": 101950,
+                                                                    "DbHits": 0,
+                                                                    "Rows": 58589,
+                                                                    "PageCacheHits": 1015508
+                                                                  },
+                                                                  "children": [
+                                                                    {
+                                                                      "operatorType": "Projection@neo4j",
+                                                                      "identifiers": [
+                                                                        "nodesCloserThanMinPathDistance",
+                                                                        "nodesCloserThanMaxPathDistance",
+                                                                        "expertCandidatePersons"
+                                                                      ],
+                                                                      "dbHits": 0,
+                                                                      "rows": 1,
+                                                                      "pageCacheHits": 0,
+                                                                      "pageCacheMisses": 0,
+                                                                      "args": {
+                                                                        "Details": "[n IN nodesCloserThanMaxPathDistance WHERE NOT n IN nodesCloserThanMinPathDistance] AS expertCandidatePersons",
+                                                                        "PipelineInfo": "In Pipeline 3",
+                                                                        "Memory": 98376,
+                                                                        "Time": 18982736,
+                                                                        "Id": 17,
+                                                                        "EstimatedRows": 43.04661500173768,
+                                                                        "PageCacheMisses": 0,
+                                                                        "DbHits": 0,
+                                                                        "Rows": 1,
+                                                                        "PageCacheHits": 0
+                                                                      },
+                                                                      "children": [
+                                                                        {
+                                                                          "operatorType": "EagerAggregation@neo4j",
+                                                                          "identifiers": [
+                                                                            "nodesCloserThanMinPathDistance",
+                                                                            "nodesCloserThanMaxPathDistance"
+                                                                          ],
+                                                                          "dbHits": 0,
+                                                                          "rows": 1,
+                                                                          "pageCacheHits": 0,
+                                                                          "pageCacheMisses": 0,
+                                                                          "args": {
+                                                                            "Details": "nodesCloserThanMinPathDistance, collect(DISTINCT node) AS nodesCloserThanMaxPathDistance",
+                                                                            "Memory": 5456576,
+                                                                            "PipelineInfo": "Fused in Pipeline 2",
+                                                                            "Id": 18,
+                                                                            "EstimatedRows": 43.04661500173768,
+                                                                            "DbHits": 0,
+                                                                            "Rows": 1
+                                                                          },
+                                                                          "children": [
+                                                                            {
+                                                                              "operatorType": "ProcedureCall@neo4j",
+                                                                              "identifiers": [
+                                                                                "startPerson",
+                                                                                "nodesCloserThanMinPathDistance",
+                                                                                "node"
+                                                                              ],
+                                                                              "dbHits": 0,
+                                                                              "rows": 0,
+                                                                              "pageCacheHits": 0,
+                                                                              "pageCacheMisses": 0,
+                                                                              "args": {
+                                                                                "Order": "startPerson ASC",
+                                                                                "Details": "apoc.path.subgraphNodes(startPerson, {relationshipFilter: $autostring_3, minLevel: $autoint_4, maxLevel: $maxPathDistance}) :: (node :: NODE)",
+                                                                                "PipelineInfo": "Fused in Pipeline 2",
+                                                                                "Memory": 447452,
+                                                                                "Time": 1188071857,
+                                                                                "Id": 19,
+                                                                                "EstimatedRows": 1853.0110631078273,
+                                                                                "PageCacheMisses": 41078,
+                                                                                "Rows": 65140,
+                                                                                "PageCacheHits": 97711
+                                                                              },
+                                                                              "children": [
+                                                                                {
+                                                                                  "operatorType": "OrderedAggregation@neo4j",
+                                                                                  "identifiers": [
+                                                                                    "startPerson",
+                                                                                    "nodesCloserThanMinPathDistance"
+                                                                                  ],
+                                                                                  "dbHits": 0,
+                                                                                  "rows": 1,
+                                                                                  "pageCacheHits": 0,
+                                                                                  "pageCacheMisses": 0,
+                                                                                  "args": {
+                                                                                    "Order": "startPerson ASC",
+                                                                                    "Details": "startPerson, collect(DISTINCT node) AS nodesCloserThanMinPathDistance",
+                                                                                    "PipelineInfo": "In Pipeline 1",
+                                                                                    "Memory": 932224,
+                                                                                    "Time": 3402623,
+                                                                                    "Id": 20,
+                                                                                    "EstimatedRows": 185.30110631078273,
+                                                                                    "PageCacheMisses": 0,
+                                                                                    "DbHits": 0,
+                                                                                    "Rows": 1,
+                                                                                    "PageCacheHits": 0
+                                                                                  },
+                                                                                  "children": [
+                                                                                    {
+                                                                                      "operatorType": "ProcedureCall@neo4j",
+                                                                                      "identifiers": [
+                                                                                        "startPerson",
+                                                                                        "node"
+                                                                                      ],
+                                                                                      "dbHits": 0,
+                                                                                      "rows": 0,
+                                                                                      "pageCacheHits": 0,
+                                                                                      "pageCacheMisses": 0,
+                                                                                      "args": {
+                                                                                        "Order": "startPerson ASC",
+                                                                                        "Details": "apoc.path.subgraphNodes(startPerson, {relationshipFilter: $autostring_0, minLevel: $autoint_1, maxLevel: $minPathDistance - $autoint_2}) :: (node :: NODE)",
+                                                                                        "Memory": 0,
+                                                                                        "PipelineInfo": "Fused in Pipeline 0",
+                                                                                        "Id": 21,
+                                                                                        "EstimatedRows": 34336.5,
+                                                                                        "Rows": 6551
+                                                                                      },
+                                                                                      "children": [
+                                                                                        {
+                                                                                          "operatorType": "Filter@neo4j",
+                                                                                          "identifiers": [
+                                                                                            "startPerson"
+                                                                                          ],
+                                                                                          "dbHits": 137351,
+                                                                                          "rows": 1,
+                                                                                          "pageCacheHits": 0,
+                                                                                          "pageCacheMisses": 0,
+                                                                                          "args": {
+                                                                                            "Order": "startPerson ASC",
+                                                                                            "Details": "startPerson.id = $personId",
+                                                                                            "PipelineInfo": "Fused in Pipeline 0",
+                                                                                            "Id": 22,
+                                                                                            "EstimatedRows": 3433.65,
+                                                                                            "DbHits": 137351,
+                                                                                            "Rows": 1
+                                                                                          },
+                                                                                          "children": [
+                                                                                            {
+                                                                                              "operatorType": "NodeByLabelScan@neo4j",
+                                                                                              "identifiers": [
+                                                                                                "startPerson"
+                                                                                              ],
+                                                                                              "dbHits": 68667,
+                                                                                              "rows": 68673,
+                                                                                              "pageCacheHits": 2042,
+                                                                                              "pageCacheMisses": 1167,
+                                                                                              "args": {
+                                                                                                "Order": "startPerson ASC",
+                                                                                                "Details": "startPerson:Person",
+                                                                                                "PipelineInfo": "Fused in Pipeline 0",
+                                                                                                "Memory": 376,
+                                                                                                "Time": 47802251,
+                                                                                                "Id": 23,
+                                                                                                "EstimatedRows": 68673.0,
+                                                                                                "PageCacheMisses": 1167,
+                                                                                                "DbHits": 68667,
+                                                                                                "Rows": 68673,
+                                                                                                "PageCacheHits": 2042
+                                                                                              },
+                                                                                              "children": []
+                                                                                            }
+                                                                                          ]
+                                                                                        }
+                                                                                      ]
+                                                                                    }
+                                                                                  ]
+                                                                                }
+                                                                              ]
+                                                                            }
+                                                                          ]
+                                                                        }
+                                                                      ]
+                                                                    }
+                                                                  ]
+                                                                }
+                                                              ]
+                                                            }
+                                                          ]
+                                                        }
+                                                      ]
+                                                    }
+                                                  ]
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

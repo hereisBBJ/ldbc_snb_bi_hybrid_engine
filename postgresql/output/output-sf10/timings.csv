@@ -1,0 +1,145 @@
+tool|sf|day|batch_type|q|parameters|time
+PostgreSQL|10|2012-11-29|power|q4precomputation||34.40236210823059
+PostgreSQL|10|2012-11-29|power|q6precomputation||78.52922534942627
+PostgreSQL|10|2012-11-29|power|q19precomputation||42.53535485267639
+PostgreSQL|10|2012-11-29|power|q20precomputation||2.2510013580322266
+PostgreSQL|10|2012-11-29|power|1|{"datetime": "2010-08-01T12:12:48.000+00:00"}|0.8055102825164795
+PostgreSQL|10|2012-11-29|power|1|{"datetime": "2010-06-11T09:21:46.000+00:00"}|0.5359725952148438
+PostgreSQL|10|2012-11-29|power|1|{"datetime": "2010-02-26T03:51:21.000+00:00"}|0.046135902404785156
+PostgreSQL|10|2012-11-29|power|1|{"datetime": "2010-08-04T10:58:09.000+00:00"}|0.8297817707061768
+PostgreSQL|10|2012-11-29|power|1|{"datetime": "2010-07-21T06:06:50.000+00:00"}|0.679358959197998
+PostgreSQL|10|2012-11-29|power|2a|{"date": "2010-06-08", "tagClass": "ChristianBishop"}|12.014554262161255
+PostgreSQL|10|2012-11-29|power|2a|{"date": "2010-06-11", "tagClass": "OfficeHolder"}|7.176903247833252
+PostgreSQL|10|2012-11-29|power|2a|{"date": "2010-06-06", "tagClass": "Album"}|5.874812602996826
+PostgreSQL|10|2012-11-29|power|2a|{"date": "2010-06-18", "tagClass": "Song"}|5.47626805305481
+PostgreSQL|10|2012-11-29|power|2a|{"date": "2010-06-11", "tagClass": "Person"}|5.593637228012085
+PostgreSQL|10|2012-11-29|power|2b|{"date": "2010-06-08", "tagClass": "ChristianBishop"}|6.031001567840576
+PostgreSQL|10|2012-11-29|power|2b|{"date": "2010-06-06", "tagClass": "Senator"}|7.1135687828063965
+PostgreSQL|10|2012-11-29|power|2b|{"date": "2010-06-07", "tagClass": "ComicsCharacter"}|6.831457853317261
+PostgreSQL|10|2012-11-29|power|2b|{"date": "2010-06-20", "tagClass": "Comedian"}|5.756404399871826
+PostgreSQL|10|2012-11-29|power|2b|{"date": "2010-06-20", "tagClass": "SoccerManager"}|6.893430233001709
+PostgreSQL|10|2012-11-29|power|3|{"tagClass": "Saint", "country": "India"}|4.746268033981323
+PostgreSQL|10|2012-11-29|power|3|{"tagClass": "President", "country": "India"}|4.4628753662109375
+PostgreSQL|10|2012-11-29|power|3|{"tagClass": "Song", "country": "China"}|4.528092861175537
+PostgreSQL|10|2012-11-29|power|3|{"tagClass": "Philosopher", "country": "China"}|16.473106145858765
+PostgreSQL|10|2012-11-29|power|3|{"tagClass": "Monarch", "country": "China"}|4.480807304382324
+PostgreSQL|10|2012-11-29|power|4|{"date": "2010-01-07"}|0.8533642292022705
+PostgreSQL|10|2012-11-29|power|4|{"date": "2010-01-10"}|0.8264741897583008
+PostgreSQL|10|2012-11-29|power|4|{"date": "2010-01-26"}|0.7558512687683105
+PostgreSQL|10|2012-11-29|power|4|{"date": "2010-01-11"}|0.8579702377319336
+PostgreSQL|10|2012-11-29|power|4|{"date": "2010-02-06"}|0.7904407978057861
+PostgreSQL|10|2012-11-29|power|5|{"tag": "Republic_of_New_Granada"}|8.973005294799805
+PostgreSQL|10|2012-11-29|power|5|{"tag": "All_by_Myself"}|10.75113582611084
+PostgreSQL|10|2012-11-29|power|5|{"tag": "Rivers_of_Babylon"}|10.710694551467896
+PostgreSQL|10|2012-11-29|power|5|{"tag": "Sikh_Empire"}|8.482133626937866
+PostgreSQL|10|2012-11-29|power|5|{"tag": "Hot_n_Cold"}|8.919123649597168
+PostgreSQL|10|2012-11-29|power|6|{"tag": "Lee_Hyung-taik"}|2.4275243282318115
+PostgreSQL|10|2012-11-29|power|6|{"tag": "Get_Back"}|2.235738754272461
+PostgreSQL|10|2012-11-29|power|6|{"tag": "German_colonial_empire"}|2.4546666145324707
+PostgreSQL|10|2012-11-29|power|6|{"tag": "French_Union"}|2.4497742652893066
+PostgreSQL|10|2012-11-29|power|6|{"tag": "Hohenzollern-Sigmaringen"}|2.4518890380859375
+PostgreSQL|10|2012-11-29|power|7|{"tag": "Jacques_Chirac"}|0.5233330726623535
+PostgreSQL|10|2012-11-29|power|7|{"tag": "Slovenia"}|0.48489928245544434
+PostgreSQL|10|2012-11-29|power|7|{"tag": "Bulgaria"}|0.5428116321563721
+PostgreSQL|10|2012-11-29|power|7|{"tag": "W._B._Yeats"}|0.49013471603393555
+PostgreSQL|10|2012-11-29|power|7|{"tag": "Nicolas_Sarkozy"}|0.5454342365264893
+PostgreSQL|10|2012-11-29|power|8a|{"tag": "Claude_Monet", "startDate": "2010-06-10", "endDate": "2010-06-22"}|0.273360013961792
+PostgreSQL|10|2012-11-29|power|8a|{"tag": "Dominican_Republic", "startDate": "2010-06-08", "endDate": "2010-06-21"}|0.2272791862487793
+PostgreSQL|10|2012-11-29|power|8a|{"tag": "Christopher_Lee", "startDate": "2010-06-16", "endDate": "2010-06-30"}|0.26050877571105957
+PostgreSQL|10|2012-11-29|power|8a|{"tag": "Argentina", "startDate": "2010-06-16", "endDate": "2010-06-30"}|0.28520703315734863
+PostgreSQL|10|2012-11-29|power|8a|{"tag": "Claude_Monet", "startDate": "2010-06-08", "endDate": "2010-06-21"}|0.26926255226135254
+PostgreSQL|10|2012-11-29|power|8b|{"tag": "1,039/Smoothed_Out_Slappy_Hours", "startDate": "2010-06-24", "endDate": "2010-07-04"}|0.0050241947174072266
+PostgreSQL|10|2012-11-29|power|8b|{"tag": "...And_Out_Come_the_Wolves", "startDate": "2010-06-15", "endDate": "2010-06-27"}|0.005722999572753906
+PostgreSQL|10|2012-11-29|power|8b|{"tag": "...All_This_Time", "startDate": "2010-06-22", "endDate": "2010-07-03"}|0.0054683685302734375
+PostgreSQL|10|2012-11-29|power|8b|{"tag": "1,039/Smoothed_Out_Slappy_Hours", "startDate": "2010-06-16", "endDate": "2010-06-30"}|0.005645275115966797
+PostgreSQL|10|2012-11-29|power|8b|{"tag": "...From_the_Hungry_i", "startDate": "2010-06-23", "endDate": "2010-07-06"}|0.00392603874206543
+PostgreSQL|10|2012-11-29|power|9|{"startDate": "2012-08-29", "endDate": "2012-11-24"}|18.35473084449768
+PostgreSQL|10|2012-11-29|power|9|{"startDate": "2012-09-04", "endDate": "2012-12-03"}|15.487780332565308
+PostgreSQL|10|2012-11-29|power|9|{"startDate": "2012-09-03", "endDate": "2012-12-09"}|17.761876106262207
+PostgreSQL|10|2012-11-29|power|9|{"startDate": "2012-09-02", "endDate": "2012-11-27"}|16.993757963180542
+PostgreSQL|10|2012-11-29|power|9|{"startDate": "2012-09-02", "endDate": "2012-12-07"}|17.92091655731201
+PostgreSQL|10|2012-11-29|power|10a|{"personId": "2199023302404", "country": "France", "tagClass": "Saint", "minPathDistance": "3", "maxPathDistance": "4"}|17.729079723358154
+PostgreSQL|10|2012-11-29|power|10a|{"personId": "2199023302404", "country": "Cuba", "tagClass": "ComicsCreator", "minPathDistance": "3", "maxPathDistance": "4"}|18.69848895072937
+PostgreSQL|10|2012-11-29|power|10a|{"personId": "2199023263376", "country": "Taiwan", "tagClass": "FormulaOneRacer", "minPathDistance": "3", "maxPathDistance": "4"}|15.611189365386963
+PostgreSQL|10|2012-11-29|power|10a|{"personId": "2199023293139", "country": "Belgium", "tagClass": "PrimeMinister", "minPathDistance": "3", "maxPathDistance": "4"}|23.015663385391235
+PostgreSQL|10|2012-11-29|power|10a|{"personId": "2199023302456", "country": "Turkey", "tagClass": "NascarDriver", "minPathDistance": "3", "maxPathDistance": "4"}|22.433451175689697
+PostgreSQL|10|2012-11-29|power|10b|{"personId": "3777", "country": "Estonia", "tagClass": "Company", "minPathDistance": "3", "maxPathDistance": "4"}|0.7174763679504395
+PostgreSQL|10|2012-11-29|power|10b|{"personId": "31198", "country": "Lithuania", "tagClass": "MartialArtist", "minPathDistance": "3", "maxPathDistance": "4"}|4.134087085723877
+PostgreSQL|10|2012-11-29|power|10b|{"personId": "38277", "country": "Estonia", "tagClass": "SnookerChamp", "minPathDistance": "3", "maxPathDistance": "4"}|4.834794282913208
+PostgreSQL|10|2012-11-29|power|10b|{"personId": "10315", "country": "Norway", "tagClass": "SnookerPlayer", "minPathDistance": "3", "maxPathDistance": "4"}|5.556603670120239
+PostgreSQL|10|2012-11-29|power|10b|{"personId": "36774", "country": "Honduras", "tagClass": "Model", "minPathDistance": "3", "maxPathDistance": "4"}|1.6031439304351807
+PostgreSQL|10|2012-11-29|power|11|{"country": "India", "startDate": "2012-09-28", "endDate": "2013-01-10"}|2.4075636863708496
+PostgreSQL|10|2012-11-29|power|11|{"country": "China", "startDate": "2012-09-30", "endDate": "2012-12-31"}|2.0298190116882324
+PostgreSQL|10|2012-11-29|power|11|{"country": "India", "startDate": "2012-10-04", "endDate": "2013-01-16"}|2.2130322456359863
+PostgreSQL|10|2012-11-29|power|11|{"country": "China", "startDate": "2012-10-12", "endDate": "2013-01-12"}|1.6192729473114014
+PostgreSQL|10|2012-11-29|power|11|{"country": "China", "startDate": "2012-10-14", "endDate": "2013-01-14"}|1.57535719871521
+PostgreSQL|10|2012-11-29|power|12|{"startDate": "2012-06-05", "lengthThreshold": "115", "languages": "es;pt;zh"}|2.326108694076538
+PostgreSQL|10|2012-11-29|power|12|{"startDate": "2012-06-05", "lengthThreshold": "115", "languages": "zh;ru;fr"}|2.3132259845733643
+PostgreSQL|10|2012-11-29|power|12|{"startDate": "2012-06-05", "lengthThreshold": "115", "languages": "ru;de;ja"}|2.095784902572632
+PostgreSQL|10|2012-11-29|power|12|{"startDate": "2012-06-05", "lengthThreshold": "115", "languages": "ur;de;ja"}|2.5437328815460205
+PostgreSQL|10|2012-11-29|power|12|{"startDate": "2012-06-29", "lengthThreshold": "75", "languages": "es;pt;zh"}|2.4025328159332275
+PostgreSQL|10|2012-11-29|power|13|{"country": "India", "endDate": "2012-11-09"}|27.710114002227783
+PostgreSQL|10|2012-11-29|power|13|{"country": "India", "endDate": "2012-11-03"}|27.39771795272827
+PostgreSQL|10|2012-11-29|power|13|{"country": "China", "endDate": "2012-11-10"}|26.99903178215027
+PostgreSQL|10|2012-11-29|power|13|{"country": "China", "endDate": "2012-10-25"}|31.09450674057007
+PostgreSQL|10|2012-11-29|power|13|{"country": "India", "endDate": "2012-11-05"}|27.25434637069702
+PostgreSQL|10|2012-11-29|power|14a|{"country1": "India", "country2": "Chile"}|22.752862453460693
+PostgreSQL|10|2012-11-29|power|14a|{"country1": "Germany", "country2": "Japan"}|15.535089015960693
+PostgreSQL|10|2012-11-29|power|14a|{"country1": "China", "country2": "Spain"}|22.1914963722229
+PostgreSQL|10|2012-11-29|power|14a|{"country1": "India", "country2": "Italy"}|17.73605489730835
+PostgreSQL|10|2012-11-29|power|14a|{"country1": "India", "country2": "South_Korea"}|18.214966297149658
+PostgreSQL|10|2012-11-29|power|14b|{"country1": "Angola", "country2": "Slovakia"}|0.7624542713165283
+PostgreSQL|10|2012-11-29|power|14b|{"country1": "Angola", "country2": "New_Zealand"}|0.768608808517456
+PostgreSQL|10|2012-11-29|power|14b|{"country1": "Bolivia", "country2": "New_Zealand"}|0.7779703140258789
+PostgreSQL|10|2012-11-29|power|14b|{"country1": "Bolivia", "country2": "Hong_Kong"}|0.7853102684020996
+PostgreSQL|10|2012-11-29|power|14b|{"country1": "Azerbaijan", "country2": "Libya"}|0.7712826728820801
+PostgreSQL|10|2012-11-29|power|15a|{"person1Id": "37383395347825", "person2Id": "10995116283851", "startDate": "2012-11-05", "endDate": "2012-11-07"}|5.616397857666016
+PostgreSQL|10|2012-11-29|power|15a|{"person1Id": "21990232625893", "person2Id": "21990232614337", "startDate": "2012-11-07", "endDate": "2012-11-08"}|8.832013368606567
+PostgreSQL|10|2012-11-29|power|15a|{"person1Id": "4398046511384", "person2Id": "6597069829596", "startDate": "2012-11-06", "endDate": "2012-11-08"}|9.276775121688843
+PostgreSQL|10|2012-11-29|power|15a|{"person1Id": "4398046557938", "person2Id": "35184372125262", "startDate": "2012-11-02", "endDate": "2012-11-10"}|7.034085035324097
+PostgreSQL|10|2012-11-29|power|15a|{"person1Id": "28587302368479", "person2Id": "30786325606892", "startDate": "2012-11-06", "endDate": "2012-11-09"}|10.085460424423218
+PostgreSQL|10|2012-11-29|power|15b|{"person1Id": "15393162808658", "person2Id": "28587302357897", "startDate": "2010-04-11", "endDate": "2010-05-03"}|28.522558212280273
+PostgreSQL|10|2012-11-29|power|15b|{"person1Id": "10995116295065", "person2Id": "10835", "startDate": "2010-04-14", "endDate": "2010-05-06"}|12.937530517578125
+PostgreSQL|10|2012-11-29|power|15b|{"person1Id": "35184372139371", "person2Id": "53965", "startDate": "2010-04-12", "endDate": "2010-05-04"}|14.9946129322052
+PostgreSQL|10|2012-11-29|power|15b|{"person1Id": "10995116295065", "person2Id": "24189255847211", "startDate": "2010-04-14", "endDate": "2010-05-06"}|28.86061692237854
+PostgreSQL|10|2012-11-29|power|15b|{"person1Id": "26388279130569", "person2Id": "32985348882673", "startDate": "2010-04-15", "endDate": "2010-05-07"}|30.136162519454956
+PostgreSQL|10|2012-11-29|power|16a|{"tagA": "Diosdado_Macapagal", "dateA": "2012-10-08", "tagB": "Thailand", "dateB": "2012-02-21", "maxKnowsLimit": "5"}|0.8695533275604248
+PostgreSQL|10|2012-11-29|power|16a|{"tagA": "Bobby_Hull", "dateA": "2012-06-21", "tagB": "Franz_Joseph_I_of_Austria", "dateB": "2012-11-10", "maxKnowsLimit": "3"}|1.0921440124511719
+PostgreSQL|10|2012-11-29|power|16a|{"tagA": "Bobby_Hull", "dateA": "2012-06-22", "tagB": "Franz_Joseph_I_of_Austria", "dateB": "2012-11-10", "maxKnowsLimit": "4"}|1.0012125968933105
+PostgreSQL|10|2012-11-29|power|16a|{"tagA": "Robert_Fripp", "dateA": "2011-02-15", "tagB": "Mary_J._Blige", "dateB": "2012-12-31", "maxKnowsLimit": "3"}|1.4299163818359375
+PostgreSQL|10|2012-11-29|power|16a|{"tagA": "Robert_Fripp", "dateA": "2011-02-16", "tagB": "Mary_J._Blige", "dateB": "2012-12-31", "maxKnowsLimit": "4"}|1.064502477645874
+PostgreSQL|10|2012-11-29|power|16b|{"tagA": "Jeff_Kennett", "dateA": "2012-12-31", "tagB": "Ralph_Bakshi", "dateB": "2011-02-12", "maxKnowsLimit": "4"}|0.002957582473754883
+PostgreSQL|10|2012-11-29|power|16b|{"tagA": "Alex_Shelley", "dateA": "2011-12-01", "tagB": "Republic_of_New_Granada", "dateB": "2010-04-29", "maxKnowsLimit": "5"}|0.014916658401489258
+PostgreSQL|10|2012-11-29|power|16b|{"tagA": "Big_Poppa", "dateA": "2012-12-06", "tagB": "East_Germany", "dateB": "2010-05-24", "maxKnowsLimit": "4"}|0.005827665328979492
+PostgreSQL|10|2012-11-29|power|16b|{"tagA": "Gin_and_Juice", "dateA": "2012-12-06", "tagB": "Slovenia", "dateB": "2010-01-30", "maxKnowsLimit": "6"}|0.008921623229980469
+PostgreSQL|10|2012-11-29|power|16b|{"tagA": "J.E._Heartbreak", "dateA": "2012-12-25", "tagB": "Right_on_the_Money", "dateB": "2011-05-10", "maxKnowsLimit": "5"}|0.0060291290283203125
+PostgreSQL|10|2012-11-29|power|17|{"tag": "The_Best_of_David_Bowie_1969/1974", "delta": "15"}|18.78085422515869
+PostgreSQL|10|2012-11-29|power|17|{"tag": "Gold_Cobra", "delta": "8"}|18.74955725669861
+PostgreSQL|10|2012-11-29|power|17|{"tag": "Apagorevmeno", "delta": "9"}|18.60774540901184
+PostgreSQL|10|2012-11-29|power|17|{"tag": "Cosmic_Egg", "delta": "12"}|18.72687077522278
+PostgreSQL|10|2012-11-29|power|17|{"tag": "Untitled_Korn_album", "delta": "16"}|18.213216066360474
+PostgreSQL|10|2012-11-29|power|18|{"tag": "Franz_Kafka"}|2.2131118774414062
+PostgreSQL|10|2012-11-29|power|18|{"tag": "Roger_Federer"}|2.3943073749542236
+PostgreSQL|10|2012-11-29|power|18|{"tag": "Charles,_Prince_of_Wales"}|2.2084081172943115
+PostgreSQL|10|2012-11-29|power|18|{"tag": "Andrew_Jackson"}|2.302832841873169
+PostgreSQL|10|2012-11-29|power|18|{"tag": "Pyotr_Ilyich_Tchaikovsky"}|2.4158430099487305
+PostgreSQL|10|2012-11-29|power|19a|{"city1Id": "702", "city2Id": "967"}|0.7266221046447754
+PostgreSQL|10|2012-11-29|power|19a|{"city1Id": "116", "city2Id": "662"}|0.7408514022827148
+PostgreSQL|10|2012-11-29|power|19a|{"city1Id": "807", "city2Id": "1447"}|0.7418954372406006
+PostgreSQL|10|2012-11-29|power|19a|{"city1Id": "317", "city2Id": "1382"}|0.71773362159729
+PostgreSQL|10|2012-11-29|power|19a|{"city1Id": "455", "city2Id": "1268"}|0.7331638336181641
+PostgreSQL|10|2012-11-29|power|19b|{"city1Id": "129", "city2Id": "265"}|0.7076127529144287
+PostgreSQL|10|2012-11-29|power|19b|{"city1Id": "372", "city2Id": "482"}|0.7268505096435547
+PostgreSQL|10|2012-11-29|power|19b|{"city1Id": "921", "city2Id": "934"}|0.7264888286590576
+PostgreSQL|10|2012-11-29|power|19b|{"city1Id": "282", "city2Id": "295"}|0.7165913581848145
+PostgreSQL|10|2012-11-29|power|19b|{"city1Id": "179", "city2Id": "252"}|0.7267038822174072
+PostgreSQL|10|2012-11-29|power|20a|{"company": "Air_Arabia_Maroc", "person2Id": "15393162811012"}|0.07057785987854004
+PostgreSQL|10|2012-11-29|power|20a|{"company": "Atlas_Blue", "person2Id": "13194139598590"}|0.07341337203979492
+PostgreSQL|10|2012-11-29|power|20a|{"company": "Tassili_Airlines", "person2Id": "6597069790129"}|0.06387853622436523
+PostgreSQL|10|2012-11-29|power|20a|{"company": "Tunisavia", "person2Id": "32985348886712"}|0.06633281707763672
+PostgreSQL|10|2012-11-29|power|20a|{"company": "Air_Arabia_Maroc", "person2Id": "30786325589718"}|0.0722801685333252
+PostgreSQL|10|2012-11-29|power|20b|{"company": "Alrosa_Mirny_Air_Enterprise", "person2Id": "2199023279951"}|0.07976913452148438
+PostgreSQL|10|2012-11-29|power|20b|{"company": "Interavia_Airlines", "person2Id": "24189255875550"}|0.07136344909667969
+PostgreSQL|10|2012-11-29|power|20b|{"company": "Medavia", "person2Id": "28587302374939"}|0.07354521751403809
+PostgreSQL|10|2012-11-29|power|20b|{"company": "Hageland_Aviation_Services", "person2Id": "24189255856536"}|0.06781291961669922
+PostgreSQL|10|2012-11-29|power|20b|{"company": "Arctic_Circle_Air", "person2Id": "24189255856536"}|0.07157588005065918

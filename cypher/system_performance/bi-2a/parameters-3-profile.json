@@ -1,0 +1,269 @@
+{
+  "operatorType": "ProduceResults@neo4j",
+  "identifiers": [
+    "tag",
+    "countWindow2",
+    "diff",
+    "countWindow1",
+    "`tag.name`"
+  ],
+  "dbHits": 0,
+  "rows": 100,
+  "pageCacheHits": 0,
+  "pageCacheMisses": 0,
+  "args": {
+    "Order": "diff DESC, `tag.name` ASC",
+    "GlobalMemory": 1487776,
+    "planner-impl": "IDP",
+    "string-representation": "Planner COST\n\nRuntime SLOTTED\n\nRuntime version 5.9\n\n+----------------------+----+------------------------------------------------------------------------------------------------------+----------------+-------+----------+----------------+------------------------+---------------------------+\n| Operator             | Id | Details                                                                                              | Estimated Rows | Rows  | DB Hits  | Memory (Bytes) | Page Cache Hits/Misses | Ordered by                |\n+----------------------+----+------------------------------------------------------------------------------------------------------+----------------+-------+----------+----------------+------------------------+---------------------------+\n| +ProduceResults      |  0 | `tag.name`, countWindow1, countWindow2, diff                                                         |            100 |   100 |        0 |                |                    0/0 |                           |\n| |                    +----+------------------------------------------------------------------------------------------------------+----------------+-------+----------+----------------+------------------------+                           |\n| +Top                 |  1 | diff DESC, `tag.name` ASC LIMIT 100                                                                  |            100 |   100 |        0 |          23736 |                    0/0 | diff DESC, `tag.name` ASC |\n| |                    +----+------------------------------------------------------------------------------------------------------+----------------+-------+----------+----------------+------------------------+---------------------------+\n| +Projection          |  2 | abs(countWindow1 - countWindow2) AS diff, tag.name AS `tag.name`                                     |            547 |  5061 |     5061 |                |                    0/0 |                           |\n| |                    +----+------------------------------------------------------------------------------------------------------+----------------+-------+----------+----------------+------------------------+---------------------------+\n| +EagerAggregation    |  3 | tag, countWindow1, count(message2) AS countWindow2                                                   |            547 |  5061 |        0 |         935992 |                    0/0 |                           |\n| |                    +----+------------------------------------------------------------------------------------------------------+----------------+-------+----------+----------------+------------------------+---------------------------+\n| +OptionalExpand(All) |  4 | (tag)<-[anon_3:HAS_TAG]-(message2) WHERE message2:Message AND cache[message2.creationDate] >= $date  |         299713 | 80764 | 10084103 |                |                    0/0 |                           |\n| |                    |    | + RuntimeConstant(Variable(anon_7),ResolvedFunctionInvocation(duration,Some(duration(input :: ANY?)  |                |       |          |                |                        |                           |\n| |                    |    | :: DURATION?),Vector(MapExpression(Vector((PropertyKeyName(days),AutoExtractedParameter(autoint_1,An |                |       |          |                |                        |                           |\n| |                    |    | y,UnknownSize))))))) AND cache[message2.creationDate] < $date + RuntimeConstant(Variable(anon_8),Res |                |       |          |                |                        |                           |\n| |                    |    | olvedFunctionInvocation(duration,Some(duration(input :: ANY?) :: DURATION?),Vector(MapExpression(Vec |                |       |          |                |                        |                           |\n| |                    |    | tor((PropertyKeyName(days),AutoExtractedParameter(autoint_2,Any,UnknownSize)))))))                   |                |       |          |                |                        |                           |\n| |                    +----+------------------------------------------------------------------------------------------------------+----------------+-------+----------+----------------+------------------------+---------------------------+\n| +EagerAggregation    |  5 | tag, count(message1) AS countWindow1                                                                 |            622 |  5061 |        0 |         642736 |                    0/0 |                           |\n| |                    +----+------------------------------------------------------------------------------------------------------+----------------+-------+----------+----------------+------------------------+---------------------------+\n| +OptionalExpand(All) |  6 | (tag)<-[anon_2:HAS_TAG]-(message1) WHERE message1:Message AND cache[message1.creationDate] >= $date  |         387235 | 40790 | 10084102 |                |                    0/0 |                           |\n| |                    |    | AND cache[message1.creationDate] < $date + RuntimeConstant(Variable(anon_6),ResolvedFunctionInvocati |                |       |          |                |                        |                           |\n| |                    |    | on(duration,Some(duration(input :: ANY?) :: DURATION?),Vector(MapExpression(Vector((PropertyKeyName( |                |       |          |                |                        |                           |\n| |                    |    | days),AutoExtractedParameter(autoint_0,Any,UnknownSize)))))))                                        |                |       |          |                |                        |                           |\n| |                    +----+------------------------------------------------------------------------------------------------------+----------------+-------+----------+----------------+------------------------+---------------------------+\n| +Filter              |  7 | tag:Tag                                                                                              |            804 |  5061 |     5061 |                |                    0/0 |                           |\n| |                    +----+------------------------------------------------------------------------------------------------------+----------------+-------+----------+----------------+------------------------+---------------------------+\n| +Expand(All)         |  8 | (anon_1)<-[anon_0:HAS_TYPE]-(tag)                                                                    |            804 |  5061 |     5064 |                |                    0/0 |                           |\n| |                    +----+------------------------------------------------------------------------------------------------------+----------------+-------+----------+----------------+------------------------+---------------------------+\n| +Filter              |  9 | anon_1.name = $tagClass                                                                              |              4 |     1 |       71 |                |                    0/0 |                           |\n| |                    +----+------------------------------------------------------------------------------------------------------+----------------+-------+----------+----------------+------------------------+---------------------------+\n| +NodeByLabelScan     | 10 | anon_1:TagClass                                                                                      |             71 |    71 |       72 |                |                    0/0 |                           |\n+----------------------+----+------------------------------------------------------------------------------------------------------+----------------+-------+----------+----------------+------------------------+---------------------------+\n\nTotal database accesses: 20183534, total allocated memory: 1487776\n",
+    "runtime": "SLOTTED",
+    "runtime-impl": "SLOTTED",
+    "DbHits": 0,
+    "Details": "`tag.name`, countWindow1, countWindow2, diff",
+    "planner-version": "5.9",
+    "runtime-version": "5.9",
+    "Id": 0,
+    "PageCacheMisses": 0,
+    "EstimatedRows": 100.0,
+    "planner": "COST",
+    "Rows": 100,
+    "PageCacheHits": 0
+  },
+  "children": [
+    {
+      "operatorType": "Top@neo4j",
+      "identifiers": [
+        "tag",
+        "countWindow2",
+        "diff",
+        "countWindow1",
+        "`tag.name`"
+      ],
+      "dbHits": 0,
+      "rows": 100,
+      "pageCacheHits": 0,
+      "pageCacheMisses": 0,
+      "args": {
+        "Order": "diff DESC, `tag.name` ASC",
+        "Details": "diff DESC, `tag.name` ASC LIMIT 100",
+        "Memory": 23736,
+        "Id": 1,
+        "EstimatedRows": 100.0,
+        "PageCacheMisses": 0,
+        "DbHits": 0,
+        "Rows": 100,
+        "PageCacheHits": 0
+      },
+      "children": [
+        {
+          "operatorType": "Projection@neo4j",
+          "identifiers": [
+            "tag",
+            "countWindow2",
+            "diff",
+            "countWindow1",
+            "`tag.name`"
+          ],
+          "dbHits": 5061,
+          "rows": 5061,
+          "pageCacheHits": 0,
+          "pageCacheMisses": 0,
+          "args": {
+            "Details": "abs(countWindow1 - countWindow2) AS diff, tag.name AS `tag.name`",
+            "Id": 2,
+            "PageCacheMisses": 0,
+            "EstimatedRows": 547.4606617073566,
+            "DbHits": 5061,
+            "Rows": 5061,
+            "PageCacheHits": 0
+          },
+          "children": [
+            {
+              "operatorType": "EagerAggregation@neo4j",
+              "identifiers": [
+                "tag",
+                "countWindow1",
+                "countWindow2"
+              ],
+              "dbHits": 0,
+              "rows": 5061,
+              "pageCacheHits": 0,
+              "pageCacheMisses": 0,
+              "args": {
+                "Details": "tag, countWindow1, count(message2) AS countWindow2",
+                "Memory": 935992,
+                "Id": 3,
+                "EstimatedRows": 547.4606617073566,
+                "PageCacheMisses": 0,
+                "DbHits": 0,
+                "Rows": 5061,
+                "PageCacheHits": 0
+              },
+              "children": [
+                {
+                  "operatorType": "OptionalExpand(All)@neo4j",
+                  "identifiers": [
+                    "tag",
+                    "countWindow1",
+                    "anon_3",
+                    "message2"
+                  ],
+                  "dbHits": 10084103,
+                  "rows": 80764,
+                  "pageCacheHits": 0,
+                  "pageCacheMisses": 0,
+                  "args": {
+                    "Details": "(tag)<-[anon_3:HAS_TAG]-(message2) WHERE message2:Message AND cache[message2.creationDate] >= $date + RuntimeConstant(Variable(anon_7),ResolvedFunctionInvocation(duration,Some(duration(input :: ANY?) :: DURATION?),Vector(MapExpression(Vector((PropertyKeyName(days),AutoExtractedParameter(autoint_1,Any,UnknownSize))))))) AND cache[message2.creationDate] < $date + RuntimeConstant(Variable(anon_8),ResolvedFunctionInvocation(duration,Some(duration(input :: ANY?) :: DURATION?),Vector(MapExpression(Vector((PropertyKeyName(days),AutoExtractedParameter(autoint_2,Any,UnknownSize)))))))",
+                    "Id": 4,
+                    "PageCacheMisses": 0,
+                    "EstimatedRows": 299713.1761170568,
+                    "DbHits": 10084103,
+                    "Rows": 80764,
+                    "PageCacheHits": 0
+                  },
+                  "children": [
+                    {
+                      "operatorType": "EagerAggregation@neo4j",
+                      "identifiers": [
+                        "tag",
+                        "countWindow1"
+                      ],
+                      "dbHits": 0,
+                      "rows": 5061,
+                      "pageCacheHits": 0,
+                      "pageCacheMisses": 0,
+                      "args": {
+                        "Details": "tag, count(message1) AS countWindow1",
+                        "Memory": 642736,
+                        "Id": 5,
+                        "EstimatedRows": 622.2820803301346,
+                        "PageCacheMisses": 0,
+                        "DbHits": 0,
+                        "Rows": 5061,
+                        "PageCacheHits": 0
+                      },
+                      "children": [
+                        {
+                          "operatorType": "OptionalExpand(All)@neo4j",
+                          "identifiers": [
+                            "anon_2",
+                            "tag",
+                            "message1",
+                            "anon_0",
+                            "anon_1"
+                          ],
+                          "dbHits": 10084102,
+                          "rows": 40790,
+                          "pageCacheHits": 0,
+                          "pageCacheMisses": 0,
+                          "args": {
+                            "Details": "(tag)<-[anon_2:HAS_TAG]-(message1) WHERE message1:Message AND cache[message1.creationDate] >= $date AND cache[message1.creationDate] < $date + RuntimeConstant(Variable(anon_6),ResolvedFunctionInvocation(duration,Some(duration(input :: ANY?) :: DURATION?),Vector(MapExpression(Vector((PropertyKeyName(days),AutoExtractedParameter(autoint_0,Any,UnknownSize)))))))",
+                            "Id": 6,
+                            "PageCacheMisses": 0,
+                            "EstimatedRows": 387234.98750000005,
+                            "DbHits": 10084102,
+                            "Rows": 40790,
+                            "PageCacheHits": 0
+                          },
+                          "children": [
+                            {
+                              "operatorType": "Filter@neo4j",
+                              "identifiers": [
+                                "anon_1",
+                                "anon_0",
+                                "tag"
+                              ],
+                              "dbHits": 5061,
+                              "rows": 5061,
+                              "pageCacheHits": 0,
+                              "pageCacheMisses": 0,
+                              "args": {
+                                "Details": "tag:Tag",
+                                "Id": 7,
+                                "PageCacheMisses": 0,
+                                "EstimatedRows": 804.0,
+                                "DbHits": 5061,
+                                "Rows": 5061,
+                                "PageCacheHits": 0
+                              },
+                              "children": [
+                                {
+                                  "operatorType": "Expand(All)@neo4j",
+                                  "identifiers": [
+                                    "anon_1",
+                                    "anon_0",
+                                    "tag"
+                                  ],
+                                  "dbHits": 5064,
+                                  "rows": 5061,
+                                  "pageCacheHits": 0,
+                                  "pageCacheMisses": 0,
+                                  "args": {
+                                    "Details": "(anon_1)<-[anon_0:HAS_TYPE]-(tag)",
+                                    "Id": 8,
+                                    "PageCacheMisses": 0,
+                                    "EstimatedRows": 804.0000000000001,
+                                    "DbHits": 5064,
+                                    "Rows": 5061,
+                                    "PageCacheHits": 0
+                                  },
+                                  "children": [
+                                    {
+                                      "operatorType": "Filter@neo4j",
+                                      "identifiers": [
+                                        "anon_1"
+                                      ],
+                                      "dbHits": 71,
+                                      "rows": 1,
+                                      "pageCacheHits": 0,
+                                      "pageCacheMisses": 0,
+                                      "args": {
+                                        "Details": "anon_1.name = $tagClass",
+                                        "Id": 9,
+                                        "PageCacheMisses": 0,
+                                        "EstimatedRows": 3.5500000000000003,
+                                        "DbHits": 71,
+                                        "Rows": 1,
+                                        "PageCacheHits": 0
+                                      },
+                                      "children": [
+                                        {
+                                          "operatorType": "NodeByLabelScan@neo4j",
+                                          "identifiers": [
+                                            "anon_1"
+                                          ],
+                                          "dbHits": 72,
+                                          "rows": 71,
+                                          "pageCacheHits": 0,
+                                          "pageCacheMisses": 0,
+                                          "args": {
+                                            "Details": "anon_1:TagClass",
+                                            "Id": 10,
+                                            "PageCacheMisses": 0,
+                                            "EstimatedRows": 71.0,
+                                            "DbHits": 72,
+                                            "Rows": 71,
+                                            "PageCacheHits": 0
+                                          },
+                                          "children": []
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

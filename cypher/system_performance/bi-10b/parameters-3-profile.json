@@ -1,0 +1,639 @@
+{
+  "operatorType": "ProduceResults@neo4j",
+  "identifiers": [
+    "`expertCandidatePerson.id`",
+    "`tag.name`",
+    "messageCount"
+  ],
+  "dbHits": 0,
+  "rows": 0,
+  "pageCacheHits": 0,
+  "pageCacheMisses": 0,
+  "args": {
+    "Order": "messageCount DESC, `tag.name` ASC, `expertCandidatePerson.id` ASC",
+    "GlobalMemory": 9270152,
+    "planner-impl": "IDP",
+    "string-representation": "Planner COST\n\nRuntime SLOTTED\n\nRuntime version 5.9\n\n+---------------------+----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-------------------------------------------------------------------+\n| Operator            | Id | Details                                                                                              | Estimated Rows | Rows  | DB Hits | Memory (Bytes) | Page Cache Hits/Misses | Ordered by                                                        |\n+---------------------+----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-------------------------------------------------------------------+\n| +ProduceResults     |  0 | `expertCandidatePerson.id`, `tag.name`, messageCount                                                 |              0 |     0 |       0 |                |                    0/0 |                                                                   |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+                                                                   |\n| +Top                |  1 | messageCount DESC, `tag.name` ASC, `expertCandidatePerson.id` ASC LIMIT 100                          |              0 |     0 |       0 |                |                    0/0 | messageCount DESC, `tag.name` ASC, `expertCandidatePerson.id` ASC |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-------------------------------------------------------------------+\n| +EagerAggregation   |  2 | cache[expertCandidatePerson.id] AS `expertCandidatePerson.id`, tag.name AS `tag.name`, count(DISTINC |              0 |     0 |       0 |            432 |                    0/0 |                                                                   |\n| |                   |    | T message) AS messageCount                                                                           |                |       |         |                |                        |                                                                   |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-------------------------------------------------------------------+\n| +Filter             |  3 | tag:Tag                                                                                              |              0 |     0 |       0 |                |                    0/0 |                                                                   |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-------------------------------------------------------------------+\n| +Expand(All)        |  4 | (message)-[anon_9:HAS_TAG]->(tag)                                                                    |              0 |     0 |       0 |                |                    0/0 |                                                                   |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-------------------------------------------------------------------+\n| +CacheProperties    |  5 | cache[expertCandidatePerson.id]                                                                      |              0 |     0 |       0 |                |                    0/0 |                                                                   |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-------------------------------------------------------------------+\n| +Filter             |  6 | anon_8:TagClass AND anon_8.name = $tagClass                                                          |              0 |     0 |   35112 |                |                    0/0 |                                                                   |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-------------------------------------------------------------------+\n| +Expand(All)        |  7 | (anon_6)-[anon_7:HAS_TYPE]->(anon_8)                                                                 |              0 | 17556 |   87460 |                |                    0/0 |                                                                   |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-------------------------------------------------------------------+\n| +Filter             |  8 | anon_6:Tag                                                                                           |              0 | 17556 |   17556 |                |                    0/0 |                                                                   |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-------------------------------------------------------------------+\n| +Expand(All)        |  9 | (message)-[anon_5:HAS_TAG]->(anon_6)                                                                 |              0 | 17556 |  100893 |                |                    0/0 |                                                                   |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-------------------------------------------------------------------+\n| +Filter             | 10 | message:Message                                                                                      |              0 | 17500 |   17500 |                |                    0/0 |                                                                   |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-------------------------------------------------------------------+\n| +Expand(All)        | 11 | (expertCandidatePerson)<-[anon_4:HAS_CREATOR]-(message)                                              |              0 | 17500 |   17975 |                |                    0/0 |                                                                   |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-------------------------------------------------------------------+\n| +Filter             | 12 | anon_3:Country AND anon_3.name = $country                                                            |              0 |    49 |  128158 |                |                    0/0 |                                                                   |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-------------------------------------------------------------------+\n| +Expand(All)        | 13 | (anon_1)-[anon_2:IS_PART_OF]->(anon_3)                                                               |              1 | 64079 |  804942 |                |                    0/0 |                                                                   |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-------------------------------------------------------------------+\n| +Filter             | 14 | anon_1:City                                                                                          |              1 | 64079 |   64079 |                |                    0/0 |                                                                   |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-------------------------------------------------------------------+\n| +Expand(All)        | 15 | (expertCandidatePerson)-[anon_0:IS_LOCATED_IN]->(anon_1)                                             |            420 | 64079 |  693116 |                |                    0/0 |                                                                   |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-------------------------------------------------------------------+\n| +Unwind             | 16 | expertCandidatePersons AS expertCandidatePerson                                                      |            430 | 64079 |       0 |                |                    0/0 |                                                                   |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-------------------------------------------------------------------+\n| +Projection         | 17 | [n IN nodesCloserThanMaxPathDistance WHERE not n IN nodesCloserThanMinPathDistance] AS expertCandida |             43 |     1 |       0 |          12360 |                    0/0 |                                                                   |\n| |                   |    | tePersons                                                                                            |                |       |         |                |                        |                                                                   |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-------------------------------------------------------------------+\n| +EagerAggregation   | 18 | nodesCloserThanMinPathDistance, collect(DISTINCT node) AS nodesCloserThanMaxPathDistance             |             43 |     1 |       0 |        9209168 |                    0/0 |                                                                   |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-------------------------------------------------------------------+\n| +ProcedureCall      | 19 | apoc.path.subgraphNodes(startPerson, {relationshipFilter: $autostring_3, minLevel: $autoint_4, maxLe |           1853 | 64927 |         |                |                    0/0 |                                                                   |\n| |                   |    | vel: $maxPathDistance}) :: (node :: NODE?)                                                           |                |       |         |                |                        |                                                                   |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+                                                                   |\n| +OrderedAggregation | 20 | startPerson, collect(DISTINCT node) AS nodesCloserThanMinPathDistance                                |            185 |     1 |       0 |         120704 |                    0/0 |                                                                   |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+                                                                   |\n| +ProcedureCall      | 21 | apoc.path.subgraphNodes(startPerson, {relationshipFilter: $autostring_0, minLevel: $autoint_1, maxLe |          34337 |   848 |         |                |                    0/0 |                                                                   |\n| |                   |    | vel: $minPathDistance - $autoint_2}) :: (node :: NODE?)                                              |                |       |         |                |                        |                                                                   |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+                                                                   |\n| +Filter             | 22 | startPerson.id = $personId                                                                           |           3434 |     1 |   68673 |                |                    0/0 |                                                                   |\n| |                   +----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+                                                                   |\n| +NodeByLabelScan    | 23 | startPerson:Person                                                                                   |          68673 | 68673 |   68674 |                |                    0/0 | startPerson ASC                                                   |\n+---------------------+----+------------------------------------------------------------------------------------------------------+----------------+-------+---------+----------------+------------------------+-------------------------------------------------------------------+\n\nTotal database accesses: 2104138 + ?, total allocated memory: 9270152\n",
+    "runtime": "SLOTTED",
+    "runtime-impl": "SLOTTED",
+    "DbHits": 0,
+    "Details": "`expertCandidatePerson.id`, `tag.name`, messageCount",
+    "planner-version": "5.9",
+    "runtime-version": "5.9",
+    "Id": 0,
+    "PageCacheMisses": 0,
+    "EstimatedRows": 0.003949036141016269,
+    "planner": "COST",
+    "Rows": 0,
+    "PageCacheHits": 0
+  },
+  "children": [
+    {
+      "operatorType": "Top@neo4j",
+      "identifiers": [
+        "`expertCandidatePerson.id`",
+        "`tag.name`",
+        "messageCount"
+      ],
+      "dbHits": 0,
+      "rows": 0,
+      "pageCacheHits": 0,
+      "pageCacheMisses": 0,
+      "args": {
+        "Order": "messageCount DESC, `tag.name` ASC, `expertCandidatePerson.id` ASC",
+        "Details": "messageCount DESC, `tag.name` ASC, `expertCandidatePerson.id` ASC LIMIT 100",
+        "Id": 1,
+        "PageCacheMisses": 0,
+        "EstimatedRows": 0.003949036141016269,
+        "DbHits": 0,
+        "Rows": 0,
+        "PageCacheHits": 0
+      },
+      "children": [
+        {
+          "operatorType": "EagerAggregation@neo4j",
+          "identifiers": [
+            "`expertCandidatePerson.id`",
+            "`tag.name`",
+            "messageCount"
+          ],
+          "dbHits": 0,
+          "rows": 0,
+          "pageCacheHits": 0,
+          "pageCacheMisses": 0,
+          "args": {
+            "Details": "cache[expertCandidatePerson.id] AS `expertCandidatePerson.id`, tag.name AS `tag.name`, count(DISTINCT message) AS messageCount",
+            "Memory": 432,
+            "Id": 2,
+            "EstimatedRows": 0.003949036141016269,
+            "PageCacheMisses": 0,
+            "DbHits": 0,
+            "Rows": 0,
+            "PageCacheHits": 0
+          },
+          "children": [
+            {
+              "operatorType": "Filter@neo4j",
+              "identifiers": [
+                "anon_2",
+                "tag",
+                "anon_4",
+                "anon_7",
+                "anon_9",
+                "anon_8",
+                "anon_3",
+                "anon_5",
+                "expertCandidatePerson",
+                "anon_0",
+                "anon_1",
+                "message",
+                "anon_6",
+                "expertCandidatePersons"
+              ],
+              "dbHits": 0,
+              "rows": 0,
+              "pageCacheHits": 0,
+              "pageCacheMisses": 0,
+              "args": {
+                "Details": "tag:Tag",
+                "Id": 3,
+                "PageCacheMisses": 0,
+                "EstimatedRows": 0.003949036141016269,
+                "DbHits": 0,
+                "Rows": 0,
+                "PageCacheHits": 0
+              },
+              "children": [
+                {
+                  "operatorType": "Expand(All)@neo4j",
+                  "identifiers": [
+                    "anon_2",
+                    "tag",
+                    "anon_4",
+                    "anon_7",
+                    "anon_9",
+                    "anon_8",
+                    "anon_3",
+                    "anon_5",
+                    "expertCandidatePerson",
+                    "anon_0",
+                    "anon_1",
+                    "message",
+                    "anon_6",
+                    "expertCandidatePersons"
+                  ],
+                  "dbHits": 0,
+                  "rows": 0,
+                  "pageCacheHits": 0,
+                  "pageCacheMisses": 0,
+                  "args": {
+                    "Details": "(message)-[anon_9:HAS_TAG]->(tag)",
+                    "Id": 4,
+                    "PageCacheMisses": 0,
+                    "EstimatedRows": 0.0039490361410162685,
+                    "DbHits": 0,
+                    "Rows": 0,
+                    "PageCacheHits": 0
+                  },
+                  "children": [
+                    {
+                      "operatorType": "CacheProperties@neo4j",
+                      "identifiers": [
+                        "anon_2",
+                        "anon_4",
+                        "anon_7",
+                        "anon_8",
+                        "anon_3",
+                        "anon_5",
+                        "expertCandidatePerson",
+                        "anon_0",
+                        "anon_1",
+                        "message",
+                        "anon_6",
+                        "expertCandidatePersons"
+                      ],
+                      "dbHits": 0,
+                      "rows": 0,
+                      "pageCacheHits": 0,
+                      "pageCacheMisses": 0,
+                      "args": {
+                        "Details": "cache[expertCandidatePerson.id]",
+                        "Id": 5,
+                        "PageCacheMisses": 0,
+                        "EstimatedRows": 0.003374219537109211,
+                        "DbHits": 0,
+                        "Rows": 0,
+                        "PageCacheHits": 0
+                      },
+                      "children": [
+                        {
+                          "operatorType": "Filter@neo4j",
+                          "identifiers": [
+                            "anon_2",
+                            "anon_4",
+                            "anon_7",
+                            "anon_8",
+                            "anon_3",
+                            "anon_5",
+                            "expertCandidatePerson",
+                            "anon_0",
+                            "anon_1",
+                            "message",
+                            "anon_6",
+                            "expertCandidatePersons"
+                          ],
+                          "dbHits": 35112,
+                          "rows": 0,
+                          "pageCacheHits": 0,
+                          "pageCacheMisses": 0,
+                          "args": {
+                            "Details": "anon_8:TagClass AND anon_8.name = $tagClass",
+                            "Id": 6,
+                            "PageCacheMisses": 0,
+                            "EstimatedRows": 0.003374219537109211,
+                            "DbHits": 35112,
+                            "Rows": 0,
+                            "PageCacheHits": 0
+                          },
+                          "children": [
+                            {
+                              "operatorType": "Expand(All)@neo4j",
+                              "identifiers": [
+                                "anon_2",
+                                "anon_4",
+                                "anon_7",
+                                "anon_8",
+                                "anon_3",
+                                "anon_5",
+                                "expertCandidatePerson",
+                                "anon_0",
+                                "anon_1",
+                                "message",
+                                "anon_6",
+                                "expertCandidatePersons"
+                              ],
+                              "dbHits": 87460,
+                              "rows": 17556,
+                              "pageCacheHits": 0,
+                              "pageCacheMisses": 0,
+                              "args": {
+                                "Details": "(anon_6)-[anon_7:HAS_TYPE]->(anon_8)",
+                                "Id": 7,
+                                "PageCacheMisses": 0,
+                                "EstimatedRows": 0.06748439074218424,
+                                "DbHits": 87460,
+                                "Rows": 17556,
+                                "PageCacheHits": 0
+                              },
+                              "children": [
+                                {
+                                  "operatorType": "Filter@neo4j",
+                                  "identifiers": [
+                                    "anon_2",
+                                    "anon_4",
+                                    "anon_3",
+                                    "anon_5",
+                                    "expertCandidatePerson",
+                                    "anon_0",
+                                    "anon_1",
+                                    "message",
+                                    "anon_6",
+                                    "expertCandidatePersons"
+                                  ],
+                                  "dbHits": 17556,
+                                  "rows": 17556,
+                                  "pageCacheHits": 0,
+                                  "pageCacheMisses": 0,
+                                  "args": {
+                                    "Details": "anon_6:Tag",
+                                    "Id": 8,
+                                    "PageCacheMisses": 0,
+                                    "EstimatedRows": 0.06748439074218424,
+                                    "DbHits": 17556,
+                                    "Rows": 17556,
+                                    "PageCacheHits": 0
+                                  },
+                                  "children": [
+                                    {
+                                      "operatorType": "Expand(All)@neo4j",
+                                      "identifiers": [
+                                        "anon_2",
+                                        "anon_4",
+                                        "anon_3",
+                                        "anon_5",
+                                        "expertCandidatePerson",
+                                        "anon_0",
+                                        "anon_1",
+                                        "message",
+                                        "anon_6",
+                                        "expertCandidatePersons"
+                                      ],
+                                      "dbHits": 100893,
+                                      "rows": 17556,
+                                      "pageCacheHits": 0,
+                                      "pageCacheMisses": 0,
+                                      "args": {
+                                        "Details": "(message)-[anon_5:HAS_TAG]->(anon_6)",
+                                        "Id": 9,
+                                        "PageCacheMisses": 0,
+                                        "EstimatedRows": 0.0674843907421842,
+                                        "DbHits": 100893,
+                                        "Rows": 17556,
+                                        "PageCacheHits": 0
+                                      },
+                                      "children": [
+                                        {
+                                          "operatorType": "Filter@neo4j",
+                                          "identifiers": [
+                                            "anon_2",
+                                            "anon_4",
+                                            "anon_3",
+                                            "expertCandidatePerson",
+                                            "anon_0",
+                                            "anon_1",
+                                            "message",
+                                            "expertCandidatePersons"
+                                          ],
+                                          "dbHits": 17500,
+                                          "rows": 17500,
+                                          "pageCacheHits": 0,
+                                          "pageCacheMisses": 0,
+                                          "args": {
+                                            "Details": "message:Message",
+                                            "Id": 10,
+                                            "PageCacheMisses": 0,
+                                            "EstimatedRows": 0.05766144992372504,
+                                            "DbHits": 17500,
+                                            "Rows": 17500,
+                                            "PageCacheHits": 0
+                                          },
+                                          "children": [
+                                            {
+                                              "operatorType": "Expand(All)@neo4j",
+                                              "identifiers": [
+                                                "anon_2",
+                                                "anon_4",
+                                                "anon_3",
+                                                "expertCandidatePerson",
+                                                "anon_0",
+                                                "anon_1",
+                                                "message",
+                                                "expertCandidatePersons"
+                                              ],
+                                              "dbHits": 17975,
+                                              "rows": 17500,
+                                              "pageCacheHits": 0,
+                                              "pageCacheMisses": 0,
+                                              "args": {
+                                                "Details": "(expertCandidatePerson)<-[anon_4:HAS_CREATOR]-(message)",
+                                                "Id": 11,
+                                                "PageCacheMisses": 0,
+                                                "EstimatedRows": 0.057661449923725044,
+                                                "DbHits": 17975,
+                                                "Rows": 17500,
+                                                "PageCacheHits": 0
+                                              },
+                                              "children": [
+                                                {
+                                                  "operatorType": "Filter@neo4j",
+                                                  "identifiers": [
+                                                    "anon_2",
+                                                    "anon_3",
+                                                    "expertCandidatePerson",
+                                                    "expertCandidatePersons",
+                                                    "anon_0",
+                                                    "anon_1"
+                                                  ],
+                                                  "dbHits": 128158,
+                                                  "rows": 49,
+                                                  "pageCacheHits": 0,
+                                                  "pageCacheMisses": 0,
+                                                  "args": {
+                                                    "Details": "anon_3:Country AND anon_3.name = $country",
+                                                    "Id": 12,
+                                                    "PageCacheMisses": 0,
+                                                    "EstimatedRows": 0.05932092449267602,
+                                                    "DbHits": 128158,
+                                                    "Rows": 49,
+                                                    "PageCacheHits": 0
+                                                  },
+                                                  "children": [
+                                                    {
+                                                      "operatorType": "Expand(All)@neo4j",
+                                                      "identifiers": [
+                                                        "anon_2",
+                                                        "anon_3",
+                                                        "expertCandidatePerson",
+                                                        "expertCandidatePersons",
+                                                        "anon_0",
+                                                        "anon_1"
+                                                      ],
+                                                      "dbHits": 804942,
+                                                      "rows": 64079,
+                                                      "pageCacheHits": 0,
+                                                      "pageCacheMisses": 0,
+                                                      "args": {
+                                                        "Details": "(anon_1)-[anon_2:IS_PART_OF]->(anon_3)",
+                                                        "Id": 13,
+                                                        "PageCacheMisses": 0,
+                                                        "EstimatedRows": 1.1864184898535208,
+                                                        "DbHits": 804942,
+                                                        "Rows": 64079,
+                                                        "PageCacheHits": 0
+                                                      },
+                                                      "children": [
+                                                        {
+                                                          "operatorType": "Filter@neo4j",
+                                                          "identifiers": [
+                                                            "expertCandidatePersons",
+                                                            "expertCandidatePerson",
+                                                            "anon_0",
+                                                            "anon_1"
+                                                          ],
+                                                          "dbHits": 64079,
+                                                          "rows": 64079,
+                                                          "pageCacheHits": 0,
+                                                          "pageCacheMisses": 0,
+                                                          "args": {
+                                                            "Details": "anon_1:City",
+                                                            "Id": 14,
+                                                            "PageCacheMisses": 0,
+                                                            "EstimatedRows": 1.1864184898535206,
+                                                            "DbHits": 64079,
+                                                            "Rows": 64079,
+                                                            "PageCacheHits": 0
+                                                          },
+                                                          "children": [
+                                                            {
+                                                              "operatorType": "Expand(All)@neo4j",
+                                                              "identifiers": [
+                                                                "expertCandidatePersons",
+                                                                "expertCandidatePerson",
+                                                                "anon_0",
+                                                                "anon_1"
+                                                              ],
+                                                              "dbHits": 693116,
+                                                              "rows": 64079,
+                                                              "pageCacheHits": 0,
+                                                              "pageCacheMisses": 0,
+                                                              "args": {
+                                                                "Details": "(expertCandidatePerson)-[anon_0:IS_LOCATED_IN]->(anon_1)",
+                                                                "Id": 15,
+                                                                "PageCacheMisses": 0,
+                                                                "EstimatedRows": 419.63538047006915,
+                                                                "DbHits": 693116,
+                                                                "Rows": 64079,
+                                                                "PageCacheHits": 0
+                                                              },
+                                                              "children": [
+                                                                {
+                                                                  "operatorType": "Unwind@neo4j",
+                                                                  "identifiers": [
+                                                                    "expertCandidatePersons",
+                                                                    "expertCandidatePerson"
+                                                                  ],
+                                                                  "dbHits": 0,
+                                                                  "rows": 64079,
+                                                                  "pageCacheHits": 0,
+                                                                  "pageCacheMisses": 0,
+                                                                  "args": {
+                                                                    "Details": "expertCandidatePersons AS expertCandidatePerson",
+                                                                    "Id": 16,
+                                                                    "PageCacheMisses": 0,
+                                                                    "EstimatedRows": 430.4661500173768,
+                                                                    "DbHits": 0,
+                                                                    "Rows": 64079,
+                                                                    "PageCacheHits": 0
+                                                                  },
+                                                                  "children": [
+                                                                    {
+                                                                      "operatorType": "Projection@neo4j",
+                                                                      "identifiers": [
+                                                                        "expertCandidatePersons"
+                                                                      ],
+                                                                      "dbHits": 0,
+                                                                      "rows": 1,
+                                                                      "pageCacheHits": 0,
+                                                                      "pageCacheMisses": 0,
+                                                                      "args": {
+                                                                        "Details": "[n IN nodesCloserThanMaxPathDistance WHERE not n IN nodesCloserThanMinPathDistance] AS expertCandidatePersons",
+                                                                        "Memory": 12360,
+                                                                        "Id": 17,
+                                                                        "EstimatedRows": 43.04661500173768,
+                                                                        "PageCacheMisses": 0,
+                                                                        "DbHits": 0,
+                                                                        "Rows": 1,
+                                                                        "PageCacheHits": 0
+                                                                      },
+                                                                      "children": [
+                                                                        {
+                                                                          "operatorType": "EagerAggregation@neo4j",
+                                                                          "identifiers": [
+                                                                            "nodesCloserThanMinPathDistance",
+                                                                            "nodesCloserThanMaxPathDistance"
+                                                                          ],
+                                                                          "dbHits": 0,
+                                                                          "rows": 1,
+                                                                          "pageCacheHits": 0,
+                                                                          "pageCacheMisses": 0,
+                                                                          "args": {
+                                                                            "Details": "nodesCloserThanMinPathDistance, collect(DISTINCT node) AS nodesCloserThanMaxPathDistance",
+                                                                            "Memory": 9209168,
+                                                                            "Id": 18,
+                                                                            "EstimatedRows": 43.04661500173768,
+                                                                            "PageCacheMisses": 0,
+                                                                            "DbHits": 0,
+                                                                            "Rows": 1,
+                                                                            "PageCacheHits": 0
+                                                                          },
+                                                                          "children": [
+                                                                            {
+                                                                              "operatorType": "ProcedureCall@neo4j",
+                                                                              "identifiers": [
+                                                                                "startPerson",
+                                                                                "nodesCloserThanMinPathDistance",
+                                                                                "node"
+                                                                              ],
+                                                                              "dbHits": 0,
+                                                                              "rows": 0,
+                                                                              "pageCacheHits": 0,
+                                                                              "pageCacheMisses": 0,
+                                                                              "args": {
+                                                                                "Order": "startPerson ASC",
+                                                                                "Details": "apoc.path.subgraphNodes(startPerson, {relationshipFilter: $autostring_3, minLevel: $autoint_4, maxLevel: $maxPathDistance}) :: (node :: NODE?)",
+                                                                                "Id": 19,
+                                                                                "PageCacheMisses": 0,
+                                                                                "EstimatedRows": 1853.0110631078273,
+                                                                                "Rows": 64927,
+                                                                                "PageCacheHits": 0
+                                                                              },
+                                                                              "children": [
+                                                                                {
+                                                                                  "operatorType": "OrderedAggregation@neo4j",
+                                                                                  "identifiers": [
+                                                                                    "startPerson",
+                                                                                    "nodesCloserThanMinPathDistance"
+                                                                                  ],
+                                                                                  "dbHits": 0,
+                                                                                  "rows": 1,
+                                                                                  "pageCacheHits": 0,
+                                                                                  "pageCacheMisses": 0,
+                                                                                  "args": {
+                                                                                    "Order": "startPerson ASC",
+                                                                                    "Details": "startPerson, collect(DISTINCT node) AS nodesCloserThanMinPathDistance",
+                                                                                    "Memory": 120704,
+                                                                                    "Id": 20,
+                                                                                    "EstimatedRows": 185.30110631078273,
+                                                                                    "PageCacheMisses": 0,
+                                                                                    "DbHits": 0,
+                                                                                    "Rows": 1,
+                                                                                    "PageCacheHits": 0
+                                                                                  },
+                                                                                  "children": [
+                                                                                    {
+                                                                                      "operatorType": "ProcedureCall@neo4j",
+                                                                                      "identifiers": [
+                                                                                        "startPerson",
+                                                                                        "node"
+                                                                                      ],
+                                                                                      "dbHits": 0,
+                                                                                      "rows": 0,
+                                                                                      "pageCacheHits": 0,
+                                                                                      "pageCacheMisses": 0,
+                                                                                      "args": {
+                                                                                        "Order": "startPerson ASC",
+                                                                                        "Details": "apoc.path.subgraphNodes(startPerson, {relationshipFilter: $autostring_0, minLevel: $autoint_1, maxLevel: $minPathDistance - $autoint_2}) :: (node :: NODE?)",
+                                                                                        "Id": 21,
+                                                                                        "PageCacheMisses": 0,
+                                                                                        "EstimatedRows": 34336.5,
+                                                                                        "Rows": 848,
+                                                                                        "PageCacheHits": 0
+                                                                                      },
+                                                                                      "children": [
+                                                                                        {
+                                                                                          "operatorType": "Filter@neo4j",
+                                                                                          "identifiers": [
+                                                                                            "startPerson"
+                                                                                          ],
+                                                                                          "dbHits": 68673,
+                                                                                          "rows": 1,
+                                                                                          "pageCacheHits": 0,
+                                                                                          "pageCacheMisses": 0,
+                                                                                          "args": {
+                                                                                            "Order": "startPerson ASC",
+                                                                                            "Details": "startPerson.id = $personId",
+                                                                                            "Id": 22,
+                                                                                            "PageCacheMisses": 0,
+                                                                                            "EstimatedRows": 3433.65,
+                                                                                            "DbHits": 68673,
+                                                                                            "Rows": 1,
+                                                                                            "PageCacheHits": 0
+                                                                                          },
+                                                                                          "children": [
+                                                                                            {
+                                                                                              "operatorType": "NodeByLabelScan@neo4j",
+                                                                                              "identifiers": [
+                                                                                                "startPerson"
+                                                                                              ],
+                                                                                              "dbHits": 68674,
+                                                                                              "rows": 68673,
+                                                                                              "pageCacheHits": 0,
+                                                                                              "pageCacheMisses": 0,
+                                                                                              "args": {
+                                                                                                "Order": "startPerson ASC",
+                                                                                                "Details": "startPerson:Person",
+                                                                                                "Id": 23,
+                                                                                                "PageCacheMisses": 0,
+                                                                                                "EstimatedRows": 68673.0,
+                                                                                                "DbHits": 68674,
+                                                                                                "Rows": 68673,
+                                                                                                "PageCacheHits": 0
+                                                                                              },
+                                                                                              "children": []
+                                                                                            }
+                                                                                          ]
+                                                                                        }
+                                                                                      ]
+                                                                                    }
+                                                                                  ]
+                                                                                }
+                                                                              ]
+                                                                            }
+                                                                          ]
+                                                                        }
+                                                                      ]
+                                                                    }
+                                                                  ]
+                                                                }
+                                                              ]
+                                                            }
+                                                          ]
+                                                        }
+                                                      ]
+                                                    }
+                                                  ]
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

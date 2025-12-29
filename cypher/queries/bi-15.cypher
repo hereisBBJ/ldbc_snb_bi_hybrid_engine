@@ -15,34 +15,33 @@ YIELD graphName
 WITH count(*) AS dummy
 // ----------------------------------------------------------------------------------------------------
 
-CALL gds.graph.project.cypher(
+MATCH (pA:Person)-[knows:KNOWS]-(pB:Person)
+OPTIONAL MATCH (pA)<-[:HAS_CREATOR]-(m1:Message)-[r:REPLY_OF]-(m2:Message)-[:HAS_CREATOR]->(pB)
+OPTIONAL MATCH (m1)-[:REPLY_OF*0..]->(:Post)<-[:CONTAINER_OF]-(forum:Forum)
+WHERE forum.creationDate >= datetime({epochmillis:$startDate.epochMillis}) AND forum.creationDate <= datetime({epochmillis:$endDate.epochMillis})
+WITH pA, pB,
+        sum(CASE forum IS NOT NULL
+            WHEN true THEN
+                CASE (m1:Post OR m2:Post) WHEN true THEN 1.0
+                ELSE 0.5 END
+            ELSE 0.0 END
+        ) AS w
+WITH gds.graph.project(
   'bi15',
-  'MATCH (p:Person) RETURN id(p) AS id',
-  'MATCH (pA:Person)-[knows:KNOWS]-(pB:Person)
-      OPTIONAL MATCH (pA)<-[:HAS_CREATOR]-(m1:Message)-[r:REPLY_OF]-(m2:Message)-[:HAS_CREATOR]->(pB)
-      OPTIONAL MATCH (m1)-[:REPLY_OF*0..]->(:Post)<-[:CONTAINER_OF]-(forum:Forum)
-              WHERE forum.creationDate >= datetime({epochmillis: ' + $startDate.epochMillis + '})
-                AND forum.creationDate <= datetime({epochmillis: ' + $endDate.epochMillis   + '})
-      WITH pA, pB,
-          sum(CASE forum IS NOT NULL
-              WHEN true THEN
-                  CASE (m1:Post OR m2:Post) WHEN true THEN 1.0
-                  ELSE 0.5 END
-              ELSE 0.0 END
-          ) AS w
-      RETURN
-        id(pA) AS source,
-        id(pB) AS target,
-        1/(w+1) AS weight
-  '
-)
-YIELD graphName
+  pA,
+  pB,
+  {
+    sourceNodeLabels: 'Person',
+    targetNodeLabels: 'Person',
+    relationshipProperties: { weight: 1/(w+1) }
+  }
+) AS g
 
 // ----------------------------------------------------------------------------------------------------
 WITH count(*) AS dummy
 // ----------------------------------------------------------------------------------------------------
 
-CALL {
+CALL () {
   MATCH (person1:Person {id: $person1Id}), (person2:Person {id: $person2Id})
   CALL gds.shortestPath.dijkstra.stream('bi15', {
     sourceNode: person1,

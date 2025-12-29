@@ -1,0 +1,805 @@
+{
+  "operatorType": "ProduceResults@neo4j",
+  "identifiers": [
+    "`zombie.id`",
+    "totalLikeCount",
+    "zombie",
+    "zombieLikeCount",
+    "zombieScore"
+  ],
+  "dbHits": 0,
+  "rows": 100,
+  "pageCacheHits": 0,
+  "pageCacheMisses": 0,
+  "args": {
+    "Order": "zombieScore DESC, `zombie.id` ASC",
+    "GlobalMemory": 1202864,
+    "planner-impl": "IDP",
+    "Memory": 0,
+    "string-representation": "Cypher 5\n\nPlanner COST\n\nRuntime PIPELINED\n\nRuntime version 5.26\n\nBatch size 1024\n\n+----------------------+----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+-----------+-----------------------------------+---------------------+\n| Operator             | Id | Details                                                                                              | Estimated Rows | Rows    | DB Hits  | Memory (Bytes) | Page Cache Hits/Misses | Time (ms) | Ordered by                        | Pipeline            |\n+----------------------+----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+-----------+-----------------------------------+---------------------+\n| +ProduceResults      |  0 | `zombie.id`, zombieLikeCount, totalLikeCount, zombieScore                                            |              3 |     100 |        0 |              0 |                    0/0 |     0.333 |                                   |                     |\n| |                    +----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+-----------+                                   |                     |\n| +Top                 |  1 | zombieScore DESC, `zombie.id` ASC LIMIT 100                                                          |              3 |     100 |        0 |          74544 |                    0/0 |     0.052 | zombieScore DESC, `zombie.id` ASC | In Pipeline 10      |\n| |                    +----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+-----------+-----------------------------------+---------------------+\n| +Projection          |  2 | CASE totalLikeCount                                                                                  |              3 |     528 |     1056 |                |                 1054/0 |     0.537 |                                   |                     |\n| |                    |    |   WHEN $autoint_3 THEN $autodouble_4                                                                 |                |         |          |                |                        |           |                                   |                     |\n| |                    |    |   ELSE zombieLikeCount / toFloat(totalLikeCount)                                                     |                |         |          |                |                        |           |                                   |                     |\n| |                    |    | END AS zombieScore,                                                                                  |                |         |          |                |                        |           |                                   |                     |\n| |                    |    | zombie.id AS `zombie.id`                                                                             |                |         |          |                |                        |           |                                   |                     |\n| |                    +----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+-----------+-----------------------------------+                     |\n| +EagerAggregation    |  3 | zombie, zombieLikeCount, count(likerPerson) AS totalLikeCount                                        |              3 |     528 |        0 |         114384 |                    0/0 |     4.785 |                                   | In Pipeline 9       |\n| |                    +----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+-----------+-----------------------------------+---------------------+\n| +Apply               |  4 |                                                                                                      |             10 |    6435 |        0 |                |                    0/0 |           |                                   |                     |\n| |\\                   +----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+-----------+-----------------------------------+---------------------+\n| | +Optional          |  5 | zombie, zombieLikeCount                                                                              |             10 |    6435 |        0 |         657400 |                    0/0 |     0.453 |                                   | In Pipeline 8       |\n| | |                  +----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+-----------+-----------------------------------+---------------------+\n| | +Filter            |  6 | likerPerson.creationDate < $endDate AND likerPerson:Person                                           |              3 |    6090 |    24408 |                |                        |           |                                   |                     |\n| | |                  +----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+                        |           +-----------------------------------+                     |\n| | +Expand(All)       |  7 | (message)<-[anon_7:LIKES]-(likerPerson)                                                              |              9 |    6114 |    13587 |                |                        |           |                                   |                     |\n| | |                  +----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+                        |           +-----------------------------------+                     |\n| | +Filter            |  8 | message:Message                                                                                      |             10 |    7473 |    14956 |                |                        |           |                                   |                     |\n| | |                  +----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+                        |           +-----------------------------------+                     |\n| | +Expand(All)       |  9 | (zombie)<-[anon_6:HAS_CREATOR]-(message)                                                             |             10 |    7473 |     8001 |                |                        |           |                                   |                     |\n| | |                  +----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+                        |           +-----------------------------------+                     |\n| | +Argument          | 10 | zombie, zombieLikeCount                                                                              |             10 |     528 |        0 |          42096 |              22439/550 |    29.079 |                                   | Fused in Pipeline 7 |\n| |                    +----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+-----------+-----------------------------------+---------------------+\n| +EagerAggregation    | 11 | zombie, count(likerZombie) AS zombieLikeCount                                                        |             10 |     528 |        0 |          72384 |                    0/0 |     0.505 |                                   | In Pipeline 6       |\n| |                    +----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+-----------+-----------------------------------+---------------------+\n| +Apply               | 12 |                                                                                                      |            102 |     534 |        0 |                |                    0/0 |           | country ASC                       |                     |\n| |\\                   +----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+-----------+-----------------------------------+---------------------+\n| | +Optional          | 13 | country, zombies, zombie                                                                             |            102 |     534 |        0 |         130848 |                    0/0 |     0.172 |                                   | In Pipeline 5       |\n| | |                  +----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+-----------+-----------------------------------+---------------------+\n| | +Filter            | 14 | likerZombie IN zombies AND likerZombie:Person                                                        |             65 |      38 |       76 |           6216 |                        |           |                                   |                     |\n| | |                  +----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+                        |           +-----------------------------------+                     |\n| | +Expand(All)       | 15 | (message)<-[anon_5:LIKES]-(likerZombie)                                                              |             86 |    6114 |    13587 |                |                        |           |                                   |                     |\n| | |                  +----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+                        |           +-----------------------------------+                     |\n| | +Filter            | 16 | message:Message                                                                                      |             99 |    7473 |    14946 |                |                        |           |                                   |                     |\n| | |                  +----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+                        |           +-----------------------------------+                     |\n| | +Expand(All)       | 17 | (zombie)<-[anon_4:HAS_CREATOR]-(message)                                                             |             99 |    7473 |     8001 |                |                        |           |                                   |                     |\n| | |                  +----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+                        |           +-----------------------------------+                     |\n| | +Argument          | 18 | zombie, zombies, country                                                                             |            102 |     528 |        0 |          52856 |              3634/9188 |    56.118 |                                   | Fused in Pipeline 4 |\n| |                    +----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+-----------+-----------------------------------+---------------------+\n| +Unwind              | 19 | zombies AS zombie                                                                                    |            102 |     528 |        0 |          15588 |                    0/0 |     0.207 |                                   | In Pipeline 3       |\n| |                    +----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+-----------+                                   +---------------------+\n| +OrderedAggregation  | 20 | country, collect(zombie) AS zombies                                                                  |             10 |       1 |        0 |         219276 |                    0/0 |     1.741 |                                   | In Pipeline 2       |\n| |                    +----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+-----------+                                   +---------------------+\n| +Filter              | 21 | messageCount / months < $autoint_2                                                                   |            104 |     528 |        0 |                |                    0/0 |     3.052 |                                   |                     |\n| |                    +----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+-----------+                                   |                     |\n| +Projection          | 22 | (($endDate.year - cache[zombie.creationDate].year) * $autoint_0 + ($endDate.month - cache[zombie.cre |            345 |    9818 |    19636 |                |             17768/1419 |    16.556 |                                   |                     |\n| |                    |    | ationDate].month)) + $autoint_1 AS months                                                            |                |         |          |                |                        |           |                                   |                     |\n| |                    +----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+-----------+                                   |                     |\n| +OrderedAggregation  | 23 | country, zombie, count(message) AS messageCount                                                      |            345 |    9818 |        0 |        1190424 |                    0/0 |   380.730 |                                   | In Pipeline 1       |\n| |                    +----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+-----------+                                   +---------------------+\n| +OptionalExpand(All) | 24 | (zombie)<-[anon_3:HAS_CREATOR]-(message) WHERE message:Message AND message.creationDate < $endDate   |         119113 | 3509461 | 19948358 |                |                        |           |                                   |                     |\n| |                    +----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+                        |           |                                   |                     |\n| +Filter              | 25 | cache[zombie.creationDate] < $endDate AND zombie:Person                                              |           1030 |    9818 |    57965 |                |                        |           |                                   |                     |\n| |                    +----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+                        |           |                                   |                     |\n| +Expand(All)         | 26 | (anon_1)<-[anon_2:IS_LOCATED_IN]-(zombie)                                                            |           3753 |   11563 |    11762 |                |                        |           |                                   |                     |\n| |                    +----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+                        |           |                                   |                     |\n| +Filter              | 27 | anon_1:City                                                                                          |             67 |     199 |     7252 |                |                        |           |                                   |                     |\n| |                    +----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+                        |           |                                   |                     |\n| +Expand(All)         | 28 | (country)<-[anon_0:IS_PART_OF]-(anon_1)                                                              |             67 |     199 |      200 |                |                        |           |                                   |                     |\n| |                    +----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+                        |           |                                   |                     |\n| +Filter              | 29 | country.name = $country                                                                              |              6 |       1 |     7076 |                |                        |           |                                   |                     |\n| |                    +----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+                        |           |                                   |                     |\n| +NodeByLabelScan     | 30 | country:Country                                                                                      |            111 |     111 |      112 |            376 |        1236099/1070395 |  7073.032 | country ASC                       | Fused in Pipeline 0 |\n+----------------------+----+------------------------------------------------------------------------------------------------------+----------------+---------+----------+----------------+------------------------+-----------+-----------------------------------+---------------------+\n\nTotal database accesses: 20150979, total allocated memory: 1202864\n",
+    "runtime": "PIPELINED",
+    "Time": 333220,
+    "runtime-impl": "PIPELINED",
+    "version": "5",
+    "DbHits": 0,
+    "batch-size": 1024,
+    "Details": "`zombie.id`, zombieLikeCount, totalLikeCount, zombieScore",
+    "planner-version": "5.26",
+    "PipelineInfo": "In Pipeline 10",
+    "runtime-version": "5.26",
+    "Id": 0,
+    "EstimatedRows": 3.176052072401868,
+    "planner": "COST",
+    "PageCacheMisses": 0,
+    "Rows": 100,
+    "PageCacheHits": 0
+  },
+  "children": [
+    {
+      "operatorType": "Top@neo4j",
+      "identifiers": [
+        "`zombie.id`",
+        "totalLikeCount",
+        "zombie",
+        "zombieLikeCount",
+        "zombieScore"
+      ],
+      "dbHits": 0,
+      "rows": 100,
+      "pageCacheHits": 0,
+      "pageCacheMisses": 0,
+      "args": {
+        "Order": "zombieScore DESC, `zombie.id` ASC",
+        "Details": "zombieScore DESC, `zombie.id` ASC LIMIT 100",
+        "PipelineInfo": "In Pipeline 10",
+        "Memory": 74544,
+        "Time": 51948,
+        "Id": 1,
+        "EstimatedRows": 3.176052072401868,
+        "PageCacheMisses": 0,
+        "DbHits": 0,
+        "Rows": 100,
+        "PageCacheHits": 0
+      },
+      "children": [
+        {
+          "operatorType": "Projection@neo4j",
+          "identifiers": [
+            "`zombie.id`",
+            "totalLikeCount",
+            "zombie",
+            "zombieLikeCount",
+            "zombieScore"
+          ],
+          "dbHits": 1056,
+          "rows": 528,
+          "pageCacheHits": 1054,
+          "pageCacheMisses": 0,
+          "args": {
+            "Details": "CASE totalLikeCount\n  WHEN $autoint_3 THEN $autodouble_4\n  ELSE zombieLikeCount / toFloat(totalLikeCount)\nEND AS zombieScore, zombie.id AS `zombie.id`",
+            "PipelineInfo": "In Pipeline 9",
+            "Time": 536869,
+            "Id": 2,
+            "PageCacheMisses": 0,
+            "EstimatedRows": 3.176052072401868,
+            "DbHits": 1056,
+            "Rows": 528,
+            "PageCacheHits": 1054
+          },
+          "children": [
+            {
+              "operatorType": "EagerAggregation@neo4j",
+              "identifiers": [
+                "zombie",
+                "zombieLikeCount",
+                "totalLikeCount"
+              ],
+              "dbHits": 0,
+              "rows": 528,
+              "pageCacheHits": 0,
+              "pageCacheMisses": 0,
+              "args": {
+                "Details": "zombie, zombieLikeCount, count(likerPerson) AS totalLikeCount",
+                "PipelineInfo": "In Pipeline 9",
+                "Memory": 114384,
+                "Time": 4785478,
+                "Id": 3,
+                "EstimatedRows": 3.176052072401868,
+                "PageCacheMisses": 0,
+                "DbHits": 0,
+                "Rows": 528,
+                "PageCacheHits": 0
+              },
+              "children": [
+                {
+                  "operatorType": "Apply@neo4j",
+                  "identifiers": [
+                    "anon_7",
+                    "likerPerson",
+                    "zombie",
+                    "zombieLikeCount",
+                    "message",
+                    "anon_6"
+                  ],
+                  "dbHits": 0,
+                  "rows": 6435,
+                  "pageCacheHits": 0,
+                  "pageCacheMisses": 0,
+                  "args": {
+                    "Id": 4,
+                    "PageCacheMisses": 0,
+                    "EstimatedRows": 10.087306766608199,
+                    "DbHits": 0,
+                    "Rows": 6435,
+                    "PageCacheHits": 0
+                  },
+                  "children": [
+                    {
+                      "operatorType": "EagerAggregation@neo4j",
+                      "identifiers": [
+                        "zombie",
+                        "zombieLikeCount"
+                      ],
+                      "dbHits": 0,
+                      "rows": 528,
+                      "pageCacheHits": 0,
+                      "pageCacheMisses": 0,
+                      "args": {
+                        "Details": "zombie, count(likerZombie) AS zombieLikeCount",
+                        "PipelineInfo": "In Pipeline 6",
+                        "Memory": 72384,
+                        "Time": 505429,
+                        "Id": 11,
+                        "EstimatedRows": 10.087306766608199,
+                        "PageCacheMisses": 0,
+                        "DbHits": 0,
+                        "Rows": 528,
+                        "PageCacheHits": 0
+                      },
+                      "children": [
+                        {
+                          "operatorType": "Apply@neo4j",
+                          "identifiers": [
+                            "anon_4",
+                            "country",
+                            "zombies",
+                            "anon_5",
+                            "likerZombie",
+                            "message",
+                            "zombie"
+                          ],
+                          "dbHits": 0,
+                          "rows": 534,
+                          "pageCacheHits": 0,
+                          "pageCacheMisses": 0,
+                          "args": {
+                            "Order": "country ASC",
+                            "Id": 12,
+                            "PageCacheMisses": 0,
+                            "EstimatedRows": 101.75375780365955,
+                            "DbHits": 0,
+                            "Rows": 534,
+                            "PageCacheHits": 0
+                          },
+                          "children": [
+                            {
+                              "operatorType": "Unwind@neo4j",
+                              "identifiers": [
+                                "country",
+                                "zombies",
+                                "zombie"
+                              ],
+                              "dbHits": 0,
+                              "rows": 528,
+                              "pageCacheHits": 0,
+                              "pageCacheMisses": 0,
+                              "args": {
+                                "Order": "country ASC",
+                                "Details": "zombies AS zombie",
+                                "PipelineInfo": "In Pipeline 3",
+                                "Memory": 15588,
+                                "Time": 207207,
+                                "Id": 19,
+                                "EstimatedRows": 101.75375780365955,
+                                "PageCacheMisses": 0,
+                                "DbHits": 0,
+                                "Rows": 528,
+                                "PageCacheHits": 0
+                              },
+                              "children": [
+                                {
+                                  "operatorType": "OrderedAggregation@neo4j",
+                                  "identifiers": [
+                                    "country",
+                                    "zombies"
+                                  ],
+                                  "dbHits": 0,
+                                  "rows": 1,
+                                  "pageCacheHits": 0,
+                                  "pageCacheMisses": 0,
+                                  "args": {
+                                    "Order": "country ASC",
+                                    "Details": "country, collect(zombie) AS zombies",
+                                    "PipelineInfo": "In Pipeline 2",
+                                    "Memory": 219276,
+                                    "Time": 1741127,
+                                    "Id": 20,
+                                    "EstimatedRows": 10.175375780365956,
+                                    "PageCacheMisses": 0,
+                                    "DbHits": 0,
+                                    "Rows": 1,
+                                    "PageCacheHits": 0
+                                  },
+                                  "children": [
+                                    {
+                                      "operatorType": "Filter@neo4j",
+                                      "identifiers": [
+                                        "country",
+                                        "zombie",
+                                        "messageCount",
+                                        "months"
+                                      ],
+                                      "dbHits": 0,
+                                      "rows": 528,
+                                      "pageCacheHits": 0,
+                                      "pageCacheMisses": 0,
+                                      "args": {
+                                        "Order": "country ASC",
+                                        "Details": "messageCount / months < $autoint_2",
+                                        "PipelineInfo": "In Pipeline 1",
+                                        "Time": 3051761,
+                                        "Id": 21,
+                                        "PageCacheMisses": 0,
+                                        "EstimatedRows": 103.53827227165807,
+                                        "DbHits": 0,
+                                        "Rows": 528,
+                                        "PageCacheHits": 0
+                                      },
+                                      "children": [
+                                        {
+                                          "operatorType": "Projection@neo4j",
+                                          "identifiers": [
+                                            "country",
+                                            "zombie",
+                                            "messageCount",
+                                            "months"
+                                          ],
+                                          "dbHits": 19636,
+                                          "rows": 9818,
+                                          "pageCacheHits": 17768,
+                                          "pageCacheMisses": 1419,
+                                          "args": {
+                                            "Order": "country ASC",
+                                            "Details": "(($endDate.year - cache[zombie.creationDate].year) * $autoint_0 + ($endDate.month - cache[zombie.creationDate].month)) + $autoint_1 AS months",
+                                            "PipelineInfo": "In Pipeline 1",
+                                            "Time": 16555723,
+                                            "Id": 22,
+                                            "PageCacheMisses": 1419,
+                                            "EstimatedRows": 345.12757423886023,
+                                            "DbHits": 19636,
+                                            "Rows": 9818,
+                                            "PageCacheHits": 17768
+                                          },
+                                          "children": [
+                                            {
+                                              "operatorType": "OrderedAggregation@neo4j",
+                                              "identifiers": [
+                                                "country",
+                                                "zombie",
+                                                "messageCount"
+                                              ],
+                                              "dbHits": 0,
+                                              "rows": 9818,
+                                              "pageCacheHits": 0,
+                                              "pageCacheMisses": 0,
+                                              "args": {
+                                                "Order": "country ASC",
+                                                "Details": "country, zombie, count(message) AS messageCount",
+                                                "PipelineInfo": "In Pipeline 1",
+                                                "Memory": 1190424,
+                                                "Time": 380729510,
+                                                "Id": 23,
+                                                "EstimatedRows": 345.12757423886023,
+                                                "PageCacheMisses": 0,
+                                                "DbHits": 0,
+                                                "Rows": 9818,
+                                                "PageCacheHits": 0
+                                              },
+                                              "children": [
+                                                {
+                                                  "operatorType": "OptionalExpand(All)@neo4j",
+                                                  "identifiers": [
+                                                    "anon_2",
+                                                    "country",
+                                                    "anon_3",
+                                                    "message",
+                                                    "zombie",
+                                                    "anon_0",
+                                                    "anon_1"
+                                                  ],
+                                                  "dbHits": 19948358,
+                                                  "rows": 3509461,
+                                                  "pageCacheHits": 0,
+                                                  "pageCacheMisses": 0,
+                                                  "args": {
+                                                    "Order": "country ASC",
+                                                    "Details": "(zombie)<-[anon_3:HAS_CREATOR]-(message) WHERE message:Message AND message.creationDate < $endDate",
+                                                    "PipelineInfo": "Fused in Pipeline 0",
+                                                    "Id": 24,
+                                                    "EstimatedRows": 119113.0425,
+                                                    "DbHits": 19948358,
+                                                    "Rows": 3509461
+                                                  },
+                                                  "children": [
+                                                    {
+                                                      "operatorType": "Filter@neo4j",
+                                                      "identifiers": [
+                                                        "anon_2",
+                                                        "country",
+                                                        "zombie",
+                                                        "anon_0",
+                                                        "anon_1"
+                                                      ],
+                                                      "dbHits": 57965,
+                                                      "rows": 9818,
+                                                      "pageCacheHits": 0,
+                                                      "pageCacheMisses": 0,
+                                                      "args": {
+                                                        "Order": "country ASC",
+                                                        "Details": "cache[zombie.creationDate] < $endDate AND zombie:Person",
+                                                        "PipelineInfo": "Fused in Pipeline 0",
+                                                        "Id": 25,
+                                                        "EstimatedRows": 1030.095,
+                                                        "DbHits": 57965,
+                                                        "Rows": 9818
+                                                      },
+                                                      "children": [
+                                                        {
+                                                          "operatorType": "Expand(All)@neo4j",
+                                                          "identifiers": [
+                                                            "anon_2",
+                                                            "country",
+                                                            "zombie",
+                                                            "anon_0",
+                                                            "anon_1"
+                                                          ],
+                                                          "dbHits": 11762,
+                                                          "rows": 11563,
+                                                          "pageCacheHits": 0,
+                                                          "pageCacheMisses": 0,
+                                                          "args": {
+                                                            "Order": "country ASC",
+                                                            "Details": "(anon_1)<-[anon_2:IS_LOCATED_IN]-(zombie)",
+                                                            "PipelineInfo": "Fused in Pipeline 0",
+                                                            "Id": 26,
+                                                            "EstimatedRows": 3752.65,
+                                                            "DbHits": 11762,
+                                                            "Rows": 11563
+                                                          },
+                                                          "children": [
+                                                            {
+                                                              "operatorType": "Filter@neo4j",
+                                                              "identifiers": [
+                                                                "country",
+                                                                "anon_0",
+                                                                "anon_1"
+                                                              ],
+                                                              "dbHits": 7252,
+                                                              "rows": 199,
+                                                              "pageCacheHits": 0,
+                                                              "pageCacheMisses": 0,
+                                                              "args": {
+                                                                "Order": "country ASC",
+                                                                "Details": "anon_1:City",
+                                                                "PipelineInfo": "Fused in Pipeline 0",
+                                                                "Id": 27,
+                                                                "EstimatedRows": 67.15,
+                                                                "DbHits": 7252,
+                                                                "Rows": 199
+                                                              },
+                                                              "children": [
+                                                                {
+                                                                  "operatorType": "Expand(All)@neo4j",
+                                                                  "identifiers": [
+                                                                    "country",
+                                                                    "anon_0",
+                                                                    "anon_1"
+                                                                  ],
+                                                                  "dbHits": 200,
+                                                                  "rows": 199,
+                                                                  "pageCacheHits": 0,
+                                                                  "pageCacheMisses": 0,
+                                                                  "args": {
+                                                                    "Order": "country ASC",
+                                                                    "Details": "(country)<-[anon_0:IS_PART_OF]-(anon_1)",
+                                                                    "PipelineInfo": "Fused in Pipeline 0",
+                                                                    "Id": 28,
+                                                                    "EstimatedRows": 67.15,
+                                                                    "DbHits": 200,
+                                                                    "Rows": 199
+                                                                  },
+                                                                  "children": [
+                                                                    {
+                                                                      "operatorType": "Filter@neo4j",
+                                                                      "identifiers": [
+                                                                        "country"
+                                                                      ],
+                                                                      "dbHits": 7076,
+                                                                      "rows": 1,
+                                                                      "pageCacheHits": 0,
+                                                                      "pageCacheMisses": 0,
+                                                                      "args": {
+                                                                        "Order": "country ASC",
+                                                                        "Details": "country.name = $country",
+                                                                        "PipelineInfo": "Fused in Pipeline 0",
+                                                                        "Id": 29,
+                                                                        "EstimatedRows": 5.550000000000001,
+                                                                        "DbHits": 7076,
+                                                                        "Rows": 1
+                                                                      },
+                                                                      "children": [
+                                                                        {
+                                                                          "operatorType": "NodeByLabelScan@neo4j",
+                                                                          "identifiers": [
+                                                                            "country"
+                                                                          ],
+                                                                          "dbHits": 112,
+                                                                          "rows": 111,
+                                                                          "pageCacheHits": 1236099,
+                                                                          "pageCacheMisses": 1070395,
+                                                                          "args": {
+                                                                            "Order": "country ASC",
+                                                                            "Details": "country:Country",
+                                                                            "PipelineInfo": "Fused in Pipeline 0",
+                                                                            "Memory": 376,
+                                                                            "Time": 7073032384,
+                                                                            "Id": 30,
+                                                                            "EstimatedRows": 111.0,
+                                                                            "PageCacheMisses": 1070395,
+                                                                            "DbHits": 112,
+                                                                            "Rows": 111,
+                                                                            "PageCacheHits": 1236099
+                                                                          },
+                                                                          "children": []
+                                                                        }
+                                                                      ]
+                                                                    }
+                                                                  ]
+                                                                }
+                                                              ]
+                                                            }
+                                                          ]
+                                                        }
+                                                      ]
+                                                    }
+                                                  ]
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "operatorType": "Optional@neo4j",
+                              "identifiers": [
+                                "anon_4",
+                                "country",
+                                "zombies",
+                                "anon_5",
+                                "likerZombie",
+                                "message",
+                                "zombie"
+                              ],
+                              "dbHits": 0,
+                              "rows": 534,
+                              "pageCacheHits": 0,
+                              "pageCacheMisses": 0,
+                              "args": {
+                                "Details": "country, zombies, zombie",
+                                "PipelineInfo": "In Pipeline 5",
+                                "Memory": 130848,
+                                "Time": 171755,
+                                "Id": 13,
+                                "EstimatedRows": 101.75375780365955,
+                                "PageCacheMisses": 0,
+                                "DbHits": 0,
+                                "Rows": 534,
+                                "PageCacheHits": 0
+                              },
+                              "children": [
+                                {
+                                  "operatorType": "Filter@neo4j",
+                                  "identifiers": [
+                                    "anon_4",
+                                    "country",
+                                    "zombies",
+                                    "anon_5",
+                                    "likerZombie",
+                                    "message",
+                                    "zombie"
+                                  ],
+                                  "dbHits": 76,
+                                  "rows": 38,
+                                  "pageCacheHits": 0,
+                                  "pageCacheMisses": 0,
+                                  "args": {
+                                    "Details": "likerZombie IN zombies AND likerZombie:Person",
+                                    "Memory": 6216,
+                                    "PipelineInfo": "Fused in Pipeline 4",
+                                    "Id": 14,
+                                    "EstimatedRows": 64.83081865509011,
+                                    "DbHits": 76,
+                                    "Rows": 38
+                                  },
+                                  "children": [
+                                    {
+                                      "operatorType": "Expand(All)@neo4j",
+                                      "identifiers": [
+                                        "anon_4",
+                                        "country",
+                                        "zombies",
+                                        "anon_5",
+                                        "likerZombie",
+                                        "message",
+                                        "zombie"
+                                      ],
+                                      "dbHits": 13587,
+                                      "rows": 6114,
+                                      "pageCacheHits": 0,
+                                      "pageCacheMisses": 0,
+                                      "args": {
+                                        "Details": "(message)<-[anon_5:LIKES]-(likerZombie)",
+                                        "PipelineInfo": "Fused in Pipeline 4",
+                                        "Id": 15,
+                                        "EstimatedRows": 86.44109154012015,
+                                        "DbHits": 13587,
+                                        "Rows": 6114
+                                      },
+                                      "children": [
+                                        {
+                                          "operatorType": "Filter@neo4j",
+                                          "identifiers": [
+                                            "anon_4",
+                                            "country",
+                                            "zombies",
+                                            "message",
+                                            "zombie"
+                                          ],
+                                          "dbHits": 14946,
+                                          "rows": 7473,
+                                          "pageCacheHits": 0,
+                                          "pageCacheMisses": 0,
+                                          "args": {
+                                            "Details": "message:Message",
+                                            "PipelineInfo": "Fused in Pipeline 4",
+                                            "Id": 16,
+                                            "EstimatedRows": 98.90724496161478,
+                                            "DbHits": 14946,
+                                            "Rows": 7473
+                                          },
+                                          "children": [
+                                            {
+                                              "operatorType": "Expand(All)@neo4j",
+                                              "identifiers": [
+                                                "anon_4",
+                                                "country",
+                                                "zombies",
+                                                "message",
+                                                "zombie"
+                                              ],
+                                              "dbHits": 8001,
+                                              "rows": 7473,
+                                              "pageCacheHits": 0,
+                                              "pageCacheMisses": 0,
+                                              "args": {
+                                                "Details": "(zombie)<-[anon_4:HAS_CREATOR]-(message)",
+                                                "PipelineInfo": "Fused in Pipeline 4",
+                                                "Id": 17,
+                                                "EstimatedRows": 98.90724496161478,
+                                                "DbHits": 8001,
+                                                "Rows": 7473
+                                              },
+                                              "children": [
+                                                {
+                                                  "operatorType": "Argument@neo4j",
+                                                  "identifiers": [
+                                                    "zombie",
+                                                    "zombies",
+                                                    "country"
+                                                  ],
+                                                  "dbHits": 0,
+                                                  "rows": 528,
+                                                  "pageCacheHits": 3634,
+                                                  "pageCacheMisses": 9188,
+                                                  "args": {
+                                                    "Details": "zombie, zombies, country",
+                                                    "PipelineInfo": "Fused in Pipeline 4",
+                                                    "Memory": 52856,
+                                                    "Time": 56117612,
+                                                    "Id": 18,
+                                                    "EstimatedRows": 101.75375780365955,
+                                                    "PageCacheMisses": 9188,
+                                                    "DbHits": 0,
+                                                    "Rows": 528,
+                                                    "PageCacheHits": 3634
+                                                  },
+                                                  "children": []
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "operatorType": "Optional@neo4j",
+                      "identifiers": [
+                        "anon_7",
+                        "likerPerson",
+                        "zombie",
+                        "zombieLikeCount",
+                        "message",
+                        "anon_6"
+                      ],
+                      "dbHits": 0,
+                      "rows": 6435,
+                      "pageCacheHits": 0,
+                      "pageCacheMisses": 0,
+                      "args": {
+                        "Details": "zombie, zombieLikeCount",
+                        "PipelineInfo": "In Pipeline 8",
+                        "Memory": 657400,
+                        "Time": 452818,
+                        "Id": 5,
+                        "EstimatedRows": 10.087306766608199,
+                        "PageCacheMisses": 0,
+                        "DbHits": 0,
+                        "Rows": 6435,
+                        "PageCacheHits": 0
+                      },
+                      "children": [
+                        {
+                          "operatorType": "Filter@neo4j",
+                          "identifiers": [
+                            "anon_7",
+                            "likerPerson",
+                            "zombie",
+                            "zombieLikeCount",
+                            "message",
+                            "anon_6"
+                          ],
+                          "dbHits": 24408,
+                          "rows": 6090,
+                          "pageCacheHits": 0,
+                          "pageCacheMisses": 0,
+                          "args": {
+                            "Details": "likerPerson.creationDate < $endDate AND likerPerson:Person",
+                            "PipelineInfo": "Fused in Pipeline 7",
+                            "Id": 6,
+                            "EstimatedRows": 2.5707880271748342,
+                            "DbHits": 24408,
+                            "Rows": 6090
+                          },
+                          "children": [
+                            {
+                              "operatorType": "Expand(All)@neo4j",
+                              "identifiers": [
+                                "anon_7",
+                                "likerPerson",
+                                "zombie",
+                                "zombieLikeCount",
+                                "message",
+                                "anon_6"
+                              ],
+                              "dbHits": 13587,
+                              "rows": 6114,
+                              "pageCacheHits": 0,
+                              "pageCacheMisses": 0,
+                              "args": {
+                                "Details": "(message)<-[anon_7:LIKES]-(likerPerson)",
+                                "PipelineInfo": "Fused in Pipeline 7",
+                                "Id": 7,
+                                "EstimatedRows": 8.569293423916113,
+                                "DbHits": 13587,
+                                "Rows": 6114
+                              },
+                              "children": [
+                                {
+                                  "operatorType": "Filter@neo4j",
+                                  "identifiers": [
+                                    "zombie",
+                                    "zombieLikeCount",
+                                    "anon_6",
+                                    "message"
+                                  ],
+                                  "dbHits": 14956,
+                                  "rows": 7473,
+                                  "pageCacheHits": 0,
+                                  "pageCacheMisses": 0,
+                                  "args": {
+                                    "Details": "message:Message",
+                                    "PipelineInfo": "Fused in Pipeline 7",
+                                    "Id": 8,
+                                    "EstimatedRows": 9.805119171058163,
+                                    "DbHits": 14956,
+                                    "Rows": 7473
+                                  },
+                                  "children": [
+                                    {
+                                      "operatorType": "Expand(All)@neo4j",
+                                      "identifiers": [
+                                        "zombie",
+                                        "zombieLikeCount",
+                                        "anon_6",
+                                        "message"
+                                      ],
+                                      "dbHits": 8001,
+                                      "rows": 7473,
+                                      "pageCacheHits": 0,
+                                      "pageCacheMisses": 0,
+                                      "args": {
+                                        "Details": "(zombie)<-[anon_6:HAS_CREATOR]-(message)",
+                                        "PipelineInfo": "Fused in Pipeline 7",
+                                        "Id": 9,
+                                        "EstimatedRows": 9.805119171058163,
+                                        "DbHits": 8001,
+                                        "Rows": 7473
+                                      },
+                                      "children": [
+                                        {
+                                          "operatorType": "Argument@neo4j",
+                                          "identifiers": [
+                                            "zombie",
+                                            "zombieLikeCount"
+                                          ],
+                                          "dbHits": 0,
+                                          "rows": 528,
+                                          "pageCacheHits": 22439,
+                                          "pageCacheMisses": 550,
+                                          "args": {
+                                            "Details": "zombie, zombieLikeCount",
+                                            "PipelineInfo": "Fused in Pipeline 7",
+                                            "Memory": 42096,
+                                            "Time": 29078643,
+                                            "Id": 10,
+                                            "EstimatedRows": 10.087306766608199,
+                                            "PageCacheMisses": 550,
+                                            "DbHits": 0,
+                                            "Rows": 528,
+                                            "PageCacheHits": 22439
+                                          },
+                                          "children": []
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
