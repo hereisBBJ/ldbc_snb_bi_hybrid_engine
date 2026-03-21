@@ -1,5 +1,7 @@
 \set ON_ERROR_STOP on
 
+SET GLOBAL TimeZone = 'Etc/UTC';
+
 CREATE TABLE Organisation (
     id bigint PRIMARY KEY,
     type text NOT NULL,
@@ -197,44 +199,44 @@ CREATE TABLE Message_hasTag_Tag (
     TagId bigint NOT NULL
 );
 
-COPY Organisation FROM '/var/lib/postgresql/data/merge_postgre_SF10_data/merged_Organisation.csv' WITH CSV DELIMITER '|';
-COPY Place FROM '/var/lib/postgresql/data/merge_postgre_SF10_data/merged_Place.csv' WITH CSV DELIMITER '|';
-COPY Tag FROM '/var/lib/postgresql/data/merge_postgre_SF10_data/merged_Tag.csv' WITH CSV DELIMITER '|';
-COPY TagClass FROM '/var/lib/postgresql/data/merge_postgre_SF10_data/merged_TagClass.csv' WITH CSV DELIMITER '|';
-COPY Comment FROM '/var/lib/postgresql/data/merge_postgre_SF10_data/merged_Comment.csv' WITH CSV DELIMITER '|';
-COPY Forum FROM '/var/lib/postgresql/data/merge_postgre_SF10_data/merged_Forum.csv' WITH CSV DELIMITER '|';
-COPY Post FROM '/var/lib/postgresql/data/merge_postgre_SF10_data/merged_Post.csv' WITH CSV DELIMITER '|';
-COPY Person FROM '/var/lib/postgresql/data/merge_postgre_SF10_data/merged_Person.csv' WITH CSV DELIMITER '|';
-COPY Comment_hasTag_Tag FROM '/var/lib/postgresql/data/merge_postgre_SF10_data/merged_Comment_hasTag_Tag.csv' WITH CSV DELIMITER '|';
-COPY Post_hasTag_Tag FROM '/var/lib/postgresql/data/merge_postgre_SF10_data/merged_Post_hasTag_Tag.csv' WITH CSV DELIMITER '|';
-COPY Forum_hasMember_Person FROM '/var/lib/postgresql/data/merge_postgre_SF10_data/merged_Forum_hasMember_Person.csv' WITH CSV DELIMITER '|';
-COPY Forum_hasTag_Tag FROM '/var/lib/postgresql/data/merge_postgre_SF10_data/merged_Forum_hasTag_Tag.csv' WITH CSV DELIMITER '|';
-COPY Person_hasInterest_Tag FROM '/var/lib/postgresql/data/merge_postgre_SF10_data/merged_Person_hasInterest_Tag.csv' WITH CSV DELIMITER '|';
-COPY Person_likes_Comment FROM '/var/lib/postgresql/data/merge_postgre_SF10_data/merged_Person_likes_Comment.csv' WITH CSV DELIMITER '|';
-COPY Person_likes_Post FROM '/var/lib/postgresql/data/merge_postgre_SF10_data/merged_Person_likes_Post.csv' WITH CSV DELIMITER '|';
-COPY Person_studyAt_University FROM '/var/lib/postgresql/data/merge_postgre_SF10_data/merged_Person_studyAt_University.csv' WITH CSV DELIMITER '|';
-COPY Person_workAt_Company FROM '/var/lib/postgresql/data/merge_postgre_SF10_data/merged_Person_workAt_Company.csv' WITH CSV DELIMITER '|';
-COPY Person_knows_Person FROM '/var/lib/postgresql/data/merge_postgre_SF10_data/merged_Person_knows_Person.csv' WITH CSV DELIMITER '|';
+COPY Organisation FROM '/work/bi-sf10-data/merged_Organisation.csv' WITH CSV DELIMITER '|';
+COPY Place FROM '/work/bi-sf10-data/merged_Place.csv' WITH CSV DELIMITER '|';
+COPY Tag FROM '/work/bi-sf10-data/merged_Tag.csv' WITH CSV DELIMITER '|';
+COPY TagClass FROM '/work/bi-sf10-data/merged_TagClass.csv' WITH CSV DELIMITER '|';
+COPY Comment FROM '/work/bi-sf10-data/merged_Comment.csv' WITH CSV DELIMITER '|';
+COPY Forum FROM '/work/bi-sf10-data/merged_Forum.csv' WITH CSV DELIMITER '|';
+COPY Post FROM '/work/bi-sf10-data/merged_Post.csv' WITH CSV DELIMITER '|';
+COPY Person FROM '/work/bi-sf10-data/merged_Person.csv' WITH CSV DELIMITER '|';
+COPY Comment_hasTag_Tag FROM '/work/bi-sf10-data/merged_Comment_hasTag_Tag.csv' WITH CSV DELIMITER '|';
+COPY Post_hasTag_Tag FROM '/work/bi-sf10-data/merged_Post_hasTag_Tag.csv' WITH CSV DELIMITER '|';
+COPY Forum_hasMember_Person FROM '/work/bi-sf10-data/merged_Forum_hasMember_Person.csv' WITH CSV DELIMITER '|';
+COPY Forum_hasTag_Tag FROM '/work/bi-sf10-data/merged_Forum_hasTag_Tag.csv' WITH CSV DELIMITER '|';
+COPY Person_hasInterest_Tag FROM '/work/bi-sf10-data/merged_Person_hasInterest_Tag.csv' WITH CSV DELIMITER '|';
+COPY Person_likes_Comment FROM '/work/bi-sf10-data/merged_Person_likes_Comment.csv' WITH CSV DELIMITER '|';
+COPY Person_likes_Post FROM '/work/bi-sf10-data/merged_Person_likes_Post.csv' WITH CSV DELIMITER '|';
+COPY Person_studyAt_University FROM '/work/bi-sf10-data/merged_Person_studyAt_University.csv' WITH CSV DELIMITER '|';
+COPY Person_workAt_Company FROM '/work/bi-sf10-data/merged_Person_workAt_Company.csv' WITH CSV DELIMITER '|';
+COPY Person_knows_Person FROM '/work/bi-sf10-data/merged_Person_knows_Person.csv' WITH CSV DELIMITER '|';
 
-CREATE INDEX ON Tag (name);
-CREATE INDEX ON Tag (TypeTagClassId);
-CREATE INDEX ON person (LocationCityId);
-CREATE INDEX ON person (id);
-CREATE INDEX ON person (firstName);
-CREATE INDEX ON person (lastName);
-CREATE INDEX ON person (creationDate);
-CREATE INDEX ON person (LocationCityId);
-CREATE INDEX ON Person_hasInterest_Tag (PersonId);
-CREATE INDEX ON Person_hasInterest_Tag (TagId);
-CREATE INDEX ON Person_knows_Person (Person1Id);
-CREATE INDEX ON Person_knows_Person (Person2Id);
-CREATE INDEX ON Person_knows_Person (creationDate);
-CREATE INDEX ON Forum (id);
-CREATE INDEX ON Forum (title);
-CREATE INDEX ON Forum (creationDate);
-CREATE INDEX ON Forum (ModeratorPersonId);
-CREATE INDEX ON Forum_hasMember_Person (ForumId);
-CREATE INDEX ON Forum_hasMember_Person (PersonId);
+CREATE INDEX idx_Tag_name ON Tag (name);
+CREATE INDEX idx_Tag_TypeTagClassId ON Tag (TypeTagClassId);
+CREATE INDEX idx_person_LocationCityId ON person (LocationCityId);
+CREATE INDEX idx_person_id ON person (id);
+CREATE INDEX idx_person_firstName ON person (firstName);
+CREATE INDEX idx_person_lastName ON person (lastName);
+CREATE INDEX idx_person_creationDate ON person (creationDate);
+CREATE INDEX idx_person_LocationCityId ON person (LocationCityId);
+CREATE INDEX idx_Person_hasInterest_Tag_PersonId ON Person_hasInterest_Tag (PersonId);
+CREATE INDEX idx_Person_hasInterest_Tag_TagId ON Person_hasInterest_Tag (TagId);
+CREATE INDEX idx_Person_knows_Person_Person1Id ON Person_knows_Person (Person1Id);
+CREATE INDEX idx_Person_knows_Person_Person2Id ON Person_knows_Person (Person2Id);
+CREATE INDEX idx_Person_knows_Person_creationDate ON Person_knows_Person (creationDate);
+CREATE INDEX idx_Forum_id ON Forum (id);
+CREATE INDEX idx_Forum_title ON Forum (title);
+CREATE INDEX idx_Forum_creationDate ON Forum (creationDate);
+CREATE INDEX idx_Forum_ModeratorPersonId ON Forum (ModeratorPersonId);
+CREATE INDEX idx_Forum_hasMember_Person_ForumId ON Forum_hasMember_Person (ForumId);
+CREATE INDEX idx_Forum_hasMember_Person_PersonId ON Forum_hasMember_Person (PersonId);
 
 INSERT INTO Country
     SELECT id, name, url, PartOfPlaceId AS PartOfContinentId
@@ -289,15 +291,15 @@ SELECT Person_knows_Person.creationDate,
        Person_knows_Person.Person1Id AS Person2id
 FROM Person_knows_Person;
 
-CREATE INDEX ON Person_likes_Message (PersonId);
-CREATE INDEX ON Person_likes_Message (MessageId);
-CREATE INDEX ON City (id);
-CREATE INDEX ON City (PartOfCountryId);
-CREATE INDEX ON Country (id);
-CREATE INDEX ON Country (name);
-CREATE INDEX ON undirected_Person_knows_Person (Person1Id);
-CREATE INDEX ON undirected_Person_knows_Person (Person2Id);
-CREATE INDEX ON undirected_Person_knows_Person (creationDate);
+CREATE INDEX idx_Person_likes_Message_PersonId ON Person_likes_Message (PersonId);
+CREATE INDEX idx_Person_likes_Message_MessageId ON Person_likes_Message (MessageId);
+CREATE INDEX idx_City_id ON City (id);
+CREATE INDEX idx_City_PartOfCountryId ON City (PartOfCountryId);
+CREATE INDEX idx_Country_id ON Country (id);
+CREATE INDEX idx_Country_name ON Country (name);
+CREATE INDEX idx_undirected_Person_knows_Person_Person1Id ON undirected_Person_knows_Person (Person1Id);
+CREATE INDEX idx_undirected_Person_knows_Person_Person2Id ON undirected_Person_knows_Person (Person2Id);
+CREATE INDEX idx_undirected_Person_knows_Person_creationDate ON undirected_Person_knows_Person (creationDate);
 
 INSERT INTO Message
     SELECT
@@ -317,16 +319,16 @@ INSERT INTO Message
     FROM Post
 ;
 
-CREATE INDEX ON Comment (id);
-CREATE INDEX ON Comment (ParentPostId);
-CREATE INDEX ON Comment (ParentCommentId);
-CREATE INDEX ON Comment (creationDate);
-CREATE INDEX ON Comment (LocationCountryId);
-CREATE INDEX ON Comment (content);
-CREATE INDEX ON Comment (length);
-CREATE INDEX ON Comment (CreatorPersonId);
-CREATE INDEX ON Comment (locationIP);
-CREATE INDEX ON Comment (browserUsed);
+CREATE INDEX idx_Comment_id ON Comment (id);
+CREATE INDEX idx_Comment_ParentPostId ON Comment (ParentPostId);
+CREATE INDEX idx_Comment_ParentCommentId ON Comment (ParentCommentId);
+CREATE INDEX idx_Comment_creationDate ON Comment (creationDate);
+CREATE INDEX idx_Comment_LocationCountryId ON Comment (LocationCountryId);
+CREATE INDEX idx_Comment_content ON Comment (content);
+CREATE INDEX idx_Comment_length ON Comment (length);
+CREATE INDEX idx_Comment_CreatorPersonId ON Comment (CreatorPersonId);
+CREATE INDEX idx_Comment_locationIP ON Comment (locationIP);
+CREATE INDEX idx_Comment_browserUsed ON Comment (browserUsed);
 
 INSERT INTO Message
     WITH RECURSIVE Message_CTE(MessageId, RootPostId, RootPostLanguage, ContainerForumId, ParentMessageId) AS (
@@ -369,27 +371,28 @@ INSERT INTO Message
       ON Message_CTE.MessageId = Comment.id
 ;
 
-CREATE INDEX ON Message (MessageId);
-CREATE INDEX ON Message (CreatorPersonId);
-CREATE INDEX ON Message (ParentMessageId);
-CREATE INDEX ON Message (creationDate);
-CREATE INDEX ON Message (length);
-CREATE INDEX ON Message (RootPostLanguage);
-CREATE INDEX ON Message (RootPostId);
-CREATE INDEX ON Message (ContainerForumId);
-CREATE INDEX ON Message (LocationCountryId);
-CREATE INDEX ON Message_hasTag_Tag (MessageId);
-CREATE INDEX ON Message_hasTag_Tag (TagId);
+CREATE INDEX idx_message_messageid ON Message (MessageId);
+CREATE INDEX idx_message_creatorpersonid ON Message (CreatorPersonId);
+CREATE INDEX idx_message_parentmessageid ON Message (ParentMessageId);
+CREATE INDEX idx_message_creationdate ON Message (creationDate);
+CREATE INDEX idx_Message_length ON Message (length);
+CREATE INDEX idx_Message_RootPostLanguage ON Message (RootPostLanguage);
+CREATE INDEX idx_Message_RootPostId ON Message (RootPostId);
+CREATE INDEX idx_Message_ContainerForumId ON Message (ContainerForumId);
+CREATE INDEX idx_Message_LocationCountryId ON Message (LocationCountryId);
+CREATE INDEX idx_Message_hasTag_Tag_MessageId ON Message_hasTag_Tag (MessageId);
+CREATE INDEX idx_Message_hasTag_Tag_TagId ON Message_hasTag_Tag (TagId);
 
-CREATE INDEX ON Forum_hasTag_Tag (ForumId);
-CREATE INDEX ON Forum_hasTag_Tag (TagId);
-CREATE INDEX ON University (LocationPlaceId);
-CREATE INDEX ON Company (LocationPlaceId);
-CREATE INDEX ON person (LocationCityId);
-CREATE INDEX ON Person_workAt_Company (PersonId);
-CREATE INDEX ON Person_workAt_Company (CompanyId);
-CREATE INDEX ON Person_hasInterest_Tag (PersonId);
-CREATE INDEX ON Person_hasInterest_Tag (TagId);
-CREATE INDEX ON Person_studyAt_University (PersonId);
-CREATE INDEX ON Person_studyAt_University (UniversityId);
-CREATE INDEX ON TagClass (SubclassOfTagClassId);
+CREATE INDEX idx_Forum_hasTag_Tag_ForumId ON Forum_hasTag_Tag (ForumId);
+CREATE INDEX idx_Forum_hasTag_Tag_TagId ON Forum_hasTag_Tag (TagId);
+CREATE INDEX idx_University_LocationPlaceId ON University (LocationPlaceId);
+CREATE INDEX idx_Company_LocationPlaceId ON Company (LocationPlaceId);
+CREATE INDEX idx_person_LocationCityId ON person (LocationCityId);
+CREATE INDEX idx_Person_workAt_Company_PersonId ON Person_workAt_Company (PersonId);
+CREATE INDEX idx_Person_workAt_Company_CompanyId ON Person_workAt_Company (CompanyId);
+CREATE INDEX idx_Person_hasInterest_Tag_PersonId ON Person_hasInterest_Tag (PersonId);
+CREATE INDEX idx_Person_hasInterest_Tag_TagId ON Person_hasInterest_Tag (TagId);
+CREATE INDEX idx_Person_studyAt_University_PersonId ON Person_studyAt_University (PersonId);
+CREATE INDEX idx_Person_studyAt_University_UniversityId ON Person_studyAt_University (UniversityId);
+CREATE INDEX idx_TagClass_SubclassOfTagClassId ON TagClass (SubclassOfTagClassId);
+

@@ -34,3 +34,8 @@ parameters-sf*.*
 __pycache__/
 *.bkp
 *.zip
+
+
+duckdb/*.duckdb
+duckdb/output*/*
+duckdb/system_performance*/*

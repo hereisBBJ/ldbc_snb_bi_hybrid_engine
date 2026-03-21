@@ -1,3 +1,0 @@
-export TG_DATA_DIR=/d1/ouf_sf_data/tigergraph_out_sf1_bi/graphs/csv/bi/composite-projected-fk/
-export TG_LICENSE=""
-export SF=1
