@@ -39,3 +39,5 @@ __pycache__/
 duckdb/*.duckdb
 duckdb/output*/*
 duckdb/system_performance*/*
+duckdb/duckdb-orig/duckdb
+duckdb/duckdb-pr/duckdb
