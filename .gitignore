@@ -41,3 +41,4 @@ duckdb/output*/*
 duckdb/system_performance*/*
 duckdb/duckdb-orig/duckdb
 duckdb/duckdb-pr/duckdb
+duckdb/system_performance_orig/*
