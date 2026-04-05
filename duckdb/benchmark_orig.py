@@ -9,11 +9,11 @@ import time
 import json
 from queries_orig import run_queries, run_precomputations
 
-query_variants = ["15a", "15b", "19a", "19b", "20a", "20b"]#"1", "2a", "2b", "3", "4", "5", "6", "7", "8a", "8b", "9",
-                #   "10a", "10b", "11", "12", "13", "14a", "14b", 
+query_variants = ["19a", "19b", "20a", "20b"]#"1", "2a", "2b", "3", "4", "5", "6", "7", "8a", "8b", "9",
+                #   "10a", "10b", "11", "12", "13", "14a", "14b", "15a", "15b", 
                 #   "16a", "16b", "17", "18", ]
 
-# python3 benchmark_orig.py --scale_factor 1 --queries --test
+# python3 benchmark_orig.py --scale_factor 1 --queries --test --path_mode full
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--scale_factor', type=str, help='Scale factor', required=True)
@@ -21,7 +21,7 @@ parser.add_argument('--test', action='store_true', help='Test execution: 1 query
 parser.add_argument('--pgtuning', action='store_true', help='Paramgen tuning execution: 100 queries/batch', required=False)
 parser.add_argument('--param_dir', type=str, help='Directory with the initial_snapshot, insert, and delete directories')
 parser.add_argument('--queries', action='store_true', help='Only run queries', required=False)
-parser.add_argument('--path_mode', choices=['precompute', 'full'], default='precompute',
+parser.add_argument('--path_mode', choices=['precompute', 'full'], default='full',
                     help='BI-19/20 path strategy: precompute uses PathQ19/PathQ20 tables, full computes paths inside query')
 # parser.add_argument('--container_name', type=str, required=True)
 args = parser.parse_args()

@@ -11,6 +11,10 @@ from pathlib import Path
 import igraph as ig
 
 from db_config import duckdb_path, db_file, format_value_duckdb
+try:
+    from bi15.shared_sql import EDGE_SELECT_SQL
+except ImportError:
+    from shared_sql import EDGE_SELECT_SQL
 
 # ---------------------------------------------------------------------------
 # 非迭代 SQL（嵌入 SET 语句后通过 CLI 执行）
@@ -18,30 +22,7 @@ from db_config import duckdb_path, db_file, format_value_duckdb
 EDGE_SQL = """\
 SET GLOBAL TimeZone = 'Etc/UTC';
 {set_stmts}
-with
-myForums(id) as (
-    select id from Forum f
-    where f.creationDate between getvariable('startDate') and getvariable('endDate')
-),
-mm as (
-    select least(msg.CreatorPersonId, reply.CreatorPersonId)    as src,
-           greatest(msg.CreatorPersonId, reply.CreatorPersonId) as dst,
-           sum(case when msg.ParentMessageId is null then 10 else 5 end) as w
-    from undirected_Person_knows_Person pp, Message msg, Message reply
-    where pp.person1id = msg.CreatorPersonId
-      and pp.person2id = reply.CreatorPersonId
-      and reply.ParentMessageId = msg.MessageId
-      and exists (select * from myForums f where f.id = msg.containerforumid)
-      and exists (select * from myForums f where f.id = reply.containerforumid)
-    group by src, dst
-)
-select pp.person1id as src,
-       pp.person2id as dst,
-       10.0 / (coalesce(mm.w, 0) + 10) as weight
-from undirected_Person_knows_Person pp
-left join mm
-       on least(pp.person1id, pp.person2id)    = mm.src
-      and greatest(pp.person1id, pp.person2id) = mm.dst;
+{edge_select_sql};
 """
 
 
@@ -92,7 +73,7 @@ def _print_phase_timings(timings, n_iters, out_csv_path=None):
 
 
 def _extract_edges(set_stmts_str, timings):
-    sql = EDGE_SQL.format(set_stmts=set_stmts_str)
+    sql = EDGE_SQL.format(set_stmts=set_stmts_str, edge_select_sql=EDGE_SELECT_SQL)
 
     _t = time.perf_counter()
     proc = subprocess.run(

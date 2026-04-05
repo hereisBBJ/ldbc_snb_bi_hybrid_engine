@@ -9,7 +9,9 @@ import re
 # from result_mapping import result_mapping
 
 from db_config import duckdb_path, db_file, format_value_duckdb
-from bi15 import run_query_15  # pybind11 C++ 加速分支（bi15/ 包）
+from bi15 import run_query_15  # 加速分支（bi15/ 包）
+from bi19 import run_query_19  # 加速分支（bi19/ 包）
+from bi20 import run_query_20  # 加速分支（bi20/ 包）
 
 '''
 注意修改文件目录
@@ -34,6 +36,14 @@ def run_query(query_num, query_variant, query_spec, query_parameters, test, perf
     # BI-15 走 pybind11/C++ 加速分支（见 bi15/pybind_backend.py）
     if query_num == 15:
         return run_query_15(query_variant, query_parameters, perf_file)
+
+    # # BI-19 走 DuckDB + igraph 分支：SQL 建图，igraph 做最短路
+    # if query_num == 19:
+    #     return run_query_19(query_variant, query_spec, query_parameters, perf_file)
+
+    # # BI-20 走 DuckDB + igraph 分支：SQL 建图，igraph 做最短路
+    # if query_num == 20:
+    #     return run_query_20(query_variant, query_spec, query_parameters, perf_file)
 
     # 其他查询：直接通过 DuckDB CLI 执行原始 SQL
     set_stmts = []
