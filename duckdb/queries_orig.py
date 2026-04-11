@@ -37,13 +37,13 @@ def run_query(query_num, query_variant, query_spec, query_parameters, test, perf
     if query_num == 15:
         return run_query_15(query_variant, query_parameters, perf_file)
 
-    # # BI-19 走 DuckDB + igraph 分支：SQL 建图，igraph 做最短路
-    # if query_num == 19:
-    #     return run_query_19(query_variant, query_spec, query_parameters, perf_file)
+    # BI-19 走 DuckDB + igraph 分支：SQL 建图，igraph 做最短路
+    if query_num == 19:
+        return run_query_19(query_variant, query_spec, query_parameters, perf_file)
 
-    # # BI-20 走 DuckDB + igraph 分支：SQL 建图，igraph 做最短路
-    # if query_num == 20:
-    #     return run_query_20(query_variant, query_spec, query_parameters, perf_file)
+    # BI-20 走 DuckDB + igraph 分支：SQL 建图，igraph 做最短路
+    if query_num == 20:
+        return run_query_20(query_variant, query_spec, query_parameters, perf_file)
 
     # 其他查询：直接通过 DuckDB CLI 执行原始 SQL
     set_stmts = []

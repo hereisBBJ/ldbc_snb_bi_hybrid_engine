@@ -27,6 +27,6 @@ if _here not in sys.path:
     sys.path.insert(0, _here)
 
 # 公开接口：只暴露 run_query_15
-from .igraph_backend import run_query_15  # noqa: E402
+from .pybind_backend import run_query_15  # noqa: E402
 
 __all__ = ["run_query_15"]
