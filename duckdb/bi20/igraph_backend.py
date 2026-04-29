@@ -144,7 +144,7 @@ def _solve_bi20(arrow_edges, src_arrow, dst_arrow, timings):
     return normalized
 
 
-def run_query_20(query_variant, query_spec, query_parameters, perf_file):
+def run_query_20(query_variant, query_spec, query_parameters, perf_file, phase_timings_dir=None):
     """BI-20 entry point with igraph shortest path computation."""
     set_stmts = []
     for k, v in query_parameters.items():
@@ -161,8 +161,18 @@ def run_query_20(query_variant, query_spec, query_parameters, perf_file):
     timings = _make_timings()
     con = _open_connection(set_stmts)
 
-    perf_parts = Path(perf_file).parts
-    phase_out_path = str(Path("output_orig", "phase_timings", *perf_parts[1:]))
+    perf_path = Path(perf_file)
+    # 从 perf_file 中提取相对于 perf_base_dir 的部分（最后2层：query_id/parameters-i.csv）
+    perf_parts = perf_path.parts
+    if len(perf_parts) >= 2:
+        rel_subpath = '/'.join(perf_parts[-2:])  # bi-20a/parameters-1.csv
+    else:
+        rel_subpath = str(perf_path)
+    
+    if phase_timings_dir is None:
+        phase_out_path = str(Path('output_orig', 'phase_timings', rel_subpath))
+    else:
+        phase_out_path = str(Path(phase_timings_dir) / rel_subpath)
 
     start = time.time()
     try:

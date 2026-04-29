@@ -55,7 +55,8 @@ def _make_timings():
     return {
         'duckdb_sql':     0.0,   # DuckDB 执行 SQL + Arrow Table
         'arrow_to_numpy': 0.0,   # Arrow 列 → numpy（零拷贝 .to_numpy()）
-        'dijkstra_cpp':   0.0,   # C++ Dijkstra（含节点映射 + 堆）
+        'graph_build':    0.0,   # Graph construction (always 0 for BI-15, no explicit graph building)
+        'dijkstra':       0.0,   # C++ Dijkstra（含节点映射 + 堆）
     }
 
 
@@ -63,7 +64,8 @@ def _print_phase_timings(timings, n_iters, backend, out_csv_path=None):
     labels = {
         'duckdb_sql':     'DuckDB SQL     ',
         'arrow_to_numpy': 'Arrow→numpy    ',
-        'dijkstra_cpp':   f'Dijkstra({backend:<7})',
+        'graph_build':    'Graph build    ',
+        'dijkstra':       f'Dijkstra({backend:<7})',
     }
     total = sum(timings.values())
     print(f"\n[BI-15 phase timings / backend={backend}]  (avg over {n_iters} iters)")
@@ -109,7 +111,7 @@ def _dijkstra_cpp(arrow_table, person1Id, person2Id, timings):
         src_arr, dst_arr, weight_arr,
         int(person1Id), int(person2Id)
     )
-    timings['dijkstra_cpp'] += time.perf_counter() - _t
+    timings['dijkstra'] += time.perf_counter() - _t
 
     return dist
 
@@ -130,7 +132,7 @@ def _dijkstra_igraph_cpp(arrow_table, person1Id, person2Id, timings):
         src_arr, dst_arr, weight_arr,
         int(person1Id), int(person2Id)
     )
-    timings['dijkstra_cpp'] += time.perf_counter() - _t
+    timings['dijkstra'] += time.perf_counter() - _t
 
     return dist
 
@@ -151,10 +153,10 @@ def _dijkstra_igraph(arrow_table, person1Id, person2Id, timings):
     p1_idx = int(np.searchsorted(all_nodes, person1Id))
     p2_idx = int(np.searchsorted(all_nodes, person2Id))
     if p1_idx >= len(all_nodes) or all_nodes[p1_idx] != person1Id:
-        timings['dijkstra_cpp'] += time.perf_counter() - _t
+        timings['dijkstra'] += time.perf_counter() - _t
         return -1
     if p2_idx >= len(all_nodes) or all_nodes[p2_idx] != person2Id:
-        timings['dijkstra_cpp'] += time.perf_counter() - _t
+        timings['dijkstra'] += time.perf_counter() - _t
         return -1
     src_idx = np.searchsorted(all_nodes, src_arr)
     dst_idx = np.searchsorted(all_nodes, dst_arr)
@@ -163,12 +165,12 @@ def _dijkstra_igraph(arrow_table, person1Id, person2Id, timings):
     g.add_edges(list(zip(src_idx.tolist(), dst_idx.tolist())))
     g.es['weight'] = weight_arr.tolist()
     dist = g.distances(source=p1_idx, target=p2_idx, weights='weight')[0][0]
-    timings['dijkstra_cpp'] += time.perf_counter() - _t
+    timings['dijkstra'] += time.perf_counter() - _t
 
     return dist if dist != float('inf') else -1
 
 
-def run_query_15(query_variant, query_parameters, perf_file):
+def run_query_15(query_variant, query_parameters, perf_file, phase_timings_dir=None):
     """
     BI-15 入口，返回 (result_json_str, duration_seconds)。
     执行 10 次取平均耗时，与其他查询保持一致。
@@ -194,8 +196,18 @@ def run_query_15(query_variant, query_parameters, perf_file):
     timings = _make_timings()
     n_valid = 0
 
-    perf_parts = Path(perf_file).parts
-    phase_out_path = str(Path('output_orig', 'phase_timings', *perf_parts[1:]))
+    perf_path = Path(perf_file)
+    # 从 perf_file 中提取相对于 perf_base_dir 的部分（最后2层：query_id/parameters-i.csv）
+    perf_parts = perf_path.parts
+    if len(perf_parts) >= 2:
+        rel_subpath = '/'.join(perf_parts[-2:])  # bi-15a/parameters-1.csv
+    else:
+        rel_subpath = str(perf_path)
+    
+    if phase_timings_dir is None:
+        phase_out_path = str(Path('output_orig', 'phase_timings', rel_subpath))
+    else:
+        phase_out_path = str(Path(phase_timings_dir) / rel_subpath)
 
     start = time.time()
     try:

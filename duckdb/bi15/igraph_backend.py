@@ -117,7 +117,7 @@ def _dijkstra_arrow(arrow_table, person1Id, person2Id, timings):
     return dist if dist != float('inf') else -1
 
 
-def run_query_15(query_variant, query_parameters, perf_file):
+def run_query_15(query_variant, query_parameters, perf_file, phase_timings_dir=None):
     """BI-15 入口（igraph 实现），接口与 pybind_backend.run_query_15 一致。"""
     param_dict = {k.split(':')[0]: v for k, v in query_parameters.items()}
     person1Id = int(param_dict['person1Id'])
@@ -137,8 +137,18 @@ def run_query_15(query_variant, query_parameters, perf_file):
     timings = _make_timings()
     n_valid = 0
 
-    perf_parts = Path(perf_file).parts
-    phase_out_path = str(Path('output_orig', 'phase_timings', *perf_parts[1:]))
+    perf_path = Path(perf_file)
+    # 从 perf_file 中提取相对于 perf_base_dir 的部分（最后2层：query_id/parameters-i.csv）
+    perf_parts = perf_path.parts
+    if len(perf_parts) >= 2:
+        rel_subpath = '/'.join(perf_parts[-2:])  # bi-15a/parameters-1.csv
+    else:
+        rel_subpath = str(perf_path)
+    
+    if phase_timings_dir is None:
+        phase_out_path = str(Path('output_orig', 'phase_timings', rel_subpath))
+    else:
+        phase_out_path = str(Path(phase_timings_dir) / rel_subpath)
 
     start = time.time()
     try:

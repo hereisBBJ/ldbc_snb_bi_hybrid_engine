@@ -85,8 +85,8 @@ def _open_connection(set_stmts):
 def _make_timings():
     return {
         "duckdb_sql": 0.0,
-        "cache_build": 0.0,
         "arrow_to_numpy": 0.0,
+        "graph_build": 0.0,
         "dijkstra": 0.0,
     }
 
@@ -94,8 +94,8 @@ def _make_timings():
 def _print_phase_timings(timings, n_iters, out_csv_path=None):
     labels = {
         "duckdb_sql": "DuckDB SQL     ",
-        "cache_build": "Cache build    ",
         "arrow_to_numpy": "Arrow->numpy   ",
+        "graph_build": "Graph build    ",
         "dijkstra": "Shortest paths ",
     }
     total = sum(timings.values())
@@ -190,7 +190,7 @@ def _run_cached_shortest_paths(src_arrow, dst_arrow, timings):
     return [{"f": f, "t": t, "w": w} for f, t, w in best_rows]
 
 
-def run_query_19(query_variant, query_spec, query_parameters, perf_file):
+def run_query_19(query_variant, query_spec, query_parameters, perf_file, phase_timings_dir=None):
     """BI-19 entry point with cached igraph graph."""
     set_stmts = []
     for k, v in query_parameters.items():
@@ -207,13 +207,23 @@ def run_query_19(query_variant, query_spec, query_parameters, perf_file):
     timings = _make_timings()
     con = _open_connection(set_stmts)
 
-    perf_parts = Path(perf_file).parts
-    phase_out_path = str(Path("output_orig", "phase_timings", *perf_parts[1:]))
+    perf_path = Path(perf_file)
+    # 从 perf_file 中提取相对于 perf_base_dir 的部分（最后2层：query_id/parameters-i.csv）
+    perf_parts = perf_path.parts
+    if len(perf_parts) >= 2:
+        rel_subpath = '/'.join(perf_parts[-2:])  # bi-19a/parameters-1.csv
+    else:
+        rel_subpath = str(perf_path)
+    
+    if phase_timings_dir is None:
+        phase_out_path = str(Path('output_orig', 'phase_timings', rel_subpath))
+    else:
+        phase_out_path = str(Path(phase_timings_dir) / rel_subpath)
 
     try:
         _t = time.perf_counter()
         _CACHE.rebuild_if_needed(edge_sql, con)
-        timings["cache_build"] += time.perf_counter() - _t
+        timings["graph_build"] += time.perf_counter() - _t
 
         start = time.time()
         for _ in range(10):

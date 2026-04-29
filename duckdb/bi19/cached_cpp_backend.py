@@ -1,9 +1,9 @@
 """
 bi19/cached_cpp_backend.py
-BI-19 cached graph backend (cpp + igraph):
-  - Build graph in C++ once per edge SQL mode
-  - Reuse C++ cached graph across repeated query iterations
-  - Keep Python side focused on SQL extraction and timings
+BI-19 cached graph backend (cpp + igraph), aligned with cached_backend.py:
+    - Same cache lifecycle as Python cached backend
+    - Same timing buckets/calibration as Python cached backend
+    - C++ only replaces the shortest-path engine and cached graph storage
 """
 
 import json
@@ -30,6 +30,30 @@ except ImportError:
     import bi19_igraph_cached_cpp
 
 
+class _CppGraphCache:
+    """Mirror Python cached backend cache policy, but store graph in C++."""
+
+    def __init__(self):
+        self.edge_sql = None
+
+    def rebuild_if_needed(self, edge_sql, con):
+        if self.edge_sql == edge_sql:
+            return False
+
+        cache_key = f"{db_file}|{edge_sql}"
+        edges_tbl = con.execute(edge_sql).fetch_arrow_table()
+        edge_src = edges_tbl.column("src").to_numpy()
+        edge_dst = edges_tbl.column("dst").to_numpy()
+        edge_w = edges_tbl.column("weight").to_numpy()
+
+        bi19_igraph_cached_cpp.build_graph(edge_src, edge_dst, edge_w, cache_key)
+        self.edge_sql = edge_sql
+        return True
+
+
+_CACHE = _CppGraphCache()
+
+
 def _open_connection(set_stmts):
     con = duckdb.connect(db_file, read_only=True)
     con.execute("SET GLOBAL TimeZone = 'Etc/UTC'")
@@ -43,7 +67,7 @@ def _make_timings():
         "duckdb_sql": 0.0,
         "cache_build": 0.0,
         "arrow_to_numpy": 0.0,
-        "cpp_dijkstra": 0.0,
+        "dijkstra": 0.0,
     }
 
 
@@ -52,7 +76,7 @@ def _print_phase_timings(timings, n_iters, out_csv_path=None):
         "duckdb_sql": "DuckDB SQL     ",
         "cache_build": "Cache build    ",
         "arrow_to_numpy": "Arrow->numpy   ",
-        "cpp_dijkstra": "CPP shortest   ",
+        "dijkstra": "Shortest paths ",
     }
     total = sum(timings.values())
     print("\n[BI-19 phase timings / cached-cpp-igraph]  (avg over {} iters)".format(n_iters))
@@ -93,16 +117,29 @@ def _extract_arrow(con, sql, timings):
     return table
 
 
-def run_query_19(query_variant, query_spec, query_parameters, perf_file):
-    """BI-19 entry point with C++ cached igraph graph."""
+def _run_cached_shortest_paths(src_arrow, dst_arrow, timings):
+    if src_arrow.num_rows == 0 or dst_arrow.num_rows == 0:
+        return []
+
+    _t = time.perf_counter()
+    src_nodes = src_arrow.column("id").to_numpy()
+    dst_nodes = dst_arrow.column("id").to_numpy()
+    timings["arrow_to_numpy"] += time.perf_counter() - _t
+
+    _t = time.perf_counter()
+    result_rows = bi19_igraph_cached_cpp.solve_cached(src_nodes, dst_nodes)
+    timings["dijkstra"] += time.perf_counter() - _t
+    return result_rows
+
+
+def run_query_19(query_variant, query_spec, query_parameters, perf_file, phase_timings_dir=None):
+    """BI-19 entry point with C++ cached igraph graph (Python-calibrated timings)."""
     set_stmts = []
     for k, v in query_parameters.items():
         param_name, param_type = k.split(":")
         set_stmts.append(f"SET variable {param_name} = {format_value_duckdb(v, param_type)}")
 
     edge_sql = EDGE_SELECT_SQL_FULL if _is_full_mode_query(query_spec) else EDGE_SELECT_SQL_PRECOMPUTED
-    cache_key = f"{db_file}|{edge_sql}"
-
     perf = subprocess.Popen(
         ["python3", "/work/machine_performance_indicators/monitor_system_perf.py", perf_file]
     )
@@ -111,36 +148,27 @@ def run_query_19(query_variant, query_spec, query_parameters, perf_file):
     timings = _make_timings()
     con = _open_connection(set_stmts)
 
-    perf_parts = Path(perf_file).parts
-    phase_out_path = str(Path("output_orig", "phase_timings", *perf_parts[1:]))
+    perf_path = Path(perf_file)
+    if phase_timings_dir is None:
+        perf_parts = perf_path.parts
+        phase_out_path = str(Path("output_orig", "phase_timings", *perf_parts[1:]))
+    else:
+        if perf_path.is_absolute() and len(perf_path.parts) > 1:
+            perf_rel = Path(*perf_path.parts[1:])
+        else:
+            perf_rel = perf_path
+        phase_out_path = str(Path(phase_timings_dir) / perf_rel)
 
     try:
-        edge_tbl = _extract_arrow(con, edge_sql, timings)
-
         _t = time.perf_counter()
-        edge_src = edge_tbl.column("src").to_numpy()
-        edge_dst = edge_tbl.column("dst").to_numpy()
-        edge_w = edge_tbl.column("weight").to_numpy()
-        timings["arrow_to_numpy"] += time.perf_counter() - _t
-
-        _t = time.perf_counter()
-        bi19_igraph_cached_cpp.build_graph(edge_src, edge_dst, edge_w, cache_key)
+        _CACHE.rebuild_if_needed(edge_sql, con)
         timings["cache_build"] += time.perf_counter() - _t
 
         start = time.time()
         for _ in range(10):
             src_tbl = _extract_arrow(con, SRCS_SQL, timings)
             dst_tbl = _extract_arrow(con, DSTS_SQL, timings)
-
-            _t = time.perf_counter()
-            src_nodes = src_tbl.column("id").to_numpy()
-            dst_nodes = dst_tbl.column("id").to_numpy()
-            timings["arrow_to_numpy"] += time.perf_counter() - _t
-
-            _t = time.perf_counter()
-            result_rows = bi19_igraph_cached_cpp.solve_cached(src_nodes, dst_nodes)
-            timings["cpp_dijkstra"] += time.perf_counter() - _t
-
+            result_rows = _run_cached_shortest_paths(src_tbl, dst_tbl, timings)
             last_result = json.dumps(result_rows)
 
         duration = (time.time() - start) / 10

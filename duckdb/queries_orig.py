@@ -32,18 +32,18 @@ def run_script(filename,perf_file):
     return result.stdout.strip(), duration
 
 
-def run_query(query_num, query_variant, query_spec, query_parameters, test, perf_file):
+def run_query(query_num, query_variant, query_spec, query_parameters, test, perf_file, phase_timings_dir=None):
     # BI-15 走 pybind11/C++ 加速分支（见 bi15/pybind_backend.py）
     if query_num == 15:
-        return run_query_15(query_variant, query_parameters, perf_file)
+        return run_query_15(query_variant, query_parameters, perf_file, phase_timings_dir=phase_timings_dir)
 
     # BI-19 走 DuckDB + igraph 分支：SQL 建图，igraph 做最短路
     if query_num == 19:
-        return run_query_19(query_variant, query_spec, query_parameters, perf_file)
+        return run_query_19(query_variant, query_spec, query_parameters, perf_file, phase_timings_dir=phase_timings_dir)
 
     # BI-20 走 DuckDB + igraph 分支：SQL 建图，igraph 做最短路
     if query_num == 20:
-        return run_query_20(query_variant, query_spec, query_parameters, perf_file)
+        return run_query_20(query_variant, query_spec, query_parameters, perf_file, phase_timings_dir=phase_timings_dir)
 
     # 其他查询：直接通过 DuckDB CLI 执行原始 SQL
     set_stmts = []
@@ -65,33 +65,36 @@ def run_query(query_num, query_variant, query_spec, query_parameters, test, perf
     return result.stdout.strip(), (end - start) / 10
 
 
-def run_precomputations(query_variants, batch_id, batch_type, sf, timings_file, use_precomputed_paths=True):
+def run_precomputations(query_variants, batch_id, batch_type, sf, timings_file,
+                        use_precomputed_paths=True, perf_base_dir='system_performance_orig'):
     if "4" in query_variants:
-        perf_file_path = f'system_performance_orig'
+        perf_file_path = perf_base_dir
         os.makedirs(perf_file_path, exist_ok=True)
         perf_file = f'{perf_file_path}/bi-4-precomputations.csv'
         result , duration=run_script("dml/precomp/bi-4.sql",perf_file)
         timings_file.write(f"DuckDB|{sf}|{batch_id}|{batch_type}|q4precomputation||{duration}\n")
     if "6" in query_variants:
-        perf_file_path = f'system_performance_orig'
+        perf_file_path = perf_base_dir
         os.makedirs(perf_file_path, exist_ok=True)
         perf_file = f'{perf_file_path}/bi-6-precomputations.csv'
         result,duration=run_script("dml/precomp/bi-6.sql",perf_file)
         timings_file.write(f"DuckDB|{sf}|{batch_id}|{batch_type}|q6precomputation||{duration}\n")
     if use_precomputed_paths and ("19a" in query_variants or "19b" in query_variants):
-        perf_file_path = f'system_performance_orig'
+        perf_file_path = perf_base_dir
         os.makedirs(perf_file_path, exist_ok=True)
         perf_file = f'{perf_file_path}/bi-19-precomputations.csv'
         result,duration=run_script("dml/precomp/bi-19.sql",perf_file)
         timings_file.write(f"DuckDB|{sf}|{batch_id}|{batch_type}|q19precomputation||{duration}\n")
     if use_precomputed_paths and ("20a" in query_variants or "20b" in query_variants):
-        perf_file_path = f'system_performance_orig'
+        perf_file_path = perf_base_dir
         os.makedirs(perf_file_path, exist_ok=True)
         perf_file = f'{perf_file_path}/bi-20-precomputations.csv'
         result,duration=run_script("dml/precomp/bi-20.sql",perf_file)
         timings_file.write(f"DuckDB|{sf}|{batch_id}|{batch_type}|q20precomputation||{duration}\n")
 
-def run_queries(query_variants, parameter_csvs, sf, test, pgtuning,batch_id, batch_type, timings_file, results_file, use_precomputed_paths=True):
+def run_queries(query_variants, parameter_csvs, sf, test, pgtuning, batch_id, batch_type,
+                timings_file, results_file, use_precomputed_paths=True,
+                phase_timings_dir=None, perf_base_dir='system_performance_orig'):
     start_total = time.time()
 
     for query_variant in query_variants:
@@ -111,11 +114,14 @@ def run_queries(query_variants, parameter_csvs, sf, test, pgtuning,batch_id, bat
         i = 0
         for query_parameters in parameters_csv:
             i += 1
-            perf_file_path = f'system_performance_orig/bi-{query_num}{query_subvariant}'
+            perf_file_path = f'{perf_base_dir}/bi-{query_num}{query_subvariant}'
             os.makedirs(perf_file_path, exist_ok=True)
             perf_file = f'{perf_file_path}/parameters-{i}.csv'
             # DuckDB 执行
-            results, duration = run_query(query_num, query_variant, query_spec, query_parameters, test, perf_file)
+            results, duration = run_query(
+                query_num, query_variant, query_spec, query_parameters, test, perf_file,
+                phase_timings_dir=phase_timings_dir
+            )
 
             # 参数简化
             query_parameters_simple = {k.split(":")[0]: v for k, v in query_parameters.items()}
