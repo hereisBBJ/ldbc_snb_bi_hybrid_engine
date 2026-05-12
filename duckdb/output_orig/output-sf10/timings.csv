@@ -1,7 +1,0 @@
-tool|sf|day|batch_type|q|parameters|time
-DuckDB|10|2012-11-29|power|15a|{"person1Id": "37383395347825", "person2Id": "10995116283851", "startDate": "2012-11-05", "endDate": "2012-11-07"}|1.0451866865158081
-DuckDB|10|2012-11-29|power|15b|{"person1Id": "15393162808658", "person2Id": "28587302357897", "startDate": "2010-04-11", "endDate": "2010-05-03"}|1.0665940523147583
-DuckDB|10|2012-11-29|power|19a|{"city1Id": "702", "city2Id": "967"}|0.005509781837463379
-DuckDB|10|2012-11-29|power|19b|{"city1Id": "129", "city2Id": "265"}|0.005380892753601074
-DuckDB|10|2012-11-29|power|20a|{"company": "Air_Arabia_Maroc", "person2Id": "15393162811012"}|0.005451679229736328
-DuckDB|10|2012-11-29|power|20b|{"company": "Alrosa_Mirny_Air_Enterprise", "person2Id": "2199023279951"}|0.00534665584564209

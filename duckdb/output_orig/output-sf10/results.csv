@@ -1,7 +1,0 @@
-15|15a|{"person1Id": "37383395347825", "person2Id": "10995116283851", "startDate": "2012-11-05", "endDate": "2012-11-07"}|[{"coalesce(min(w), -1)": 4.0}]
-15|15b|{"person1Id": "15393162808658", "person2Id": "28587302357897", "startDate": "2010-04-11", "endDate": "2010-05-03"}|[{"coalesce(min(w), -1)": 1.3016806722689076}]
-19|19a|{"city1Id": "702", "city2Id": "967"}|
-19|19b|{"city1Id": "129", "city2Id": "265"}|
-20|20a|{"company": "Air_Arabia_Maroc", "person2Id": "15393162811012"}|
-20|20b|{"company": "Alrosa_Mirny_Air_Enterprise", "person2Id": "2199023279951"}|
-

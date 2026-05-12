@@ -135,7 +135,7 @@ def _solve_bi19(arrow_edges, src_arrow, dst_arrow, timings):
     return [{"f": f, "t": t, "w": w} for f, t, w in best_rows]
 
 
-def run_query_19(query_variant, query_spec, query_parameters, perf_file):
+def run_query_19(query_variant, query_spec, query_parameters, perf_file, phase_timings_dir=None):
     """BI-19 entry point with igraph shortest path computation."""
     set_stmts = []
     for k, v in query_parameters.items():
@@ -152,8 +152,17 @@ def run_query_19(query_variant, query_spec, query_parameters, perf_file):
     timings = _make_timings()
     con = _open_connection(set_stmts)
 
-    perf_parts = Path(perf_file).parts
-    phase_out_path = str(Path("output_orig", "phase_timings", *perf_parts[1:]))
+    perf_path = Path(perf_file)
+    perf_parts = perf_path.parts
+    if len(perf_parts) >= 2:
+        rel_subpath = Path(*perf_parts[-2:])
+    else:
+        rel_subpath = perf_path
+
+    if phase_timings_dir is None:
+        phase_out_path = str(Path("output_orig", "phase_timings") / rel_subpath)
+    else:
+        phase_out_path = str(Path(phase_timings_dir) / rel_subpath)
 
     start = time.time()
     try:
